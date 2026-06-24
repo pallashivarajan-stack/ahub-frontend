@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import heroPoster from "@/assets/hero-poster.jpg";
 import heroVideo from "@/assets/AUIC NIDHI iTBI - a-hub (1080p, h264).mp4";
@@ -16,7 +16,7 @@ export function Hero() {
       setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
-    const resizeTimer = window.addEventListener('resize', checkMobile);
+    window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -102,14 +102,6 @@ export function Hero() {
       {/* CONTENT LAYER - Above all overlays */}
       <div className="relative z-30 mx-auto flex min-h-[calc(100vh-1.5rem)] max-w-7xl items-center px-6 py-24 md:px-10 md:py-28 lg:py-32">
         <div className="max-w-xl text-white">
-          {/* Badge */}
-          <div 
-            className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/8 px-4 py-2 text-[0.66rem] uppercase tracking-[0.24em] text-white/95 backdrop-blur-md shadow-[0_8px_24px_-12px_rgba(0,0,0,0.4)]"
-            aria-label="Premium Innovation Hub certification"
-          >
-            <Sparkles size={12} aria-hidden="true" className="animate-pulse" /> Premium Innovation Hub
-          </div>
-
           {/* Main Heading */}
           <h1 className="text-balance font-display text-3xl font-semibold leading-[1.2] sm:leading-[1.05] tracking-tight sm:text-4xl xl:text-[3.5rem] drop-shadow-[0_12px_32px_rgba(0,0,0,0.6)]">
             A premium startup ecosystem for ambitious founders.

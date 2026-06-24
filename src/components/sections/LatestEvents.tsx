@@ -3,18 +3,34 @@ import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 import { events } from "@/data";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
-import event1 from "@/assets/event-1.jpg";
-import event2 from "@/assets/event-2.jpg";
-import event3 from "@/assets/event-3.jpg";
-import event4 from "@/assets/event-4.jpg";
-import inst4 from "@/assets/inst-4.jpg";
+
+/* ── Event image imports ── */
+import startupSaturday1 from "@/assets/events/startup saturday.jpeg";
+import beenThereDoneThat1 from "@/assets/events/been there done that.jpeg";
+import googleStartupDays from "@/assets/events/google starup success days.jpg";
+import ideathon from "@/assets/events/ideathon.jpg";
+import startUpSaturday2 from "@/assets/events/Start Up saturday.jpeg";
+import beenThereDoneThat2 from "@/assets/events/been there donw that 2.jpeg";
+import andhraTechLeague from "@/assets/events/andhra texh league.jpg";
+import hackapHackathon from "@/assets/events/Hackap agritech hackathon.jpg";
+import startupsSaturday3 from "@/assets/events/starups staruday.jpg";
+import runninWild from "@/assets/events/runnin wild.jpeg";
+import edsCompetition from "@/assets/events/eds stduet design competittion.jpeg";
+import eyesWideShut from "@/assets/events/eyes wide shut.jpg";
 
 const imgMap: Record<string, string> = {
-  "/src/assets/event-1.jpg": event1,
-  "/src/assets/event-2.jpg": event2,
-  "/src/assets/event-3.jpg": event3,
-  "/src/assets/event-4.jpg": event4,
-  "/src/assets/inst-4.jpg": inst4,
+  "/src/assets/events/startup saturday.jpeg": startupSaturday1,
+  "/src/assets/events/been there done that.jpeg": beenThereDoneThat1,
+  "/src/assets/events/google starup success days.jpg": googleStartupDays,
+  "/src/assets/events/ideathon.jpg": ideathon,
+  "/src/assets/events/Start Up saturday.jpeg": startUpSaturday2,
+  "/src/assets/events/been there donw that 2.jpeg": beenThereDoneThat2,
+  "/src/assets/events/andhra texh league.jpg": andhraTechLeague,
+  "/src/assets/events/Hackap agritech hackathon.jpg": hackapHackathon,
+  "/src/assets/events/starups staruday.jpg": startupsSaturday3,
+  "/src/assets/events/runnin wild.jpeg": runninWild,
+  "/src/assets/events/eds stduet design competittion.jpeg": edsCompetition,
+  "/src/assets/events/eyes wide shut.jpg": eyesWideShut,
 };
 
 export function LatestEvents() {
@@ -33,6 +49,7 @@ export function LatestEvents() {
         duration: 44,
         ease: "none",
         repeat: -1,
+        force3D: true,
       },
     );
 
@@ -52,6 +69,7 @@ export function LatestEvents() {
       xPercent: next,
       duration: 0.8,
       ease: "power3.out",
+      force3D: true,
       onComplete: () => animationRef.current?.play(),
     });
   };
@@ -78,7 +96,7 @@ export function LatestEvents() {
       </div>
 
       <div className="relative mt-10 overflow-hidden" onPointerEnter={() => animationRef.current?.pause()} onPointerLeave={() => animationRef.current?.play()}>
-        <div ref={trackRef} className="flex w-max gap-6 px-6 md:px-10">
+        <div ref={trackRef} className="flex w-max gap-6 px-6 md:px-10" style={{ willChange: "transform" }}>
           {[...events, ...events].map((e, i) => (
             <article
               key={i}
@@ -88,7 +106,7 @@ export function LatestEvents() {
                 <img
                   src={imgMap[e.img]}
                   alt={e.title}
-                  loading="lazy"
+                  loading="eager"
                   draggable={false}
                   decoding="async"
                   className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105"

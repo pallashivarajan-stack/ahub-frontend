@@ -35,7 +35,7 @@ import inst6 from "@/assets/inst-6.jpg";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 
-type PanelKey = "ecosystem" | "programs" | "startups" | "events" | "network" | "about" | "students";
+type PanelKey = "approach" | "aspire" | "associate" | "achieve" | "announcement" | "about";
 type IconType = ComponentType<{ className?: string; size?: number }>;
 
 type NavItem = {
@@ -45,13 +45,24 @@ type NavItem = {
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "#home" },
-  { label: "Ecosystem", href: "#what-we-do", panel: "ecosystem" },
-  { label: "Startups", href: "#achieve", panel: "startups" },
-  { label: "Students", href: "#students", panel: "students" },
-  { label: "Events", href: "#announcement", panel: "events" },
-  { label: "About", href: "#about", panel: "about" },
+  { label: "āpproach", href: "#home", panel: "approach" },
+  { label: "āspire", href: "#what-we-do", panel: "aspire" },
+  { label: "āssociate", href: "#achieve", panel: "associate" },
+  { label: "āchieve", href: "#students", panel: "achieve" },
+  { label: "ānnouncement", href: "#announcement", panel: "announcement" },
+  { label: "ābout", href: "#about", panel: "about" },
 ];
+
+function NavLabel({ label }: { label: string }) {
+  const first = label.charAt(0);
+  const rest = label.slice(1);
+  return (
+    <span className="inline-flex items-baseline gap-0">
+      <span className="text-[#e75710]">{first}</span>
+      <span>{rest}</span>
+    </span>
+  );
+}
 
 const PANEL_PARTICLES = [
   { className: "left-[8%] top-[16%] h-1.5 w-1.5", delay: 0 },
@@ -141,107 +152,81 @@ type StudentTab = {
   stats: string[];
 };
 
-const PANEL_CONTENT: Record<PanelKey, { eyebrow: string; title: string; summary: string; links: MenuLink[]; compact?: boolean; spotlight?: { image: string; caption: string; note: string } }> = {
-  ecosystem: {
-    eyebrow: "Ecosystem",
-    title: "Structured platform pathways for founders and partners",
-    summary: "Navigate the ecosystem layer through mentors, capital, infrastructure, governance, and team visibility.",
+const PANEL_CONTENT: Record<PanelKey, { eyebrow: string; summary: string; links: MenuLink[]; compact?: boolean; spotlight?: { image: string; caption: string; note: string } }> = {
+  approach: {
+    eyebrow: "Approach",
+    summary: "Our core approach — vision, roadmap, and the operational model that drives our ecosystem.",
     links: [
-      { label: "Mentors", href: "/ecosystem/mentors", description: "Industry experts, office hours, and domain guidance.", image: inst1 },
-      { label: "Investors", href: "/ecosystem/investors", description: "Funding partners, angels, and venture support.", image: inst2 },
-      { label: "Partners", href: "/ecosystem/partners", description: "Institutional logos and collaboration network.", image: inst3 },
-      { label: "Vision & Roadmap", href: "/ecosystem/vision-roadmap", description: "Mission, milestones, and growth direction.", image: heroPoster },
+      { label: "Vision & Roadmap", href: "/about/vision-roadmap", description: "Mission, milestones, and growth direction.", image: heroPoster },
+      { label: "Operational Model", href: "/approach/operational-model", description: "How we build, validate, and scale startups.", image: inst4 },
+    ],
+    compact: true,
+    spotlight: { image: heroPoster, caption: "Strategic clarity", note: "Vision, roadmap, and operational structure" },
+  },
+  aspire: {
+    eyebrow: "Aspire",
+    summary: "Explore the startup portfolio, infrastructure, partners, investors, and startup events.",
+    links: [
+      { label: "Startup Portfolio", href: "/startups/startup-portfolio", description: "Explore our incubated startups and their journeys.", image: inst2 },
       { label: "Infrastructure", href: "/ecosystem/infrastructure", description: "Labs, halls, and collaboration spaces.", image: inst4 },
-      { label: "Board", href: "/ecosystem/board", description: "Governance, leadership, and strategic oversight.", image: inst5 },
-      { label: "Team", href: "/ecosystem/team", description: "Core team, coordinators, and student leaders.", image: inst6 },
-      { label: "Seminar Hall Booking", href: "/ecosystem/seminar-hall-booking", description: "Request a venue, date, and support package.", image: event1 },
+      { label: "Partners", href: "/ecosystem/partners", description: "Institutional logos and collaboration network.", image: inst3 },
+      { label: "Investors", href: "/ecosystem/investors", description: "Funding partners, angels, and venture support.", image: inst2 },
+      { label: "Startup Events", href: "/events/startups-events", description: "Demo days, pitch sessions, and founder meetups.", image: event2 },
     ],
-    spotlight: { image: inst1, caption: "Mentorship & institutional depth", note: "Picture-led ecosystem template" },
+    spotlight: { image: inst2, caption: "Aspire ecosystem layer", note: "Portfolio, infrastructure, and investor access" },
   },
-  programs: {
-    eyebrow: "Programs",
-    title: "Founders moving from validation to structured growth",
-    summary: "A premium program ladder for incubation, collaboration, pitch intake, and community onboarding.",
+  associate: {
+    eyebrow: "Associate",
+    summary: "Join our ecosystem — programs, startup support, and venue bookings.",
     links: [
-      { label: "Aspire", href: "/programs/aspire", description: "Pre-incubation and startup training.", image: heroPoster },
-      { label: "Associate", href: "/programs/associate", description: "Collaboration and ecosystem engagement.", image: event2 },
-      { label: "Pitch To Us", href: "/programs/pitch-to-us", description: "Startup submission and founder intake.", image: event3 },
       { label: "Join Us", href: "/programs/join-us", description: "Community onboarding and membership.", image: event4 },
+      { label: "Pitch To Us", href: "/programs/pitch-to-us", description: "Startup submission and founder intake.", image: event3 },
+      { label: "Seminar Hall Booking", href: "/ecosystem/seminar-hall-booking", description: "Request a venue, date, and support package.", image: event1 },
+      { label: "Startup Funding", href: "/startups/startup-funding", description: "Funding pathways, grants, and investor access.", image: inst5 },
     ],
-    spotlight: { image: heroPoster, caption: "Premium program suite", note: "Hover for layered previews" },
+    compact: true,
+    spotlight: { image: event4, caption: "Associate programs", note: "Join, pitch, fund, and book" },
   },
-  startups: {
-    eyebrow: "Startups",
-    title: "Portfolio, recruiting, and startup operations",
-    summary: "Everything around the startup layer from portfolio intelligence to hiring and registration.",
+  achieve: {
+    eyebrow: "Achieve",
+    summary: "Impact metrics, recognition, and reports showcasing ecosystem outcomes.",
     links: [
-      { label: "Incubators", href: "/incubators", description: "A premium showcase of incubator models and outcomes.", image: inst1 },
-      { label: "Startup Portfolio", href: "/startups/startup-portfolio", description: "Expand the existing portfolio listing with filters.", image: inst2 },
-      { label: "Latest Events", href: "/startups/latest-events", description: "Workshops, demo days, and founder sessions.", image: event1 },
-      { label: "Blog", href: "/startups/blog", description: "Insights, stories, and innovation updates.", image: heroPoster },
-      { label: "Student Startup Recruitment", href: "/startups/student-startup-recruitment", description: "Roles, internships, and applications.", image: inst5 },
+      { label: "Impact", href: "/achieve/impact", description: "Ecosystem impact metrics and founder outcomes.", image: inst1 },
+      { label: "Reward & Recognition", href: "/about/rewards", description: "Awards, accolades, and ecosystem milestones.", image: event3 },
+      { label: "Reports", href: "/about/reports", description: "Annual reports, impact metrics, and data insights.", image: event4 },
+    ],
+    compact: true,
+    spotlight: { image: event3, caption: "Achievement & recognition", note: "Impact, rewards, and transparent reporting" },
+  },
+  announcement: {
+    eyebrow: "Announcement",
+    summary: "Press, case studies, events, registrations, blogs, and career opportunities.",
+    links: [
+      { label: "Press", href: "/about/press", description: "Media coverage, news features, and publications.", image: event2 },
+      { label: "Case Studies", href: "/events/case-studies", description: "Impact stories and startup journey highlights.", image: inst3 },
+      { label: "Events Calendar", href: "/events/calendar", description: "Interactive event schedule and upcoming dates.", image: event1 },
+      { label: "Startup Blogs", href: "/startups/blog", description: "Insights, stories, and innovation updates.", image: heroPoster },
+      { label: "Event Registration", href: "/events/event-registration", description: "Register and RSVP for upcoming events.", image: event2 },
       { label: "Startup Registration", href: "/startups/startup-registration", description: "Onboarding for founders and teams.", image: inst6 },
+      { label: "Internship Registration", href: "/students/internship-registration", description: "Apply for internships and track status.", image: event2 },
+      { label: "Internship Calendar", href: "/students/internship-calendar", description: "Internship schedules, openings, and timelines.", image: event1 },
     ],
-    spotlight: { image: inst2, caption: "Portfolio templates with real images", note: "Founder stories, funding, and traction" },
-  },
-  events: {
-    eyebrow: "Events",
-    title: "A clean signal layer for every ecosystem moment",
-    summary: "Use the events menu for calendars, case studies, careers, visits, and hosting requests.",
-    links: [
-      { label: "Calendar", href: "/events/calendar", description: "Interactive event schedule and registrations.", image: event1 },
-      { label: "Case Studies", href: "/events/case-studies", description: "Startup journeys, impact stories, and metrics.", image: event2 },
-      { label: "Careers", href: "/events/careers", description: "Open roles at AHUB and the ecosystem.", image: event3 },
-      { label: "Student Visits", href: "/events/student-visits", description: "Campus tours and visit requests.", image: event4 },
-      { label: "Host an Event", href: "/events/host-an-event", description: "Venue, capacity, and support requests.", image: heroPoster },
-    ],
-    spotlight: { image: event2, caption: "Interactive event templates", note: "Workshops, visits, and demo days" },
-  },
-  network: {
-    eyebrow: "Network",
-    title: "Institutional reach and partner visibility",
-    summary: "A compact network view for connected institutions, research partners, and ecosystem nodes.",
-    links: [
-      { label: "Partners", href: "/ecosystem/partners", description: "Institutional and corporate partner map.", image: inst3 },
-      { label: "Infrastructure", href: "/ecosystem/infrastructure", description: "Facilities that support collaboration.", image: inst4 },
-      { label: "Board", href: "/ecosystem/board", description: "Leadership and governance visibility.", image: inst5 },
-      { label: "Team", href: "/ecosystem/team", description: "The people running the platform.", image: inst6 },
-    ],
-    spotlight: { image: inst3, caption: "Network template", note: "Hover cards with partner imagery" },
+    spotlight: { image: event2, caption: "Announcements & updates", note: "Press, events, registrations, and blogs" },
   },
   about: {
     eyebrow: "About",
-    title: "A smaller clean dropdown for institutional context",
-    summary: "Quick access to board, team, and leadership pages without changing the homepage experience.",
+    summary: "Meet the mentors, board, and team behind the AUIC ecosystem.",
     links: [
-      { label: "Board", href: "/about/board", description: "Leadership and governance overview.", image: inst5 },
-      { label: "Team", href: "/about/team", description: "Operations and community leadership.", image: inst6 },
+      { label: "Mentors", href: "/about/mentors", description: "Industry experts, office hours, and domain guidance.", image: inst1 },
+      { label: "Board", href: "/about/board", description: "Governance, leadership, and strategic oversight.", image: inst5 },
+      { label: "Team", href: "/about/team", description: "Core team, coordinators, and student leaders.", image: inst6 },
     ],
     compact: true,
-    spotlight: { image: inst5, caption: "Clean institutional dropdown", note: "Minimal but visual" },
-  },
-  students: {
-    eyebrow: "Students",
-    title: "Student-facing access and opportunity flow",
-    summary: "Dashboard access, internship scheduling, and login entry points for student users.",
-    links: [
-      { label: "Dashboard", href: "/students/dashboard", description: "Program tracking and startup opportunities.", image: heroPoster },
-      { label: "Internship Calendar", href: "/students/internship-calendar", description: "Openings, dates, and timelines.", image: event1 },
-      { label: "Login", href: "/students/login", description: "Student, founder, and mentor authentication.", image: event4 },
-    ],
-    compact: true,
-    spotlight: { image: heroPoster, caption: "Student access templates", note: "Dashboard, calendar, login" },
+    spotlight: { image: inst5, caption: "Institutional leadership", note: "Mentors, board, and team" },
   },
 };
 
 const STUDENT_TABS: StudentTab[] = [
-  {
-    label: "Dashboard",
-    href: "/students/dashboard",
-    description: "Track programs, opportunities, registrations, and application status in one view.",
-    image: heroPoster,
-    stats: ["Program tracking", "Startup opportunities", "RSVP status"],
-  },
   {
     label: "Internship Calendar",
     href: "/students/internship-calendar",
@@ -250,11 +235,18 @@ const STUDENT_TABS: StudentTab[] = [
     stats: ["Openings", "Timelines", "Important dates"],
   },
   {
-    label: "Login",
-    href: "/students/login",
-    description: "Professional sign-in for students, startup founders, and mentors.",
-    image: event4,
-    stats: ["Student login", "Founder login", "Mentor login"],
+    label: "Internship Registration",
+    href: "/students/internship-registration",
+    description: "Apply for internships, submit applications, and track your status.",
+    image: event2,
+    stats: ["Apply now", "Track status", "Get matched"],
+  },
+  {
+    label: "Dashboard",
+    href: "/students/dashboard",
+    description: "Track programs, opportunities, registrations, and application status in one view.",
+    image: heroPoster,
+    stats: ["Program tracking", "Startup opportunities", "RSVP status"],
   },
 ];
 
@@ -307,16 +299,7 @@ function MegaMenuPanel({
   panelRef: React.RefObject<HTMLDivElement | null>;
   onNavigate: () => void;
 }) {
-  const [activeStudentHref, setActiveStudentHref] = useState(STUDENT_TABS[0].href);
   const panel = activePanel ? PANEL_CONTENT[activePanel] : null;
-
-  useEffect(() => {
-    if (activePanel === "students") {
-      setActiveStudentHref(STUDENT_TABS[0].href);
-    }
-  }, [activePanel]);
-
-  const activeStudentTab = STUDENT_TABS.find((tab) => tab.href === activeStudentHref) ?? STUDENT_TABS[0];
 
   return (
     <AnimatePresence mode="wait">
@@ -330,197 +313,63 @@ function MegaMenuPanel({
           transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
           className={cn(
             "pointer-events-auto absolute left-1/2 top-full -translate-x-1/2 overflow-hidden rounded-xl border border-slate-200 bg-white backdrop-blur-xl p-4 text-slate-900 shadow-[0_20px_60px_rgba(0,0,0,0.1)]",
-            activePanel === "students"
-              ? "w-[min(900px,calc(100vw-2rem))] max-h-[calc(100vh-140px)]"
-              : panel.compact
-                ? "w-[min(680px,calc(100vw-2rem))] max-h-[calc(100vh-140px)]"
-                : "w-[min(1020px,calc(100vw-2rem))] max-h-[calc(100vh-140px)]",
+            panel.compact
+              ? "w-[min(680px,calc(100vw-2rem))] max-h-[calc(100vh-140px)]"
+              : "w-[min(1020px,calc(100vw-2rem))] max-h-[calc(100vh-140px)]",
           )}
         >
           <div className="relative flex items-center justify-between gap-4 border-b border-slate-200 px-2 pb-4">
             <div>
               <div className="text-xs uppercase tracking-widest text-slate-500">{panel.eyebrow}</div>
-              <div className="mt-2 text-lg font-semibold text-slate-900">{panel.title}</div>
             </div>
           </div>
 
-          {activePanel === "students" ? (
-            <div className="relative overflow-y-auto max-h-[calc(100vh-200px)] grid gap-3 px-2 pb-2 pt-3 lg:grid-cols-[0.62fr_1.38fr]">
-              <div className="min-h-[320px] flex flex-col rounded-lg border border-slate-200 bg-slate-50 p-4">
-                <div className="inline-flex items-center rounded-lg border border-slate-200 bg-white w-fit px-3 py-1.5 text-xs uppercase tracking-widest text-slate-700">
-                  Students
-                </div>
-                <h3 className="mt-3 text-base font-semibold text-slate-900">{panel.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{panel.summary}</p>
-
-                <div className="mt-4 grid grid-cols-2 gap-2 text-xs text-slate-600">
-                  <div className="rounded-lg border border-slate-200 bg-white p-2.5">
-                    <div className="text-sm font-semibold text-slate-900">3</div>
-                    student paths
-                  </div>
-                  <div className="rounded-lg border border-slate-200 bg-white p-2.5">
-                    <div className="text-sm font-semibold text-slate-900">Fast</div>
-                    quick access
-                  </div>
-                </div>
-
-                <div className="mt-4 grid gap-2">
-                  {STUDENT_TABS.map((tab) => {
-                    const isActiveTab = activeStudentHref === tab.href;
-
-                    return (
-                      <button
-                        key={tab.href}
-                        type="button"
-                        onMouseEnter={() => setActiveStudentHref(tab.href)}
-                        onFocus={() => setActiveStudentHref(tab.href)}
-                        onClick={() => setActiveStudentHref(tab.href)}
-                        className={cn(
-                          "flex items-center gap-2.5 rounded-lg border px-3 py-2.5 text-left transition-all duration-300",
-                          isActiveTab
-                            ? "border-[#e75710]/40 bg-[#e75710]/10"
-                            : "border-slate-200 bg-white hover:border-slate-300",
-                        )}
-                      >
-                        <span className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
-                          <img src={tab.image} alt="" className="h-full w-full object-cover" />
-                        </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="block text-sm font-medium text-slate-900">{tab.label}</span>
-                          <span className="mt-0.5 block text-xs text-slate-600">{tab.description}</span>
-                        </span>
-                        <ChevronRight size={14} className={cn("text-slate-400 transition duration-300", isActiveTab ? "translate-x-0.5 text-[#e75710]" : "")}/>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                  <button
-                    type="button"
-                    onClick={() => scrollToSection("students")}
-                    className="mt-4 w-full px-4 py-2 bg-[#e75710] text-white text-sm font-medium rounded-lg transition-all duration-300 hover:shadow-[0_8px_24px_rgba(231,87,16,0.4)] hover:brightness-110"
+          <div className="relative overflow-y-auto max-h-[calc(100vh-200px)] px-2 pb-2 pt-3">
+            <div className={cn("grid gap-3", panel.compact ? "sm:grid-cols-2" : "sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4")}>
+              {panel.links.map((item) => {
+                // Map labels to appropriate icons
+                const iconMap: Record<string, IconType> = {
+                  "Mentors": Users,
+                  "Board": Building2,
+                  "Team": Users,
+                  "Incubation": Rocket,
+                  "Innovation": Layers3,
+                  "Mentorship": Users,
+                  "Funding": BadgeDollarSign,
+                  "Partners": Building2,
+                  "Infrastructure": Layers3,
+                  "Dashboard": Zap,
+                  "Calendar": CalendarDays,
+                  "Registration": ShieldCheck,
+                  "Login": ShieldCheck,
+                };
+                
+                const Icon = Object.entries(iconMap).find(([key]) => item.label.includes(key))?.[1] || Sparkles;
+                
+                return (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={onNavigate}
+                    data-reveal
+                    className="group overflow-hidden rounded-lg border border-slate-200 bg-white text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50"
                   >
-                  Open Students Section
-                </button>
-              </div>
-
-              <div className="grid gap-3">
-                <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
-                  <div className="relative h-[116px] overflow-hidden">
-                    <img src={activeStudentTab.image} alt={activeStudentTab.label} className="h-full w-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
-                  </div>
-                  <div className="grid gap-3 p-4">
-                    <div>
-                      <div className="text-lg font-semibold text-slate-900">{activeStudentTab.label}</div>
-                      <p className="mt-1 text-sm text-slate-600">{activeStudentTab.description}</p>
+                    <div className="relative h-[88px] overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100/50 flex items-center justify-center gap-2 px-3">
+                      <Icon size={22} className="text-[#ff8901]" strokeWidth={1.5} />
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5" />
                     </div>
-                    <div className="grid gap-2 sm:grid-cols-3">
-                      {activeStudentTab.stats.map((stat) => (
-                        <div key={stat} className="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-2 text-xs uppercase tracking-widest text-slate-600">
-                          {stat}
-                        </div>
-                      ))}
+                    <div className="p-3.5">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="text-sm font-medium text-slate-900">{item.label}</div>
+                        <ArrowRight className="text-[#e75710] opacity-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:opacity-100" size={14} />
+                      </div>
+                      <p className="mt-1.5 text-xs leading-relaxed text-slate-600">{item.description}</p>
                     </div>
-                    <div className="grid gap-2 sm:grid-cols-3">
-                      {STUDENT_TABS.map((tab) => (
-                        <Link
-                          key={tab.href}
-                          to={tab.href}
-                          onClick={onNavigate}
-                          className={cn(
-                            "rounded-lg border px-3 py-2.5 transition-all duration-300 text-sm font-medium",
-                            activeStudentHref === tab.href
-                              ? "border-[#e75710]/40 bg-[#e75710]/10 text-slate-900"
-                              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300",
-                          )}
-                        >
-                          {tab.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
+                  </Link>
+                );
+              })}
             </div>
-          ) : (
-            <div className="relative overflow-y-auto max-h-[calc(100vh-200px)] grid gap-3 px-2 pb-2 pt-3 lg:grid-cols-[0.88fr_1.62fr]">
-              <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
-                {panel.spotlight ? (
-                  <div className="relative h-36 overflow-hidden">
-                    <img src={panel.spotlight.image} alt="AHUB dropdown preview" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
-                    <div className="absolute inset-x-0 bottom-0 p-4">
-                      <div className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-xs uppercase tracking-widest backdrop-blur-sm">
-                        <Sparkles size={11} className="text-white/80" />
-                        <span className="text-white/80">Menu preview</span>
-                      </div>
-                      <div className="mt-3 text-base font-semibold text-white">{panel.spotlight.caption}</div>
-                    </div>
-                  </div>
-                ) : null}
-                <div className="p-4">
-                  <div className="text-xs uppercase tracking-widest text-slate-500">{panel.eyebrow}</div>
-                  <h3 className="mt-3 text-base font-semibold text-slate-900">{panel.title}</h3>
-                  <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-600">{panel.summary}</p>
-                  <div className="mt-4 grid grid-cols-2 gap-2.5 text-xs text-slate-600">
-                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-2.5">
-                      <div className="text-slate-900">{panel.links.length}</div>
-                      pages
-                    </div>
-                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-2.5">
-                      <div className="text-slate-900">Premium</div>
-                      routing
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className={cn("grid gap-3", panel.compact ? "sm:grid-cols-1" : "sm:grid-cols-2 xl:grid-cols-4")}>
-                {panel.links.map((item) => {
-                  // Map labels to appropriate icons
-                  const iconMap: Record<string, IconType> = {
-                    "Mentors": Users,
-                    "Board": Building2,
-                    "Team": Users,
-                    "Incubation": Rocket,
-                    "Innovation": Layers3,
-                    "Mentorship": Users,
-                    "Funding": BadgeDollarSign,
-                    "Partners": Building2,
-                    "Infrastructure": Layers3,
-                    "Dashboard": Zap,
-                    "Calendar": CalendarDays,
-                    "Login": ShieldCheck,
-                  };
-                  
-                  const Icon = Object.entries(iconMap).find(([key]) => item.label.includes(key))?.[1] || Sparkles;
-                  
-                  return (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      onClick={onNavigate}
-                      data-reveal
-                      className="group overflow-hidden rounded-lg border border-slate-200 bg-white text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50"
-                    >
-                      <div className="relative h-[88px] overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100/50 flex items-center justify-center gap-2 px-3">
-                        <Icon size={22} className="text-[#ff8901]" strokeWidth={1.5} />
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5" />
-                      </div>
-                      <div className="p-3.5">
-                        <div className="flex items-center justify-between gap-3">
-                          <div className="text-sm font-medium text-slate-900">{item.label}</div>
-                          <ArrowRight className="text-[#e75710] opacity-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:opacity-100" size={14} />
-                        </div>
-                        <p className="mt-1.5 text-xs leading-relaxed text-slate-600">{item.description}</p>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          </div>
         </motion.div>
       ) : null}
     </AnimatePresence>
@@ -675,30 +524,24 @@ export function Navbar() {
           </div>
 
           {/* Center navigation links - hidden on mobile */}
-          <div className="hidden flex-1 items-center justify-center px-4 lg:flex xl:px-8">
-            <ul className="flex items-center gap-4 xl:gap-5">
+          <div className="hidden flex-1 items-center justify-center lg:flex">
+            <ul className="flex items-center justify-center gap-1 xl:gap-1.5">
               {NAV_ITEMS.map((item) => {
-                const isActive = activeSection === item.href.slice(1);
                 const isPanelOpen = activePanel === item.panel;
+                const hasPanel = !!item.panel;
                 return (
-                  <li key={item.label} className="relative">
+                  <li key={item.label}>
                     <button
                       type="button"
-                      aria-current={isActive ? "page" : undefined}
-                      className={cn(
-                        "group relative inline-flex items-center gap-1.5 whitespace-nowrap text-[0.75rem] font-medium tracking-[0.08em] transition-colors duration-300 pb-1.5",
-                        isActive 
-                          ? "text-slate-900" 
-                          : "text-slate-700 hover:text-slate-900",
-                      )}
+                      className="group flex items-center gap-1 rounded-lg px-3 py-2 text-[0.78rem] font-semibold tracking-[0.06em] text-slate-700 transition-colors duration-300 hover:text-[#e75710]"
                       onMouseEnter={() => item.panel && setActivePanel(item.panel)}
                       onFocus={() => item.panel && setActivePanel(item.panel)}
                       onClick={() => {
-                        if (item.panel) {
+                        if (hasPanel) {
                           setActivePanel((current) => (current === item.panel ? null : item.panel ?? null));
                           return;
                         }
-                        if (item.label === "Home") {
+                        if (item.href === "#home") {
                           navigate({ to: "/" });
                         } else {
                           scrollToSection(item.href.slice(1));
@@ -706,24 +549,17 @@ export function Navbar() {
                         closeMenus();
                       }}
                     >
-                      <span className="flex items-center gap-1.5">
-                        {item.label}
-                        <ChevronDown
-                          size={14}
-                          className={cn(
-                            "transition-transform duration-300 ease-out",
-                            isPanelOpen ? "rotate-180 text-[#e75710]" : "text-slate-400 group-hover:rotate-180 group-hover:text-[#e75710]",
-                          )}
-                        />
-                      </span>
-                      {item.label !== "Home" ? (
-                        <span
-                          className={cn(
-                            "absolute bottom-0 left-0 h-0.5 bg-[#e75710] transition-all duration-300",
-                            isActive ? "right-0" : "right-full",
-                          )}
-                        />
-                      ) : null}
+                      <NavLabel label={item.label} />
+                      <ChevronDown
+                        size={13}
+                        strokeWidth={2.5}
+                        className={cn(
+                          "-mr-0.5 transition-all duration-300",
+                          isPanelOpen
+                            ? "rotate-180 text-[#e75710]"
+                            : "text-slate-400 group-hover:rotate-180 group-hover:text-[#e75710]",
+                        )}
+                      />
                     </button>
                   </li>
                 );
@@ -802,7 +638,7 @@ export function Navbar() {
                             setActivePanel((current) => (current === item.panel ? null : item.panel ?? null));
                             return;
                           }
-                          if (item.label === "Home") {
+                          if (item.href === "#home") {
                             navigate({ to: "/" });
                           } else {
                             scrollToSection(item.href.slice(1));
@@ -816,7 +652,7 @@ export function Navbar() {
                               : "border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] text-white/80 hover:border-[rgba(255,255,255,0.2)] hover:text-white",
                         )}
                       >
-                        {item.label}
+                        <NavLabel label={item.label} />
                       </button>
                     </motion.li>
                   );
@@ -827,7 +663,6 @@ export function Navbar() {
               {activePanel ? (
                 <div className="mt-6 rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] p-4">
                   <div className="text-xs uppercase tracking-widest text-white/60">{PANEL_CONTENT[activePanel].eyebrow}</div>
-                  <div className="mt-2 text-base font-semibold text-white">{PANEL_CONTENT[activePanel].title}</div>
                   <p className="mt-2 text-sm leading-relaxed text-white/70">{PANEL_CONTENT[activePanel].summary}</p>
                   <div className="mt-4 grid gap-2 max-h-64 overflow-y-auto">
                     {PANEL_CONTENT[activePanel].links.map((item) => (

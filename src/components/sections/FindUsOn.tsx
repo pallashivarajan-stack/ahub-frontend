@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Instagram, Linkedin, Search, Twitter } from "lucide-react";
+import { ArrowUpRight, Instagram, Linkedin, Search, Twitter, MessageSquareQuote } from "lucide-react";
 
 const platforms = [
   {
@@ -11,6 +11,10 @@ const platforms = [
     icon: Linkedin,
     accent: "from-[#5b0e2d] via-[#8d1d46] to-[#f5d8e0]",
     glow: "bg-[#5b0e2d]/25",
+    testimonial: {
+      quote: "A-Hub's startup networking event connected us with incredible founders and investors. One of the best ecosystem communities for early-stage startups.",
+      author: "Founder, Campus Startup"
+    }
   },
   {
     name: "Twitter / X",
@@ -20,6 +24,10 @@ const platforms = [
     icon: Twitter,
     accent: "from-slate-900 via-slate-700 to-[#e8edf3]",
     glow: "bg-slate-900/25",
+    testimonial: {
+      quote: "Attended the A-Hub innovation meetup today. Amazing energy, brilliant founders, and practical startup insights.",
+      author: "Community Member"
+    }
   },
   {
     name: "Instagram",
@@ -29,6 +37,10 @@ const platforms = [
     icon: Instagram,
     accent: "from-[#5b0e2d] via-[#b53d67] to-[#fdf2f5]",
     glow: "bg-pink-500/20",
+    testimonial: {
+      quote: "Love seeing behind-the-scenes startup journeys and founder stories. The content feels authentic and inspiring.",
+      author: "Student Entrepreneur"
+    }
   },
 ] as const;
 
@@ -47,18 +59,17 @@ export function FindUsOn() {
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#5b0e2d]/12 bg-white/82 px-3 py-1 text-[0.65rem] uppercase tracking-[0.24em] text-[#5b0e2d] shadow-[0_10px_30px_-20px_rgba(91,14,45,0.3)] backdrop-blur-md">
             <Search size={12} /> Find Us On
           </div>
-          <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            <span className="bg-gradient-to-r from-[#5b0e2d] via-[#8c1f45] to-[#b23d66] bg-clip-text text-transparent">
-              Find Us On
-            </span>
+          <h2 className="font-display text-4xl font-extrabold tracking-[-0.02em] sm:text-5xl lg:text-[72px] lg:leading-[1.05]">
+            <span style={{ color: '#F59E42' }}>Find</span>{' '}
+            <span style={{ color: '#2D1B1B' }}>Us On</span>
           </h2>
-          <div className="mt-4 h-px w-24 bg-gradient-to-r from-[#5b0e2d] via-[#8c1f45] to-transparent" />
+          <div className="mt-4 h-1 w-16 rounded-full bg-[#F59E42]" />
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            Connect with our innovation ecosystem across social platforms.
+            Connect with our innovation ecosystem across social platforms and discover startup updates, founder stories, campus activities, and ecosystem highlights.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3\">
+        <div className="mt-12 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {platforms.map((platform, index) => (
             <SocialCard
               key={platform.name}
@@ -103,7 +114,7 @@ function SocialCard({
           y: ((event.clientY - bounds.top) / bounds.height) * 100,
         });
       }}
-      className="group relative overflow-hidden rounded-[24px] border border-[#5b0e2d]/10 bg-white/82 p-6 shadow-[0_24px_80px_-40px_rgba(91,14,45,0.28)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-[#5b0e2d]/20 hover:shadow-[0_28px_90px_-38px_rgba(91,14,45,0.44)]"
+      className="group relative overflow-hidden rounded-[24px] border border-[#5b0e2d]/10 bg-white/82 p-6 shadow-[0_24px_80px_-40px_rgba(91,14,45,0.28)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-[#5b0e2d]/20 hover:shadow-[0_28px_90px_-38px_rgba(91,14,45,0.44)] flex flex-col h-full"
       style={{
         transformOrigin: "center",
       }}
@@ -119,7 +130,7 @@ function SocialCard({
         <div className="absolute -bottom-10 left-6 h-24 w-24 rounded-full bg-[#5b0e2d]/12 blur-3xl" />
       </div>
 
-      <div className="relative flex items-start justify-between gap-5">
+      <div className="relative flex items-start justify-between gap-5 flex-1">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-[#5b0e2d]/12 bg-white/85 px-3 py-1 text-[0.68rem] uppercase tracking-[0.2em] text-[#5b0e2d]">
             <span className={`h-1.5 w-1.5 rounded-full bg-gradient-to-r ${platform.accent}`} />
@@ -144,7 +155,20 @@ function SocialCard({
         </div>
       </div>
 
-      <div className="relative mt-8 flex items-center justify-between border-t border-[#5b0e2d]/10 pt-5">
+      <div className="relative opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 mt-4 mb-2">
+        <div className="text-xs font-bold text-[#5b0e2d]/80 uppercase tracking-wider mb-1">Latest Community Buzz</div>
+        <div className="bg-[#FFF8F3] rounded-[12px] p-[14px] mt-4 relative border border-[#5b0e2d]/5 shadow-sm">
+          <MessageSquareQuote size={16} className="text-[#5b0e2d]/40 mb-2" />
+          <p className="text-[14px] italic text-[#5b0e2d]/80 leading-relaxed line-clamp-3">
+            "{platform.testimonial.quote}"
+          </p>
+          <div className="mt-2 text-xs font-semibold text-[#5b0e2d]/60">
+            — {platform.testimonial.author}
+          </div>
+        </div>
+      </div>
+
+      <div className="relative mt-auto pt-6 flex items-center justify-between border-t border-[#5b0e2d]/10">
         <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-[#5b0e2d]" />
           Follow the ecosystem

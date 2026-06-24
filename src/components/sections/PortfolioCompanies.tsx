@@ -1,12 +1,82 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
-import { portfolio } from "@/data";
+import { ArrowUpRight, Briefcase, MessageSquare, Users, Loader2 } from "lucide-react";
+import { portfolio as localPortfolio } from "@/data";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
-import { Avatar } from "@/components/ui-ahub/Avatar";
+
+const BACKEND_URL = "http://localhost:8000";
+
+interface PortfolioItem {
+  id: number;
+  startup: string;
+  company_name?: string; // from backend
+  industry: string;
+  tag?: string; // from backend
+  category?: string;
+  desc: string;
+  description?: string; // from backend
+  achievements: string[];
+  funding?: string;
+  logo: string;
+  logo_image?: string; // from backend
+  founder: string;
+  founder_name?: string; // from backend
+  founderTitle?: string;
+  founder_designation?: string; // from backend
+  founderImage: string;
+  founder_image?: string; // from backend
+  website_url?: string;
+  websiteUrl?: string;
+}
 
 export function PortfolioCompanies() {
   const [active, setActive] = useState(0);
+  const [portfolio, setPortfolio] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadPortfolio() {
+      try {
+        const res = await fetch(`${BACKEND_URL}/api/public/portfolio-companies`);
+        if (!res.ok) throw new Error("Failed to fetch public portfolio companies");
+        const data = await res.json();
+        
+        // Map backend response structure to fit React component expectations
+        const mappedData = data.map((item: any) => ({
+          startup: item.company_name,
+          industry: item.tag,
+          category: item.tag.toUpperCase(),
+          desc: item.description,
+          achievements: ["AI Powered", "Incubated", "Innovator"], // Default labels for dynamic entries
+          logo: item.logo_image ? `${BACKEND_URL}${item.logo_image}` : "",
+          founder: item.founder_name,
+          founderTitle: item.founder_designation,
+          founderImage: item.founder_image ? `${BACKEND_URL}${item.founder_image}` : "",
+          websiteUrl: item.website_url,
+        }));
+        
+        if (mappedData.length > 0) {
+          setPortfolio(mappedData);
+        } else {
+          setPortfolio(localPortfolio);
+        }
+      } catch (err) {
+        console.warn("Backend API not reachable, falling back to local static portfolio data.", err);
+        setPortfolio(localPortfolio);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadPortfolio();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex h-[400px] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-[#FF6B00]" />
+      </div>
+    );
+  }
 
   return (
     <section id="achieve" className="relative overflow-hidden bg-[linear-gradient(180deg,#FFF8F3_0%,#FFFFFF_100%)] py-16 md:py-24">
@@ -26,50 +96,136 @@ export function PortfolioCompanies() {
                 key={p.startup}
                 onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
-                animate={{ flexGrow: isActive ? 4 : 1 }}
-                transition={{ type: "spring", stiffness: 120, damping: 20 }}
-                className={`maroon-gradient-border group relative basis-0 overflow-hidden rounded-[30px] border border-[color:color-mix(in_oklch,var(--primary)_8%,transparent)] bg-[color:color-mix(in_oklch,var(--card)_94%,white)] text-left shadow-[0_20px_60px_-30px_rgba(90,30,44,0.28)] focus:outline-none`}
+                layout
+                animate={{
+                  flexGrow: isActive ? 4 : 1,
+                  scale: isActive ? 1 : 0.95,
+                  opacity: isActive ? 1 : 0.75,
+                }}
+                transition={{ type: "spring", stiffness: 180, damping: 24 }}
+                className="maroon-gradient-border group relative basis-0 overflow-hidden rounded-[30px] border border-orange-100/50 bg-[#FDFBF7] text-left shadow-[0_20px_60px_-30px_rgba(90,30,44,0.14)] focus:outline-none will-change-transform"
               >
-                {/* background image */}
                 {isActive && (
-                  <div
-                    className="absolute inset-0 opacity-5 bg-gradient-to-br from-primary/20 to-transparent"
-                  />
+                  <div className="absolute inset-0 opacity-5 bg-gradient-to-br from-orange-500/20 to-transparent" />
                 )}
 
-                {/* collapsed label */}
-                  <div className={`absolute inset-0 flex items-end justify-start p-5 transition-opacity duration-500 ${isActive ? "opacity-0" : "opacity-100"}`}>
+                <div className={`absolute inset-0 flex items-end justify-start p-5 transition-opacity duration-500 ${isActive ? "opacity-0" : "opacity-100"}`}>
                   <div className="rotate-0 md:[writing-mode:vertical-rl] md:rotate-180">
-                    <div className="font-display text-base font-medium text-primary md:text-lg">{p.startup}</div>
-                    <div className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">{p.industry}</div>
+                    <div className="font-display text-base font-semibold text-[#8C2D19] md:text-lg">{p.startup}</div>
+                    <div className="text-[0.7rem] uppercase tracking-[0.18em] text-[#9E8B87]">{p.industry}</div>
                   </div>
                 </div>
 
-                {/* expanded content */}
-                  <div className={`relative z-10 flex h-full flex-col justify-between p-6 transition-opacity duration-500 md:p-8 ${isActive ? "opacity-100" : "opacity-0"}`}>
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <Avatar name={p.founder} size={52} />
-                      <div>
-                        <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{p.industry}</div>
-                        <div className="font-display text-2xl font-medium text-foreground">{p.startup}</div>
-                        <div className="text-sm text-muted-foreground">Founded by {p.founder}</div>
+                <div
+                  className={`absolute inset-0 z-10 grid h-full grid-cols-1 md:grid-cols-[70%_30%] items-center p-6 md:p-8 gap-6 transition-opacity duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                    isActive ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
+                  }`}
+                >
+                  {/* LEFT SIDE */}
+                  <div className="flex flex-col justify-center max-w-[500px]">
+                    <div className="space-y-4 md:space-y-5">
+                      <div className="flex items-center gap-3">
+                        {p.logo ? (
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm border border-orange-100/30 overflow-hidden">
+                            <img
+                              src={p.logo}
+                              alt={`${p.startup} logo`}
+                              className="h-6 w-6 object-contain"
+                              draggable={false}
+                            />
+                          </div>
+                        ) : (
+                          <div
+                            className="grid h-10 w-10 place-items-center rounded-xl text-white text-sm font-bold shadow-sm animate-pulse"
+                            style={{ backgroundColor: "#F97316" }}
+                          >
+                            {p.startup.charAt(0)}
+                          </div>
+                        )}
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F97316] bg-orange-50/80 px-3 py-1 rounded-full border border-orange-100/30">
+                          {p.category || p.industry}
+                        </span>
+                      </div>
+
+                      <div className="space-y-2">
+                        <h3 className="font-display text-3xl font-black tracking-tight text-[#2B1B18] leading-[1.05] md:text-4xl">
+                          {p.startup}
+                        </h3>
+                        <div className="h-0.5 w-12 bg-gradient-to-r from-[#F97316] to-[#FB923C] rounded-full" />
+                      </div>
+
+                      <p className="text-[13px] leading-relaxed text-[#6C5E5B] max-w-sm line-clamp-3">
+                        {p.desc}
+                      </p>
+
+                      <div className="flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] whitespace-nowrap pb-1">
+                        {p.achievements.map((achievement: string, idx: number) => {
+                          const displayTxt = achievement === "Empowering Careers" ? "Career Growth" : achievement;
+                          const icons = [MessageSquare, Briefcase, Users];
+                          const Icon = icons[idx] || MessageSquare;
+                          return (
+                            <div
+                              key={achievement}
+                              className="inline-flex items-center gap-1.5 rounded-full bg-white/60 border border-orange-100/30 px-3 py-1.5 text-[10px] font-semibold text-[#4A3C39] shadow-sm transition-all duration-300 hover:shadow-[0_4px_12px_rgba(249,115,22,0.15)] hover:border-orange-200/50"
+                            >
+                              <Icon size={11} className="text-[#F97316]" />
+                              {displayTxt}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
-                    <ArrowUpRight className="text-primary" size={20} />
+
+                    {p.websiteUrl && (
+                      <div className="mt-5 pt-4 border-t border-orange-100/20">
+                        <a
+                          href={p.websiteUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group/btn relative inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.15em] text-[#F97316] hover:text-orange-500 transition-colors duration-300 focus:outline-none cursor-pointer"
+                        >
+                          <span>Learn More</span>
+                          <ArrowUpRight
+                            size={14}
+                            className="transition-all duration-300 group-hover/btn:translate-x-[4px] group-hover/btn:-translate-y-[2px]"
+                          />
+                          <span className="absolute bottom-[-2px] left-0 w-0 h-[1.5px] bg-[#F97316] transition-all duration-300 group-hover/btn:w-full" />
+                        </a>
+                      </div>
+                    )}
                   </div>
 
-                  <div className="max-w-md">
-                    <p className="text-[0.95rem] leading-relaxed text-foreground/80">{p.desc}</p>
-                    <ul className="mt-4 flex flex-wrap gap-2">
-                      {p.achievements.map((a) => (
-                          <li key={a} className="rounded-full border border-[color:color-mix(in_oklch,var(--primary)_14%,transparent)] bg-[color:color-mix(in_oklch,var(--background)_92%,white)] px-3 py-1 text-xs text-primary">
-                          {a}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-xs font-medium text-primary-foreground">
-                      {p.funding}
+                  {/* RIGHT SIDE – Founder Portrait + Glass Card */}
+                  <div className="hidden md:flex relative h-full flex-col items-center justify-center">
+                    <div className="relative w-full max-w-[180px]">
+                      <div className="h-[220px] rounded-[20px] overflow-hidden bg-gradient-to-b from-[#FFF0E2] via-[#FFE3CC] to-[#FFF0E2] border border-[#FFE0C9]/30 shadow-sm">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.12)_0%,transparent_70%)] pointer-events-none" />
+                        {p.founderImage ? (
+                          <img
+                            src={p.founderImage}
+                            alt={p.founder}
+                            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04] will-change-transform"
+                            draggable={false}
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-5xl font-bold opacity-30 text-[#F97316]">
+                            {p.founder.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Founder Card — matches reference exactly */}
+                      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 w-[85%] bg-white/95 backdrop-blur-sm rounded-2xl px-5 py-4 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-orange-100/30 transition-all duration-300 ease-out group-hover:-translate-y-1.5 group-hover:shadow-[0_14px_40px_rgba(0,0,0,0.10)] z-20 text-center">
+                        <p className="text-[13px] font-semibold text-[#F97316] tracking-wide leading-none">
+                          Founded by
+                        </p>
+                        <h4 className="text-[18px] font-extrabold text-[#2B1B18] tracking-tight leading-snug mt-1.5 truncate">
+                          {p.founder}
+                        </h4>
+                        <p className="text-[12px] font-medium text-[#6C5E5B]/80 leading-none mt-1 truncate">
+                          {p.founderTitle}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

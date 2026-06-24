@@ -15,10 +15,10 @@ export function useLenis() {
     });
 
     // Tell ScrollTrigger to use Lenis' scrolling position as the source
-    const scrollEl = document.scrollingElement ?? document.documentElement;
+    const scrollEl = (document.scrollingElement ?? document.documentElement) as HTMLElement;
     ScrollTrigger.scrollerProxy(scrollEl, {
-      scrollTop(value: number) {
-        if (arguments.length) {
+      scrollTop(value?: number) {
+        if (arguments.length && value !== undefined) {
           lenis.scrollTo(value);
           return;
         }

@@ -11,9 +11,29 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as IncubatorsRouteImport } from './routes/incubators'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StudentsInternshipRegistrationRouteImport } from './routes/students/internship-registration'
+import { Route as StudentsInternshipCalendarRouteImport } from './routes/students/internship-calendar'
+import { Route as StudentsDashboardRouteImport } from './routes/students/dashboard'
+import { Route as StartupsStartupRegistrationRouteImport } from './routes/startups/startup-registration'
+import { Route as StartupsStartupPortfolioRouteImport } from './routes/startups/startup-portfolio'
+import { Route as StartupsStartupFundingRouteImport } from './routes/startups/startup-funding'
+import { Route as StartupsBlogRouteImport } from './routes/startups/blog'
+import { Route as ProgramsPitchToUsRouteImport } from './routes/programs/pitch-to-us'
+import { Route as ProgramsJoinUsRouteImport } from './routes/programs/join-us'
+import { Route as EventsStartupsEventsRouteImport } from './routes/events/startups-events'
+import { Route as EventsCalendarRouteImport } from './routes/events/calendar'
+import { Route as EcosystemPartnersRouteImport } from './routes/ecosystem/partners'
 import { Route as EcosystemMentorsRouteImport } from './routes/ecosystem/mentors'
+import { Route as EcosystemInvestorsRouteImport } from './routes/ecosystem/investors'
+import { Route as EcosystemInfrastructureRouteImport } from './routes/ecosystem/infrastructure'
+import { Route as ApproachOperationalModelRouteImport } from './routes/approach/operational-model'
+import { Route as AchieveImpactRouteImport } from './routes/achieve/impact'
+import { Route as AboutVisionRoadmapRouteImport } from './routes/about/vision-roadmap'
 import { Route as AboutTeamRouteImport } from './routes/about/team'
+import { Route as AboutRewardsRouteImport } from './routes/about/rewards'
+import { Route as AboutMentorsRouteImport } from './routes/about/mentors'
 import { Route as AboutBoardRouteImport } from './routes/about/board'
 import { Route as SectionSlugRouteImport } from './routes/$section/$slug'
 
@@ -27,9 +47,78 @@ const IncubatorsRoute = IncubatorsRouteImport.update({
   path: '/incubators',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudentsInternshipRegistrationRoute =
+  StudentsInternshipRegistrationRouteImport.update({
+    id: '/students/internship-registration',
+    path: '/students/internship-registration',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const StudentsInternshipCalendarRoute =
+  StudentsInternshipCalendarRouteImport.update({
+    id: '/students/internship-calendar',
+    path: '/students/internship-calendar',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const StudentsDashboardRoute = StudentsDashboardRouteImport.update({
+  id: '/students/dashboard',
+  path: '/students/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartupsStartupRegistrationRoute =
+  StartupsStartupRegistrationRouteImport.update({
+    id: '/startups/startup-registration',
+    path: '/startups/startup-registration',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const StartupsStartupPortfolioRoute =
+  StartupsStartupPortfolioRouteImport.update({
+    id: '/startups/startup-portfolio',
+    path: '/startups/startup-portfolio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const StartupsStartupFundingRoute = StartupsStartupFundingRouteImport.update({
+  id: '/startups/startup-funding',
+  path: '/startups/startup-funding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartupsBlogRoute = StartupsBlogRouteImport.update({
+  id: '/startups/blog',
+  path: '/startups/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgramsPitchToUsRoute = ProgramsPitchToUsRouteImport.update({
+  id: '/programs/pitch-to-us',
+  path: '/programs/pitch-to-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgramsJoinUsRoute = ProgramsJoinUsRouteImport.update({
+  id: '/programs/join-us',
+  path: '/programs/join-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsStartupsEventsRoute = EventsStartupsEventsRouteImport.update({
+  id: '/events/startups-events',
+  path: '/events/startups-events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsCalendarRoute = EventsCalendarRouteImport.update({
+  id: '/events/calendar',
+  path: '/events/calendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EcosystemPartnersRoute = EcosystemPartnersRouteImport.update({
+  id: '/ecosystem/partners',
+  path: '/ecosystem/partners',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EcosystemMentorsRoute = EcosystemMentorsRouteImport.update({
@@ -37,9 +126,45 @@ const EcosystemMentorsRoute = EcosystemMentorsRouteImport.update({
   path: '/ecosystem/mentors',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EcosystemInvestorsRoute = EcosystemInvestorsRouteImport.update({
+  id: '/ecosystem/investors',
+  path: '/ecosystem/investors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EcosystemInfrastructureRoute = EcosystemInfrastructureRouteImport.update({
+  id: '/ecosystem/infrastructure',
+  path: '/ecosystem/infrastructure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApproachOperationalModelRoute =
+  ApproachOperationalModelRouteImport.update({
+    id: '/approach/operational-model',
+    path: '/approach/operational-model',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AchieveImpactRoute = AchieveImpactRouteImport.update({
+  id: '/achieve/impact',
+  path: '/achieve/impact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutVisionRoadmapRoute = AboutVisionRoadmapRouteImport.update({
+  id: '/about/vision-roadmap',
+  path: '/about/vision-roadmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutTeamRoute = AboutTeamRouteImport.update({
   id: '/about/team',
   path: '/about/team',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRewardsRoute = AboutRewardsRouteImport.update({
+  id: '/about/rewards',
+  path: '/about/rewards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutMentorsRoute = AboutMentorsRouteImport.update({
+  id: '/about/mentors',
+  path: '/about/mentors',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutBoardRoute = AboutBoardRouteImport.update({
@@ -55,70 +180,210 @@ const SectionSlugRoute = SectionSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/incubators': typeof IncubatorsRoute
   '/mentors': typeof MentorsRoute
   '/$section/$slug': typeof SectionSlugRoute
   '/about/board': typeof AboutBoardRoute
+  '/about/mentors': typeof AboutMentorsRoute
+  '/about/rewards': typeof AboutRewardsRoute
   '/about/team': typeof AboutTeamRoute
+  '/about/vision-roadmap': typeof AboutVisionRoadmapRoute
+  '/achieve/impact': typeof AchieveImpactRoute
+  '/approach/operational-model': typeof ApproachOperationalModelRoute
+  '/ecosystem/infrastructure': typeof EcosystemInfrastructureRoute
+  '/ecosystem/investors': typeof EcosystemInvestorsRoute
   '/ecosystem/mentors': typeof EcosystemMentorsRoute
+  '/ecosystem/partners': typeof EcosystemPartnersRoute
+  '/events/calendar': typeof EventsCalendarRoute
+  '/events/startups-events': typeof EventsStartupsEventsRoute
+  '/programs/join-us': typeof ProgramsJoinUsRoute
+  '/programs/pitch-to-us': typeof ProgramsPitchToUsRoute
+  '/startups/blog': typeof StartupsBlogRoute
+  '/startups/startup-funding': typeof StartupsStartupFundingRoute
+  '/startups/startup-portfolio': typeof StartupsStartupPortfolioRoute
+  '/startups/startup-registration': typeof StartupsStartupRegistrationRoute
+  '/students/dashboard': typeof StudentsDashboardRoute
+  '/students/internship-calendar': typeof StudentsInternshipCalendarRoute
+  '/students/internship-registration': typeof StudentsInternshipRegistrationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/incubators': typeof IncubatorsRoute
   '/mentors': typeof MentorsRoute
   '/$section/$slug': typeof SectionSlugRoute
   '/about/board': typeof AboutBoardRoute
+  '/about/mentors': typeof AboutMentorsRoute
+  '/about/rewards': typeof AboutRewardsRoute
   '/about/team': typeof AboutTeamRoute
+  '/about/vision-roadmap': typeof AboutVisionRoadmapRoute
+  '/achieve/impact': typeof AchieveImpactRoute
+  '/approach/operational-model': typeof ApproachOperationalModelRoute
+  '/ecosystem/infrastructure': typeof EcosystemInfrastructureRoute
+  '/ecosystem/investors': typeof EcosystemInvestorsRoute
   '/ecosystem/mentors': typeof EcosystemMentorsRoute
+  '/ecosystem/partners': typeof EcosystemPartnersRoute
+  '/events/calendar': typeof EventsCalendarRoute
+  '/events/startups-events': typeof EventsStartupsEventsRoute
+  '/programs/join-us': typeof ProgramsJoinUsRoute
+  '/programs/pitch-to-us': typeof ProgramsPitchToUsRoute
+  '/startups/blog': typeof StartupsBlogRoute
+  '/startups/startup-funding': typeof StartupsStartupFundingRoute
+  '/startups/startup-portfolio': typeof StartupsStartupPortfolioRoute
+  '/startups/startup-registration': typeof StartupsStartupRegistrationRoute
+  '/students/dashboard': typeof StudentsDashboardRoute
+  '/students/internship-calendar': typeof StudentsInternshipCalendarRoute
+  '/students/internship-registration': typeof StudentsInternshipRegistrationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/incubators': typeof IncubatorsRoute
   '/mentors': typeof MentorsRoute
   '/$section/$slug': typeof SectionSlugRoute
   '/about/board': typeof AboutBoardRoute
+  '/about/mentors': typeof AboutMentorsRoute
+  '/about/rewards': typeof AboutRewardsRoute
   '/about/team': typeof AboutTeamRoute
+  '/about/vision-roadmap': typeof AboutVisionRoadmapRoute
+  '/achieve/impact': typeof AchieveImpactRoute
+  '/approach/operational-model': typeof ApproachOperationalModelRoute
+  '/ecosystem/infrastructure': typeof EcosystemInfrastructureRoute
+  '/ecosystem/investors': typeof EcosystemInvestorsRoute
   '/ecosystem/mentors': typeof EcosystemMentorsRoute
+  '/ecosystem/partners': typeof EcosystemPartnersRoute
+  '/events/calendar': typeof EventsCalendarRoute
+  '/events/startups-events': typeof EventsStartupsEventsRoute
+  '/programs/join-us': typeof ProgramsJoinUsRoute
+  '/programs/pitch-to-us': typeof ProgramsPitchToUsRoute
+  '/startups/blog': typeof StartupsBlogRoute
+  '/startups/startup-funding': typeof StartupsStartupFundingRoute
+  '/startups/startup-portfolio': typeof StartupsStartupPortfolioRoute
+  '/startups/startup-registration': typeof StartupsStartupRegistrationRoute
+  '/students/dashboard': typeof StudentsDashboardRoute
+  '/students/internship-calendar': typeof StudentsInternshipCalendarRoute
+  '/students/internship-registration': typeof StudentsInternshipRegistrationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/incubators'
     | '/mentors'
     | '/$section/$slug'
     | '/about/board'
+    | '/about/mentors'
+    | '/about/rewards'
     | '/about/team'
+    | '/about/vision-roadmap'
+    | '/achieve/impact'
+    | '/approach/operational-model'
+    | '/ecosystem/infrastructure'
+    | '/ecosystem/investors'
     | '/ecosystem/mentors'
+    | '/ecosystem/partners'
+    | '/events/calendar'
+    | '/events/startups-events'
+    | '/programs/join-us'
+    | '/programs/pitch-to-us'
+    | '/startups/blog'
+    | '/startups/startup-funding'
+    | '/startups/startup-portfolio'
+    | '/startups/startup-registration'
+    | '/students/dashboard'
+    | '/students/internship-calendar'
+    | '/students/internship-registration'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/incubators'
     | '/mentors'
     | '/$section/$slug'
     | '/about/board'
+    | '/about/mentors'
+    | '/about/rewards'
     | '/about/team'
+    | '/about/vision-roadmap'
+    | '/achieve/impact'
+    | '/approach/operational-model'
+    | '/ecosystem/infrastructure'
+    | '/ecosystem/investors'
     | '/ecosystem/mentors'
+    | '/ecosystem/partners'
+    | '/events/calendar'
+    | '/events/startups-events'
+    | '/programs/join-us'
+    | '/programs/pitch-to-us'
+    | '/startups/blog'
+    | '/startups/startup-funding'
+    | '/startups/startup-portfolio'
+    | '/startups/startup-registration'
+    | '/students/dashboard'
+    | '/students/internship-calendar'
+    | '/students/internship-registration'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/incubators'
     | '/mentors'
     | '/$section/$slug'
     | '/about/board'
+    | '/about/mentors'
+    | '/about/rewards'
     | '/about/team'
+    | '/about/vision-roadmap'
+    | '/achieve/impact'
+    | '/approach/operational-model'
+    | '/ecosystem/infrastructure'
+    | '/ecosystem/investors'
     | '/ecosystem/mentors'
+    | '/ecosystem/partners'
+    | '/events/calendar'
+    | '/events/startups-events'
+    | '/programs/join-us'
+    | '/programs/pitch-to-us'
+    | '/startups/blog'
+    | '/startups/startup-funding'
+    | '/startups/startup-portfolio'
+    | '/startups/startup-registration'
+    | '/students/dashboard'
+    | '/students/internship-calendar'
+    | '/students/internship-registration'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   IncubatorsRoute: typeof IncubatorsRoute
   MentorsRoute: typeof MentorsRoute
   SectionSlugRoute: typeof SectionSlugRoute
   AboutBoardRoute: typeof AboutBoardRoute
+  AboutMentorsRoute: typeof AboutMentorsRoute
+  AboutRewardsRoute: typeof AboutRewardsRoute
   AboutTeamRoute: typeof AboutTeamRoute
+  AboutVisionRoadmapRoute: typeof AboutVisionRoadmapRoute
+  AchieveImpactRoute: typeof AchieveImpactRoute
+  ApproachOperationalModelRoute: typeof ApproachOperationalModelRoute
+  EcosystemInfrastructureRoute: typeof EcosystemInfrastructureRoute
+  EcosystemInvestorsRoute: typeof EcosystemInvestorsRoute
   EcosystemMentorsRoute: typeof EcosystemMentorsRoute
+  EcosystemPartnersRoute: typeof EcosystemPartnersRoute
+  EventsCalendarRoute: typeof EventsCalendarRoute
+  EventsStartupsEventsRoute: typeof EventsStartupsEventsRoute
+  ProgramsJoinUsRoute: typeof ProgramsJoinUsRoute
+  ProgramsPitchToUsRoute: typeof ProgramsPitchToUsRoute
+  StartupsBlogRoute: typeof StartupsBlogRoute
+  StartupsStartupFundingRoute: typeof StartupsStartupFundingRoute
+  StartupsStartupPortfolioRoute: typeof StartupsStartupPortfolioRoute
+  StartupsStartupRegistrationRoute: typeof StartupsStartupRegistrationRoute
+  StudentsDashboardRoute: typeof StudentsDashboardRoute
+  StudentsInternshipCalendarRoute: typeof StudentsInternshipCalendarRoute
+  StudentsInternshipRegistrationRoute: typeof StudentsInternshipRegistrationRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -137,11 +402,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IncubatorsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/students/internship-registration': {
+      id: '/students/internship-registration'
+      path: '/students/internship-registration'
+      fullPath: '/students/internship-registration'
+      preLoaderRoute: typeof StudentsInternshipRegistrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/students/internship-calendar': {
+      id: '/students/internship-calendar'
+      path: '/students/internship-calendar'
+      fullPath: '/students/internship-calendar'
+      preLoaderRoute: typeof StudentsInternshipCalendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/students/dashboard': {
+      id: '/students/dashboard'
+      path: '/students/dashboard'
+      fullPath: '/students/dashboard'
+      preLoaderRoute: typeof StudentsDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/startups/startup-registration': {
+      id: '/startups/startup-registration'
+      path: '/startups/startup-registration'
+      fullPath: '/startups/startup-registration'
+      preLoaderRoute: typeof StartupsStartupRegistrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/startups/startup-portfolio': {
+      id: '/startups/startup-portfolio'
+      path: '/startups/startup-portfolio'
+      fullPath: '/startups/startup-portfolio'
+      preLoaderRoute: typeof StartupsStartupPortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/startups/startup-funding': {
+      id: '/startups/startup-funding'
+      path: '/startups/startup-funding'
+      fullPath: '/startups/startup-funding'
+      preLoaderRoute: typeof StartupsStartupFundingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/startups/blog': {
+      id: '/startups/blog'
+      path: '/startups/blog'
+      fullPath: '/startups/blog'
+      preLoaderRoute: typeof StartupsBlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs/pitch-to-us': {
+      id: '/programs/pitch-to-us'
+      path: '/programs/pitch-to-us'
+      fullPath: '/programs/pitch-to-us'
+      preLoaderRoute: typeof ProgramsPitchToUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs/join-us': {
+      id: '/programs/join-us'
+      path: '/programs/join-us'
+      fullPath: '/programs/join-us'
+      preLoaderRoute: typeof ProgramsJoinUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/startups-events': {
+      id: '/events/startups-events'
+      path: '/events/startups-events'
+      fullPath: '/events/startups-events'
+      preLoaderRoute: typeof EventsStartupsEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/calendar': {
+      id: '/events/calendar'
+      path: '/events/calendar'
+      fullPath: '/events/calendar'
+      preLoaderRoute: typeof EventsCalendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ecosystem/partners': {
+      id: '/ecosystem/partners'
+      path: '/ecosystem/partners'
+      fullPath: '/ecosystem/partners'
+      preLoaderRoute: typeof EcosystemPartnersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ecosystem/mentors': {
@@ -151,11 +507,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EcosystemMentorsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ecosystem/investors': {
+      id: '/ecosystem/investors'
+      path: '/ecosystem/investors'
+      fullPath: '/ecosystem/investors'
+      preLoaderRoute: typeof EcosystemInvestorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ecosystem/infrastructure': {
+      id: '/ecosystem/infrastructure'
+      path: '/ecosystem/infrastructure'
+      fullPath: '/ecosystem/infrastructure'
+      preLoaderRoute: typeof EcosystemInfrastructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/approach/operational-model': {
+      id: '/approach/operational-model'
+      path: '/approach/operational-model'
+      fullPath: '/approach/operational-model'
+      preLoaderRoute: typeof ApproachOperationalModelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/achieve/impact': {
+      id: '/achieve/impact'
+      path: '/achieve/impact'
+      fullPath: '/achieve/impact'
+      preLoaderRoute: typeof AchieveImpactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about/vision-roadmap': {
+      id: '/about/vision-roadmap'
+      path: '/about/vision-roadmap'
+      fullPath: '/about/vision-roadmap'
+      preLoaderRoute: typeof AboutVisionRoadmapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about/team': {
       id: '/about/team'
       path: '/about/team'
       fullPath: '/about/team'
       preLoaderRoute: typeof AboutTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about/rewards': {
+      id: '/about/rewards'
+      path: '/about/rewards'
+      fullPath: '/about/rewards'
+      preLoaderRoute: typeof AboutRewardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about/mentors': {
+      id: '/about/mentors'
+      path: '/about/mentors'
+      fullPath: '/about/mentors'
+      preLoaderRoute: typeof AboutMentorsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about/board': {
@@ -177,12 +582,32 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   IncubatorsRoute: IncubatorsRoute,
   MentorsRoute: MentorsRoute,
   SectionSlugRoute: SectionSlugRoute,
   AboutBoardRoute: AboutBoardRoute,
+  AboutMentorsRoute: AboutMentorsRoute,
+  AboutRewardsRoute: AboutRewardsRoute,
   AboutTeamRoute: AboutTeamRoute,
+  AboutVisionRoadmapRoute: AboutVisionRoadmapRoute,
+  AchieveImpactRoute: AchieveImpactRoute,
+  ApproachOperationalModelRoute: ApproachOperationalModelRoute,
+  EcosystemInfrastructureRoute: EcosystemInfrastructureRoute,
+  EcosystemInvestorsRoute: EcosystemInvestorsRoute,
   EcosystemMentorsRoute: EcosystemMentorsRoute,
+  EcosystemPartnersRoute: EcosystemPartnersRoute,
+  EventsCalendarRoute: EventsCalendarRoute,
+  EventsStartupsEventsRoute: EventsStartupsEventsRoute,
+  ProgramsJoinUsRoute: ProgramsJoinUsRoute,
+  ProgramsPitchToUsRoute: ProgramsPitchToUsRoute,
+  StartupsBlogRoute: StartupsBlogRoute,
+  StartupsStartupFundingRoute: StartupsStartupFundingRoute,
+  StartupsStartupPortfolioRoute: StartupsStartupPortfolioRoute,
+  StartupsStartupRegistrationRoute: StartupsStartupRegistrationRoute,
+  StudentsDashboardRoute: StudentsDashboardRoute,
+  StudentsInternshipCalendarRoute: StudentsInternshipCalendarRoute,
+  StudentsInternshipRegistrationRoute: StudentsInternshipRegistrationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

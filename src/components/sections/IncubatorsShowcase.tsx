@@ -34,7 +34,7 @@ type Incubator = {
 
 const incubators: Incubator[] = [
   {
-    name: "aHub",
+    name: "āHub",
     tagline: "Andhra University's Flagship Innovation Centre",
     short:
       "A state-of-the-art NIDHI iTBI facility at the Andhra University Incubation Council, built to turn research-led ideas into investable, market-ready ventures.",
@@ -51,12 +51,12 @@ const incubators: Incubator[] = [
     ],
   },
   {
-    name: "AU Element aHub",
+    name: "AU Element āHub",
     tagline: "Deep-Tech & Materials Innovation",
     short:
       "A specialised incubation hub for founders working across materials science, chemistry, and elemental technologies—bridging lab research with commercial outcomes.",
     long:
-      "AU Element aHub provides domain labs, technical advisory, and industry linkages so teams can validate IP, run structured pilots, and build defensible products with academic rigour.",
+      "AU Element āHub provides domain labs, technical advisory, and industry linkages so teams can validate IP, run structured pilots, and build defensible products with academic rigour.",
     blurb:
       "Founders access expert mentors, shared R&D infrastructure, and partner networks tailored to science-led, high-impact ventures.",
     image: auElementAhubImg,
@@ -68,14 +68,14 @@ const incubators: Incubator[] = [
     ],
   },
   {
-    name: "Marine aHub",
+    name: "Marine āHub",
     tagline: "Advancing the Blue Economy",
     short:
-      "Hosted at the Department of Marine Living Resources, Andhra University, Marine aHub nurtures innovation in aquaculture, marine biotechnology, and sustainable ocean industries.",
+      "Hosted at the Department of Marine Living Resources, Andhra University, Marine āHub nurtures innovation in aquaculture, marine biotechnology, and sustainable ocean industries.",
     long:
       "Entrepreneurs gain access to specialised research facilities, field expertise, and academic mentorship to develop solutions for fisheries, coastal livelihoods, and the growing blue-economy sector.",
     blurb:
-      "From lab validation to market pilots, Marine aHub connects science-driven founders with the resources needed to scale responsible, impact-focused marine ventures.",
+      "From lab validation to market pilots, Marine āHub connects science-driven founders with the resources needed to scale responsible, impact-focused marine ventures.",
     image: marineAhubImg,
     card: nasscomAhubImg,
     stats: [
@@ -85,14 +85,14 @@ const incubators: Incubator[] = [
     ],
   },
   {
-    name: "NASSCOM aHub",
+    name: "NASSCOM āHub",
     tagline: "Digital & AI Startup Acceleration",
     short:
       "An industry-aligned incubator in partnership with NASSCOM, focused on scalable software, AI, and digital products built for India and global markets.",
     long:
       "Startups receive structured go-to-market support, enterprise connects, and technology mentorship—helping teams refine products, win pilots, and prepare for institutional funding.",
     blurb:
-      "NASSCOM aHub links founders to ecosystem programs, corporate innovation tracks, and a national network of operators and investors.",
+      "NASSCOM āHub links founders to ecosystem programs, corporate innovation tracks, and a national network of operators and investors.",
     image: nasscomAhubImg,
     card: ahubImg,
     stats: [

@@ -1,26 +1,12 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
-  Briefcase,
-  CalendarDays,
-  CheckCircle2,
-  Clock3,
   ExternalLink,
-  FileUp,
-  Globe2,
-  GraduationCap,
-  LayoutDashboard,
-  MapPin,
-  MonitorDot,
-  Search,
-  ShieldCheck,
-  Sparkles,
   Users,
 } from "lucide-react";
 import { InternalPageShell } from "@/components/layout/InternalPageShell";
 import { LatestEvents } from "@/components/sections/LatestEvents";
-import { institutions, partners, portfolio, stats, visitors } from "@/data";
-import { cn } from "@/lib/utils";
+import { institutions, partners, portfolio, visitors } from "@/data";
 
 export const Route = createFileRoute("/$section/$slug")({
   component: SectionPage,
@@ -482,6 +468,64 @@ const pageMap: Record<string, PageDefinition> = {
     ],
     buttonLabel: "Sign in",
   },
+  "about/press": {
+    kind: "blog",
+    eyebrow: "About / Press",
+    title: "Press & Media Coverage",
+    summary: "Media features, news publications, and ecosystem highlights across leading platforms.",
+    featured: { title: "AUIC Incubation Hub makes national headlines", body: "A premium editorial feature on our ecosystem's impact — from student founders to deep-tech ventures.", meta: "Featured" },
+    cards: [
+      { title: "Startup India feature", body: "Recognized as a top-tier incubator with measurable founder outcomes.", meta: "News" },
+      { title: "Economic Times coverage", body: "AUIC's innovative model spotlighted in a national innovation segment.", meta: "Media" },
+      { title: "IIT collaboration spotlight", body: "Joint research and innovation programs draw national attention.", meta: "Press" },
+    ],
+  },
+  "about/rewards": {
+    kind: "timeline",
+    eyebrow: "About / Reward & Recognition",
+    title: "Awards, Accolades & Ecosystem Milestones",
+    summary: "Celebrating the achievements, recognitions, and landmark milestones of the AUIC ecosystem.",
+    timeline: [
+      { date: "2024", title: "Best University Incubator", body: "Recognized nationally for program quality and founder success rates." },
+      { date: "2023", title: "Innovation Excellence Award", body: "Awarded by the Department for Promotion of Industry and Internal Trade (DPIIT)." },
+      { date: "2022", title: "Top 25 Startup Ecosystems", body: "Ranked among India's leading startup incubation platforms by StartupBlink." },
+      { date: "2021", title: "Community Impact Recognition", body: "Honored for bridging student entrepreneurship with institutional support." },
+    ],
+    highlights: [
+      { title: "National recognition", body: "Awards from premier bodies validating our ecosystem quality." },
+      { title: "Founder outcomes", body: "Recognition tied to real startup success stories." },
+      { title: "Community milestones", body: "Celebrating both institutional and individual achievements." },
+    ],
+  },
+  "about/reports": {
+    kind: "timeline",
+    eyebrow: "About / Reports",
+    title: "Annual Reports & Impact Metrics",
+    summary: "Transparent reporting on ecosystem health, startup outcomes, and strategic growth milestones.",
+    timeline: [
+      { date: "FY 2024", title: "Annual Impact Report", body: "50+ startups incubated, ₹12 Cr raised, and 200+ jobs created across cohorts." },
+      { date: "FY 2023", title: "Ecosystem Growth Report", body: "Expanded to 3 new partner institutions with 35 active startup teams." },
+      { date: "FY 2022", title: "Foundation Year Report", body: "Launched the first cohort, established mentor network, and secured seed partnerships." },
+    ],
+    highlights: [
+      { title: "Transparency", body: "Annual data on funding, jobs, and founder outcomes." },
+      { title: "Impact metrics", body: "Clear reporting on ecosystem ROI and startup health." },
+      { title: "Stakeholder trust", body: "Published openly for partners, investors, and institutions." },
+    ],
+  },
+  "events/event-registration": {
+    kind: "form",
+    eyebrow: "Events / Event Registration",
+    title: "Register for an Upcoming Event",
+    summary: "RSVP and register for workshops, demo days, investor meets, and startup showcases.",
+    fields: ["Full name", "Email address", "Event name", "Organization / Startup", "Role"],
+    cards: [
+      { title: "Upcoming events", body: "Workshops, demo days, investor sessions, and founder showcases.", meta: "Multiple dates" },
+      { title: "Confirmation", body: "Receive instant confirmation and event details via email.", meta: "Instant" },
+      { title: "Note", body: "Spots are limited — register early to secure your place." },
+    ],
+    buttonLabel: "Register now",
+  },
 };
 
 function SectionPage() {
@@ -521,7 +565,7 @@ function SectionPage() {
 
           <LatestEvents />
 
-          <SectionCards cards={page.cards} />
+          <SectionCards cards={(page as any).cards} />
         </div>
       </InternalPageShell>
     );
@@ -611,7 +655,7 @@ function TimelinePage({ page }: { page: Extract<PageDefinition, { kind: "timelin
     <>
       <SectionCards cards={page.highlights} />
       <div className="space-y-4">
-        {page.timeline.map((item, index) => (
+        {page.timeline.map((item) => (
           <div key={item.title} className="grid gap-4 rounded-[26px] border border-[rgba(91,14,45,0.08)] bg-white p-5 md:grid-cols-[140px_1fr]">
             <div className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{item.date}</div>
             <div>

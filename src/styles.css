@@ -73,6 +73,18 @@
   --gradient-brand: linear-gradient(135deg, #FF9800 0%, #FFA726 100%);
   --shadow-brand: 0 30px 60px -20px rgba(255, 152, 0, 0.45);
   --shadow-card: 0 10px 30px -12px rgba(20, 20, 40, 0.12);
+
+  /* Board Section Tokens */
+  --board-cream: #FFF8F1;
+  --board-cream-deep: #F5E6D3;
+  --board-primary: #FF6B00;
+  --board-primary-fg: #ffffff;
+  --board-foreground: #1A0F0A;
+  --board-muted-fg: #8A7B76;
+  --board-shadow-elegant: 0 30px 60px -20px rgba(255, 107, 0, 0.28);
+  --board-shadow-soft: 0 10px 30px -10px rgba(255, 107, 0, 0.18);
+  --board-gradient-orange: linear-gradient(135deg, #FF8C42 0%, #FFB776 100%);
+  --board-font-serif: "Playfair Display", Georgia, serif;
 }
 
 .dark {
