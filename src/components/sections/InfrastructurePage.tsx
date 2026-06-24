@@ -14,6 +14,7 @@ import {
 } from "@/data/infrastructurePage";
 import { useCountUp } from "@/hooks/useCountUp";
 import { cn } from "@/lib/utils";
+import { usePublicInfrastructure } from "@/services/usePublicContent";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -23,25 +24,36 @@ const fadeUp = {
 };
 
 export function InfrastructurePage() {
+  const { data: infraData } = usePublicInfrastructure({
+    facilities,
+    galleryStrip,
+    infrastructureImages,
+    infrastructureStats,
+    masonryGallery,
+    researchPills,
+    collaborativeFeatures,
+    eventFeatures,
+  });
+
   return (
     <div className="relative isolate overflow-hidden bg-[#FDF8F2]">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_90%_5%,rgba(245,158,66,0.1),transparent_55%),radial-gradient(50%_45%_at_5%_20%,rgba(245,158,66,0.07),transparent_50%)]" />
       </div>
 
-      <HeroSection />
-      <FacilitiesSection />
-      <GalleryStrip />
-      <CollaborativeSection />
-      <ResearchLabsSection />
-      <EventsSection />
-      <MetricsSection />
-      <MasonryGallery />
+      <HeroSection images={infraData.infrastructureImages} />
+      <FacilitiesSection data={infraData.facilities} />
+      <GalleryStrip data={infraData.galleryStrip} />
+      <CollaborativeSection images={infraData.infrastructureImages} features={infraData.collaborativeFeatures} />
+      <ResearchLabsSection images={infraData.infrastructureImages} pills={infraData.researchPills} />
+      <EventsSection images={infraData.infrastructureImages} features={infraData.eventFeatures} />
+      <MetricsSection data={infraData.infrastructureStats} />
+      <MasonryGallery data={infraData.masonryGallery} />
     </div>
   );
 }
 
-function HeroSection() {
+function HeroSection({ images }: { images: any }) {
   const heroStats = [
     { value: "120+", label: "Startups" },
     { value: "80+", label: "Mentors" },
@@ -88,7 +100,7 @@ function HeroSection() {
         >
           <div className="overflow-hidden rounded-[32px] shadow-[0_24px_60px_-30px_rgba(45,27,27,0.2)]">
             <img
-              src={infrastructureImages.hero}
+              src={images.hero}
               alt="AHUB innovation campus"
               className="aspect-[4/3] w-full object-cover lg:aspect-[5/4]"
             />
@@ -110,7 +122,7 @@ function HeroSection() {
   );
 }
 
-function FacilitiesSection() {
+function FacilitiesSection({ data }: { data: any }) {
   return (
     <section id="facilities" className="py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
@@ -120,7 +132,7 @@ function FacilitiesSection() {
         </motion.div>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {facilities.map((facility, index) => (
+          {data.map((facility: any, index: number) => (
             <motion.article
               key={facility.title}
               initial={{ opacity: 0, y: 20 }}
@@ -142,7 +154,7 @@ function FacilitiesSection() {
   );
 }
 
-function GalleryStrip() {
+function GalleryStrip({ data }: { data: any }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", dragFree: true, containScroll: "trimSnaps" });
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -170,7 +182,7 @@ function GalleryStrip() {
 
         <div ref={emblaRef} className="overflow-hidden">
           <div className="flex gap-5">
-            {galleryStrip.map((item) => (
+            {data.map((item: any) => (
               <div
                 key={item.label}
                 className="group relative min-w-0 shrink-0 grow-0 basis-[85%] overflow-hidden rounded-[28px] sm:basis-[45%] lg:basis-[32%]"
@@ -190,7 +202,7 @@ function GalleryStrip() {
         </div>
 
         <div className="mt-5 flex justify-center gap-2">
-          {galleryStrip.map((item, index) => (
+          {data.map((item: any, index: number) => (
             <button
               key={item.label}
               type="button"
@@ -208,14 +220,14 @@ function GalleryStrip() {
   );
 }
 
-function CollaborativeSection() {
+function CollaborativeSection({ images, features }: { images: any; features: any }) {
   return (
     <section className="py-16 md:py-20">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 md:px-10 lg:grid-cols-2 lg:gap-14">
         <motion.div {...fadeUp} className="order-2 lg:order-1">
           <div className="overflow-hidden rounded-[32px] shadow-[0_20px_60px_-30px_rgba(45,27,27,0.15)]">
             <img
-              src={infrastructureImages.collaborative}
+              src={images.collaborative}
               alt="Collaborative workspace"
               className="aspect-[4/3] w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
             />
@@ -234,7 +246,7 @@ function CollaborativeSection() {
               together.
             </p>
             <ul className="mt-6 space-y-3">
-              {collaborativeFeatures.map((feature) => (
+              {features.map((feature: any) => (
                 <li key={feature} className="flex items-center gap-3 text-sm text-[#2D1B1B]">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFF4E8]">
                     <Check className="h-3.5 w-3.5 text-[#F59E42]" strokeWidth={2.5} />
@@ -250,7 +262,7 @@ function CollaborativeSection() {
   );
 }
 
-function ResearchLabsSection() {
+function ResearchLabsSection({ images, pills }: { images: any; pills: any }) {
   return (
     <section className="py-16 md:py-20">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 md:px-10 lg:grid-cols-2 lg:gap-14">
@@ -261,7 +273,7 @@ function ResearchLabsSection() {
               Cutting-edge laboratories equipped for deep-tech prototyping, experimentation, and product validation.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
-              {researchPills.map((pill) => (
+              {pills.map((pill: any) => (
                 <span
                   key={pill}
                   className="rounded-full border border-[#F59E42]/20 bg-[#FFF4E8] px-4 py-1.5 text-xs font-semibold text-[#2D1B1B]"
@@ -281,7 +293,7 @@ function ResearchLabsSection() {
         >
           <div className="overflow-hidden rounded-[32px] shadow-[0_20px_60px_-30px_rgba(45,27,27,0.15)]">
             <img
-              src={infrastructureImages.labs}
+              src={images.labs}
               alt="IoT and robotics research lab"
               className="aspect-[4/3] w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
             />
@@ -292,7 +304,7 @@ function ResearchLabsSection() {
   );
 }
 
-function EventsSection() {
+function EventsSection({ images, features }: { images: any; features: any }) {
   return (
     <section className="py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
@@ -306,7 +318,7 @@ function EventsSection() {
               className="relative min-h-[280px] lg:min-h-[420px]"
             >
               <img
-                src={infrastructureImages.conference}
+                src={images.conference}
                 alt="Events and community auditorium"
                 className="absolute inset-0 h-full w-full object-cover"
               />
@@ -322,7 +334,7 @@ function EventsSection() {
                 startup ecosystem.
               </p>
               <ul className="mt-6 space-y-3">
-                {eventFeatures.map((feature) => (
+                {features.map((feature: any) => (
                   <li key={feature} className="flex items-center gap-3 text-sm font-medium text-[#2D1B1B]">
                     <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFF4E8]">
                       <Check className="h-3.5 w-3.5 text-[#F59E42]" strokeWidth={2.5} />
@@ -339,7 +351,7 @@ function EventsSection() {
   );
 }
 
-function MetricsSection() {
+function MetricsSection({ data }: { data: any }) {
   return (
     <section className="py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
@@ -349,7 +361,7 @@ function MetricsSection() {
         </motion.div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {infrastructureStats.map((stat, index) => (
+          {data.map((stat: any, index: number) => (
             <MetricCard key={stat.label} stat={stat} index={index} />
           ))}
         </div>
@@ -386,7 +398,7 @@ function MetricCard({
   );
 }
 
-function MasonryGallery() {
+function MasonryGallery({ data }: { data: any }) {
   return (
     <section className="pb-24 pt-8 md:pb-32">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
@@ -396,7 +408,7 @@ function MasonryGallery() {
         </motion.div>
 
         <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
-          {masonryGallery.map((item, index) => (
+          {data.map((item: any, index: number) => (
             <motion.div
               key={`${item.label}-${index}`}
               initial={{ opacity: 0, y: 20 }}

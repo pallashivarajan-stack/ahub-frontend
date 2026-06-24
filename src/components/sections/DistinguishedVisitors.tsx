@@ -1,66 +1,61 @@
 import { motion } from "framer-motion";
-import bvrMohanReddy from "@/assets/visitors/bvr mohan reddy.jpeg";
-import rishiMehta from "@/assets/visitors/rishi mehta.jpg";
-import matsViberg from "@/assets/visitors/mats viberg.jpeg";
-import malcolmByrne from "@/assets/visitors/malcolm Byrne.jpg";
-import drLawrenceJones from "@/assets/visitors/dr lawrence jones.jpeg";
-import narayanaMurthy from "@/assets/visitors/naryana murthy.png";
-import gMalikarjunaRao from "@/assets/visitors/G malikarjuna rao.jpg";
-import carmeloRosa from "@/assets/visitors/carmelo rosa.jpg";
-import orangeVisitorsBackground from "@/assets/orange  visitors background.png";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
+import { usePublicDistinguishedVisitors } from "@/services/usePublicContent";
+import { resolveLegacyAsset } from "@/lib/assets";
 
 export function DistinguishedVisitors() {
-  const visitors = [
+  const visitorsFallback = [
     {
       name: "BVR Mohan Reddy",
       role: "Chairman",
       org: "Cyient",
-      image: bvrMohanReddy,
+      image: resolveLegacyAsset("/src/assets/visitors/bvr mohan reddy.jpeg"),
     },
     {
       name: "Rishi Mehta",
       role: "Chief Executive Officer",
       org: "WAISL",
-      image: rishiMehta,
+      image: resolveLegacyAsset("/src/assets/visitors/rishi mehta.jpg"),
     },
     {
       name: "Mats Viberg",
       role: "Vice Chancellor",
       org: "Blekinge Institute of Technology",
-      image: matsViberg,
+      image: resolveLegacyAsset("/src/assets/visitors/mats viberg.jpeg"),
     },
     {
       name: "Malcolm Byrne",
       role: "Senator",
       org: "Senate of Ireland",
-      image: malcolmByrne,
+      image: resolveLegacyAsset("/src/assets/visitors/malcolm Byrne.jpg"),
     },
     {
       name: "Dr Lawrence Jones",
       role: "Programme Director",
       org: "Wageningen University",
-      image: drLawrenceJones,
+      image: resolveLegacyAsset("/src/assets/visitors/dr lawrence jones.jpeg"),
     },
     {
       name: "N. R. Narayana Murthy",
       role: "Founder & Former CEO",
       org: "Infosys",
-      image: narayanaMurthy,
+      image: resolveLegacyAsset("/src/assets/visitors/naryana murthy.png"),
     },
     {
       name: "G. Malikarjuna Rao",
       role: "Chairman",
       org: "GMR Group",
-      image: gMalikarjunaRao,
+      image: resolveLegacyAsset("/src/assets/visitors/G malikarjuna rao.jpg"),
     },
     {
       name: "Carmelo Rosa",
       role: "Director",
       org: "UD FDA",
-      image: carmeloRosa,
+      image: resolveLegacyAsset("/src/assets/visitors/carmelo rosa.jpg"),
     },
   ];
+
+  const { data: visitors } = usePublicDistinguishedVisitors(visitorsFallback);
 
   const loop = [...visitors, ...visitors];
 
@@ -75,7 +70,7 @@ export function DistinguishedVisitors() {
     >
       <div
         className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat opacity-90"
-        style={{ backgroundImage: `url(${orangeVisitorsBackground})` }}
+        style={{ backgroundImage: `url(${resolveLegacyAsset("/src/assets/orange  visitors background.png")})` }}
       />
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80%_55%_at_50%_0%,rgba(255,255,255,0.38),transparent_58%),linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.12))]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),transparent)]" />

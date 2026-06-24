@@ -11,6 +11,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import { usePublicStartupRegistration } from "@/services/usePublicContent";
 
 const ORANGE = "#F97316";
 
@@ -22,6 +23,37 @@ const fadeUp: Variants = {
 const stagger = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.09 } },
+};
+
+const FALLBACK = {
+  heroBadge: "Startup Onboarding",
+  heroTitle: 'Register Your <em>Startup</em> with AHUB',
+  heroSubtitle: "Join the Andhra University Incubation Council ecosystem. Complete your startup registration to access incubation, mentorship, and funding support.",
+  formTitle: "Startup Registration Form",
+  formSubtitle: "AUIC Incubation Programme",
+  submitBtn: "Submit Registration",
+  contactEmail: "incubation@ahub.in",
+  contactPhone: "+91 891 234 5678",
+  benefits: [
+    { title: "Office Space", desc: "Access to co-working and private offices at AHUB" },
+    { title: "Mentorship", desc: "1:1 sessions with industry experts and investors" },
+    { title: "Network Access", desc: "Entry into AHUB's ecosystem of 150+ partners" },
+    { title: "Funding Support", desc: "Pitch days, grant applications, and investor introductions" },
+  ],
+  postRegistration: [
+    "Dedicated incubation space & resources",
+    "Mentorship from industry experts",
+    "Access to investor network & funding",
+    "Legal & compliance guidance",
+    "Marketing & PR support",
+    "Participation in Demo Days",
+  ],
+  eligibility: [
+    "Must be an Andhra University student, alumni, or faculty",
+    "Startup should be less than 5 years old",
+    "Innovation-driven product or service",
+    "Commitment to the 12-month incubation cycle",
+  ],
 };
 
 function Field({
@@ -121,14 +153,10 @@ const LEGAL_ENTITIES = [
 
 const TEAM_SIZES = ["Solo founder", "2 members", "3–5 members", "6–10 members", "10+ members"];
 
-const BENEFITS = [
-  { icon: Building2, title: "Office Space", desc: "Access to co-working and private offices at AHUB" },
-  { icon: Briefcase, title: "Mentorship", desc: "1:1 sessions with industry experts and investors" },
-  { icon: Globe, title: "Network Access", desc: "Entry into AHUB's ecosystem of 150+ partners" },
-  { icon: Rocket, title: "Funding Support", desc: "Pitch days, grant applications, and investor introductions" },
-];
-
 export function StartupRegistrationPage() {
+  const { data } = usePublicStartupRegistration(FALLBACK);
+  const c = data ?? FALLBACK;
+
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────── */}
@@ -143,7 +171,7 @@ export function StartupRegistrationPage() {
             className="mb-4 inline-flex items-center gap-2 rounded-full border border-[rgba(249,115,22,0.2)] bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#F97316] shadow-sm"
           >
             <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#F97316]/10 text-[8px]">✦</span>
-            Startup Onboarding
+            {c.heroBadge}
           </motion.div>
 
           <motion.h1
@@ -151,13 +179,8 @@ export function StartupRegistrationPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.65, delay: 0.1 }}
             className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-5xl md:text-[3.25rem]"
-          >
-            Register Your{" "}
-            <span className="bg-gradient-to-r from-[#F97316] to-[#FB923C] bg-clip-text text-transparent">
-              Startup
-            </span>{" "}
-            with AHUB
-          </motion.h1>
+            dangerouslySetInnerHTML={{ __html: c.heroTitle }}
+          />
 
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -165,7 +188,7 @@ export function StartupRegistrationPage() {
             transition={{ delay: 0.26 }}
             className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-slate-500"
           >
-            Join the Andhra University Incubation Council ecosystem. Complete your startup registration to access incubation, mentorship, and funding support.
+            {c.heroSubtitle}
           </motion.p>
 
           <motion.div
@@ -181,24 +204,28 @@ export function StartupRegistrationPage() {
       <section className="bg-white px-6 pb-8 pt-4">
         <div className="mx-auto max-w-5xl">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {BENEFITS.map(({ icon: Icon, title, desc }, i) => (
-              <motion.div
-                key={title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-                className="flex flex-col items-start gap-3 rounded-2xl border border-slate-100 bg-[#FAFAFA] p-5"
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F97316]/10">
-                  <Icon size={18} className="text-[#F97316]" />
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-slate-800">{title}</div>
-                  <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{desc}</p>
-                </div>
-              </motion.div>
-            ))}
+            {(c.benefits as typeof FALLBACK.benefits).map(({ title, desc }, i) => {
+              const icons = [Building2, Briefcase, Globe, Rocket] as const;
+              const Icon = icons[i] ?? Building2;
+              return (
+                <motion.div
+                  key={title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.07 }}
+                  className="flex flex-col items-start gap-3 rounded-2xl border border-slate-100 bg-[#FAFAFA] p-5"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F97316]/10">
+                    <Icon size={18} className="text-[#F97316]" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-slate-800">{title}</div>
+                    <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{desc}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -225,8 +252,8 @@ export function StartupRegistrationPage() {
                   <Rocket size={20} style={{ color: ORANGE }} />
                 </div>
                 <div>
-                  <div className="text-base font-bold text-slate-900">Startup Registration Form</div>
-                  <div className="text-[0.75rem] text-slate-500">AUIC Incubation Programme</div>
+                  <div className="text-base font-bold text-slate-900">{c.formTitle}</div>
+                  <div className="text-[0.75rem] text-slate-500">{c.formSubtitle}</div>
                 </div>
               </div>
 
@@ -347,7 +374,7 @@ export function StartupRegistrationPage() {
                 style={{ backgroundColor: ORANGE }}
               >
                 <Rocket size={16} />
-                Submit Registration
+                {c.submitBtn}
               </button>
               <p className="mt-3 text-center text-[0.72rem] text-slate-400">
                 By submitting, you agree to our terms. We'll review and respond within 7 working days.
@@ -360,14 +387,7 @@ export function StartupRegistrationPage() {
               {/* What you get */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                 <div className="mb-4 text-sm font-bold text-slate-800">What you get after registration</div>
-                {[
-                  "Dedicated incubation space & resources",
-                  "Mentorship from industry experts",
-                  "Access to investor network & funding",
-                  "Legal & compliance guidance",
-                  "Marketing & PR support",
-                  "Participation in Demo Days",
-                ].map((item) => (
+                {(c.postRegistration as string[]).map((item: string) => (
                   <div key={item} className="flex items-start gap-2.5 py-2 border-b border-slate-50 last:border-0">
                     <CheckCircle2 size={14} className="mt-0.5 flex-shrink-0 text-[#F97316]" />
                     <span className="text-xs text-slate-600">{item}</span>
@@ -378,12 +398,7 @@ export function StartupRegistrationPage() {
               {/* Eligibility */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                 <div className="mb-4 text-sm font-bold text-slate-800">Eligibility Criteria</div>
-                {[
-                  "Must be an Andhra University student, alumni, or faculty",
-                  "Startup should be less than 5 years old",
-                  "Innovation-driven product or service",
-                  "Commitment to the 12-month incubation cycle",
-                ].map((item) => (
+                {(c.eligibility as string[]).map((item: string) => (
                   <div key={item} className="flex items-start gap-2.5 py-2 border-b border-slate-50 last:border-0">
                     <User size={13} className="mt-0.5 flex-shrink-0 text-[#F97316]" />
                     <span className="text-xs text-slate-600">{item}</span>
@@ -396,18 +411,18 @@ export function StartupRegistrationPage() {
                 <div className="text-sm font-bold text-slate-800 mb-3">Need help?</div>
                 <div className="flex flex-col gap-3">
                   <a
-                    href="mailto:incubation@ahub.in"
+                    href={`mailto:${c.contactEmail}`}
                     className="flex items-center gap-2 text-xs text-slate-600 hover:text-[#F97316] transition-colors"
                   >
                     <Mail size={13} className="text-[#F97316]" />
-                    incubation@ahub.in
+                    {c.contactEmail}
                   </a>
                   <a
-                    href="tel:+918912345678"
+                    href={`tel:${c.contactPhone.replace(/\s/g, "")}`}
                     className="flex items-center gap-2 text-xs text-slate-600 hover:text-[#F97316] transition-colors"
                   >
                     <Phone size={13} className="text-[#F97316]" />
-                    +91 891 234 5678
+                    {c.contactPhone}
                   </a>
                   <a
                     href="https://ahub.in"

@@ -1,6 +1,8 @@
-import rajaSekharImg from "@/assets/board/Prof.G.P.Raja Sekhar.jpeg";
-import rambabuImg from "@/assets/board/prof.K.Rambabu.png";
-import valliKumariImg from "@/assets/board/prof.Valli kumari vatsavayi.png";
+import { resolveLegacyAsset } from "@/lib/assets";
+
+const rajaSekharImg = resolveLegacyAsset("/src/assets/board/Prof.G.P.Raja Sekhar.jpeg");
+const rambabuImg = resolveLegacyAsset("/src/assets/board/prof.K.Rambabu.png");
+const valliKumariImg = resolveLegacyAsset("/src/assets/board/prof.Valli kumari vatsavayi.png");
 
 export type BoardMember = {
   name: string;

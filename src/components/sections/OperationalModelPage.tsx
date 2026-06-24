@@ -17,6 +17,7 @@ import {
   Megaphone,
   ShieldCheck,
 } from "lucide-react";
+import { usePublicOperationalModel } from "@/services/usePublicContent";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 36 },
@@ -359,6 +360,8 @@ function ModelSection() {
 
 /* ── Main Export ── */
 export function OperationalModelPage() {
+  const operationalFallback = { ENGINE_STAGES, JOURNEY_STEPS, PHASE_COLUMNS, PROCESS_STAGES, FUTURE_SERVICES, SUPPORT_PILLARS };
+  const { data: opData } = usePublicOperationalModel(operationalFallback);
   return (
     <>
       <HeroSection />

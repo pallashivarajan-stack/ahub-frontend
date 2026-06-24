@@ -1,13 +1,17 @@
-import alcoveLogo from "@/assets/partners/alcove.jpg";
-import atpiLogo from "@/assets/partners/atpi.jpg";
-import avantiLogo from "@/assets/partners/avanti.png";
-import digifacLogo from "@/assets/partners/digifac.png";
-import icompassLogo from "@/assets/partners/icompass.png";
-import ministryLogo from "@/assets/partners/ministry of sceince.png";
-import nasscomLogo from "@/assets/partners/nasscom.png";
-import rosysLogo from "@/assets/partners/rosys.jpg";
-import sandlogicLogo from "@/assets/partners/sandlogic.jpg";
-import tieLogo from "@/assets/partners/tie.jpg";
+import { resolveLegacyAsset } from "@/lib/assets";
+
+const [alcoveLogo, atpiLogo, avantiLogo, digifacLogo, icompassLogo, ministryLogo, nasscomLogo, rosysLogo, sandlogicLogo, tieLogo] = [
+  "/src/assets/partners/alcove.jpg",
+  "/src/assets/partners/atpi.jpg",
+  "/src/assets/partners/avanti.png",
+  "/src/assets/partners/digifac.png",
+  "/src/assets/partners/icompass.png",
+  "/src/assets/partners/ministry of sceince.png",
+  "/src/assets/partners/nasscom.png",
+  "/src/assets/partners/rosys.jpg",
+  "/src/assets/partners/sandlogic.jpg",
+  "/src/assets/partners/tie.jpg",
+].map(resolveLegacyAsset);
 
 export type PartnerItem = {
   name: string;

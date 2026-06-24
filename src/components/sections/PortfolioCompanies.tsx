@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Briefcase, MessageSquare, Users, Loader2 } from "lucide-react";
-import { usePublicPortfolio } from "@/hooks/usePublicContent";
+import { usePublicPortfolio } from "@/services/usePublicContent";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
 
 export function PortfolioCompanies() {
@@ -27,7 +27,7 @@ export function PortfolioCompanies() {
         />
 
         <div className="mt-12 flex h-[420px] gap-3 md:h-[440px]">
-          {portfolio.map((p, i) => {
+          {(portfolio as any[]).map((p: any, i: number) => {
             const isActive = i === active;
             return (
               <motion.button
@@ -116,7 +116,7 @@ export function PortfolioCompanies() {
                     {p.websiteUrl && (
                       <div className="mt-5 pt-4 border-t border-orange-100/20">
                         <a
-                          href={p.websiteUrl}
+                          href={p.websiteUrl} 
                           target="_blank"
                           rel="noreferrer"
                           className="group/btn relative inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.15em] text-[#F97316] hover:text-orange-500 transition-colors duration-300 focus:outline-none cursor-pointer"

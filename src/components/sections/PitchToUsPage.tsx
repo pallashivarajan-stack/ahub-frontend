@@ -9,6 +9,7 @@ import {
   Users,
   FileText,
 } from "lucide-react";
+import { usePublicPitchToUs } from "@/services/usePublicContent";
 
 const GOLD = "#C9A84C";
 const NAVY = "#0A1128";
@@ -21,6 +22,23 @@ const fadeUp: Variants = {
 const stagger = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.09 } },
+};
+
+const FALLBACK = {
+  heroBadge: "Submit Your Pitch",
+  heroTitle: 'Pitch Your Startup <em>With Confidence</em>',
+  heroSubtitle: "Share your vision with AHUB AUIC. We evaluate every submission for potential, problem clarity, and founder readiness.",
+  formTitle: "Startup Pitch Submission",
+  formSubtitle: "Tell us about your venture",
+  submitBtn: "Submit Pitch",
+  formEmail: "pitch@ahub.in",
+  evaluationCriteria: [
+    "Clarity of problem and solution",
+    "Founder passion and commitment",
+    "Scalable business model",
+    "Market size and opportunity",
+    "Early validation or traction",
+  ],
 };
 
 function Field({
@@ -123,6 +141,9 @@ const PROCESS_STEPS = [
 ];
 
 export function PitchToUsPage() {
+  const { data } = usePublicPitchToUs(FALLBACK);
+  const c = data ?? FALLBACK;
+
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────── */}
@@ -137,7 +158,7 @@ export function PitchToUsPage() {
             className="mb-4 inline-flex items-center gap-2 rounded-full border border-[rgba(201,168,76,0.2)] bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#A8863A] shadow-sm"
           >
             <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#C9A84C]/10 text-[8px]">✦</span>
-            Submit Your Pitch
+            {c.heroBadge}
           </motion.div>
 
           <motion.h1
@@ -145,12 +166,8 @@ export function PitchToUsPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.65, delay: 0.1 }}
             className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-[#0A1128] sm:text-5xl md:text-[3.25rem]"
-          >
-            Pitch Your Startup{" "}
-            <span className="bg-gradient-to-r from-[#C9A84C] to-[#A8863A] bg-clip-text text-transparent">
-              With Confidence
-            </span>
-          </motion.h1>
+            dangerouslySetInnerHTML={{ __html: c.heroTitle }}
+          />
 
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -158,7 +175,7 @@ export function PitchToUsPage() {
             transition={{ delay: 0.26 }}
             className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-[#706760]"
           >
-            Share your vision with AHUB AUIC. We evaluate every submission for potential, problem clarity, and founder readiness.
+            {c.heroSubtitle}
           </motion.p>
 
           <motion.div
@@ -218,8 +235,8 @@ export function PitchToUsPage() {
                   <Rocket size={20} style={{ color: GOLD }} />
                 </div>
                 <div>
-                  <div className="text-base font-bold text-[#0A1128]">Startup Pitch Submission</div>
-                  <div className="text-[0.75rem] text-[#706760]">Tell us about your venture</div>
+                  <div className="text-base font-bold text-[#0A1128]">{c.formTitle}</div>
+                  <div className="text-[0.75rem] text-[#706760]">{c.formSubtitle}</div>
                 </div>
               </div>
 
@@ -283,7 +300,7 @@ export function PitchToUsPage() {
                 style={{ background: `linear-gradient(135deg, ${GOLD} 0%, #A8863A 100%)`, color: '#FFFFFF' }}
               >
                 <FileText size={16} />
-                Submit Pitch
+                {c.submitBtn}
               </button>
             </motion.div>
 
@@ -314,13 +331,7 @@ export function PitchToUsPage() {
               {/* What we look for */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                 <div className="mb-4 text-sm font-bold text-slate-800">What we look for</div>
-                {[
-                  "Clarity of problem and solution",
-                  "Founder passion and commitment",
-                  "Scalable business model",
-                  "Market size and opportunity",
-                  "Early validation or traction",
-                ].map((item) => (
+                {c.evaluationCriteria.map((item: string) => (
                   <div key={item} className="flex items-start gap-2.5 py-2">
                     <CheckCircle2 size={15} className="mt-0.5 flex-shrink-0 text-[#F97316]" />
                     <span className="text-xs text-slate-600">{item}</span>
@@ -335,10 +346,10 @@ export function PitchToUsPage() {
                   Reach out to our team before submitting if you have queries about the process.
                 </p>
                 <a
-                  href="mailto:pitch@ahub.in"
+                  href={`mailto:${c.formEmail}`}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#F97316] hover:opacity-80 transition-opacity"
                 >
-                  pitch@ahub.in <ArrowRight size={12} />
+                  {c.formEmail} <ArrowRight size={12} />
                 </a>
               </div>
             </motion.div>

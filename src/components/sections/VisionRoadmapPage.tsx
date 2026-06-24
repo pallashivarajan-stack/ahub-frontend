@@ -1,6 +1,7 @@
 import { motion, Variants } from "framer-motion";
 import { Rocket, Target, ChevronRight } from "lucide-react";
 import { visionData, roadmapData, timelineYears } from "@/data/visionRoadmap";
+import { usePublicVisionRoadmap } from "@/services/usePublicContent";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -58,7 +59,7 @@ function HeroSection() {
 }
 
 /* ── Vision / Mission Cards ── */
-function VisionCards() {
+function VisionCards({ data }: { data: any }) {
   return (
     <section className="bg-[#FFF8F2] px-4 pb-16">
       <div className="mx-auto max-w-7xl">
@@ -69,7 +70,7 @@ function VisionCards() {
           variants={stagger}
           className="grid gap-6 md:grid-cols-2"
         >
-          {visionData.map((item) => {
+          {data.map((item: any) => {
             const Icon = item.icon === "Rocket" ? Rocket : Target;
             return (
               <motion.div
@@ -117,7 +118,7 @@ function VisionCards() {
 }
 
 /* ── Roadmap Image ── */
-function RoadmapSection() {
+function RoadmapSection({ data }: { data: any }) {
   return (
     <section className="bg-[#FAF7F4] px-4 py-16">
       <div className="mx-auto max-w-7xl">
@@ -135,7 +136,7 @@ function RoadmapSection() {
             variants={fadeUp}
             className="mt-2 text-3xl font-bold tracking-tight text-[#0B1736] md:text-4xl"
           >
-            {roadmapData.title}
+            {data.title}
           </motion.h2>
           <motion.div variants={fadeUp} className="mx-auto mt-3 h-px w-12 bg-[#FF6B00]" />
         </motion.div>
@@ -149,7 +150,7 @@ function RoadmapSection() {
         >
           <div className="overflow-hidden rounded-2xl shadow-xl shadow-[#FF6B00]/10">
             <img
-              src={roadmapData.image}
+              src={data.image}
               alt="Strategic Roadmap"
               className="w-full object-cover"
             />
@@ -161,7 +162,7 @@ function RoadmapSection() {
 }
 
 /* ── Timeline Years ── */
-function TimelineSection() {
+function TimelineSection({ data }: { data: any }) {
   return (
     <section className="bg-[#FAF7F4] px-4 pb-16">
       <div className="mx-auto max-w-7xl">
@@ -191,7 +192,7 @@ function TimelineSection() {
           variants={stagger}
           className="mt-10 grid gap-6 md:grid-cols-3"
         >
-          {timelineYears.map((item) => (
+          {data.map((item: any) => (
             <motion.div
               key={item.year}
               variants={fadeUp}
@@ -224,12 +225,18 @@ function TimelineSection() {
 
 /* ── Main Export ── */
 export function VisionRoadmapPage() {
+  const { data } = usePublicVisionRoadmap({
+    visionData,
+    roadmapData,
+    timelineYears,
+  });
+
   return (
     <>
       <HeroSection />
-      <VisionCards />
-      <RoadmapSection />
-      <TimelineSection />
+      <VisionCards data={data.visionData} />
+      <RoadmapSection data={data.roadmapData} />
+      <TimelineSection data={data.timelineYears} />
     </>
   );
 }

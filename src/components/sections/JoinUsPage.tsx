@@ -1,5 +1,6 @@
 import { motion, type Variants } from "framer-motion";
 import { Rocket, Users, Send, ArrowRight } from "lucide-react";
+import { usePublicJoinUs } from "@/services/usePublicContent";
 
 const ORANGE = "#e75710";
 
@@ -11,6 +12,21 @@ const fadeUp: Variants = {
 const stagger = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.09 } },
+};
+
+
+/* ── Fallback content (API returns superset of this shape) ── */
+const FALLBACK = {
+  heroEyebrow: "Together, We Build Innovation",
+  heroTitle: "Join Us in Building <span>the <em>Future</em></span>",
+  heroSubtitle: "Whether you're a founder, mentor, investor, or changemaker, there's a place for you in our ecosystem.",
+  ctaTitle: "Let's create impact together.",
+  ctaSubtitle: "We welcome passionate individuals and organizations who want to make a difference.",
+  ctaBtn: "Contact Us",
+  incubationCard: { title: "Incubation Registration", subtitle: "For startups and ventures" },
+  joinCard: { title: "Join Us", subtitle: "Partner, collaborate or contribute" },
+  submitBtn: "Submit Registration",
+  joinSubmitBtn: "Submit",
 };
 
 /* ── Shared input style ── */
@@ -59,7 +75,8 @@ function TextAreaField({ label, placeholder, required = false }: { label: string
 }
 
 /* ── Hero ── */
-function HeroSection() {
+function HeroSection({ content, hero }: { content: typeof FALLBACK; hero?: any }) {
+  const c = hero ?? content;
   return (
     <section className="relative isolate overflow-hidden bg-gradient-to-b from-[#FFF6F0] to-white pb-10 pt-28 md:pt-36">
       {/* decorative blobs */}
@@ -73,7 +90,7 @@ function HeroSection() {
           className="text-[0.72rem] font-bold uppercase tracking-[0.28em]"
           style={{ color: ORANGE }}
         >
-          Together, We Build Innovation
+          {c.heroEyebrow}
         </motion.p>
 
         <motion.h1
@@ -81,10 +98,8 @@ function HeroSection() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.65, delay: 0.12 }}
           className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-[3.4rem] leading-tight"
-        >
-          Join Us in Building <br />
-          the <span style={{ color: ORANGE }}>Future</span>
-        </motion.h1>
+          dangerouslySetInnerHTML={{ __html: c.heroTitle }}
+        />
 
         <motion.p
           initial={{ opacity: 0, y: 12 }}
@@ -92,7 +107,7 @@ function HeroSection() {
           transition={{ duration: 0.55, delay: 0.28 }}
           className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-slate-500"
         >
-          Whether you're a founder, mentor, investor, or changemaker, there's a place for you in our ecosystem.
+          {c.heroSubtitle}
         </motion.p>
 
         {/* orange line divider */}
@@ -109,7 +124,7 @@ function HeroSection() {
 }
 
 /* ── LEFT: Incubation Registration form ── */
-function IncubationForm() {
+function IncubationForm({ content }: { content: typeof FALLBACK }) {
   return (
     <motion.div
       variants={fadeUp}
@@ -124,8 +139,8 @@ function IncubationForm() {
           <Rocket size={20} style={{ color: ORANGE }} />
         </div>
         <div>
-          <div className="text-base font-bold text-slate-900">Incubation Registration</div>
-          <div className="text-[0.75rem] text-slate-500">For startups and ventures</div>
+          <div className="text-base font-bold text-slate-900">{content.incubationCard.title}</div>
+          <div className="text-[0.75rem] text-slate-500">{content.incubationCard.subtitle}</div>
         </div>
       </div>
 
@@ -174,7 +189,7 @@ function IncubationForm() {
         className="mt-7 w-full rounded-xl py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_28px_-8px_rgba(231,87,16,0.4)] active:scale-95"
         style={{ backgroundColor: ORANGE }}
       >
-        Submit Registration
+        {content.submitBtn}
       </button>
     </motion.div>
   );
@@ -192,7 +207,7 @@ const JOIN_PURPOSES = [
   "Advisory Board",
 ];
 
-function JoinUsForm() {
+function JoinUsForm({ content }: { content: typeof FALLBACK }) {
   return (
     <motion.div
       variants={fadeUp}
@@ -207,8 +222,8 @@ function JoinUsForm() {
           <Users size={20} style={{ color: ORANGE }} />
         </div>
         <div>
-          <div className="text-base font-bold text-slate-900">Join Us</div>
-          <div className="text-[0.75rem] text-slate-500">Partner, collaborate or contribute</div>
+          <div className="text-base font-bold text-slate-900">{content.joinCard.title}</div>
+          <div className="text-[0.75rem] text-slate-500">{content.joinCard.subtitle}</div>
         </div>
       </div>
 
@@ -250,14 +265,14 @@ function JoinUsForm() {
         className="mt-7 w-full rounded-xl py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_28px_-8px_rgba(231,87,16,0.4)] active:scale-95"
         style={{ backgroundColor: ORANGE }}
       >
-        Submit
+        {content.joinSubmitBtn}
       </button>
     </motion.div>
   );
 }
 
 /* ── CTA Footer ── */
-function CTABanner() {
+function CTABanner({ content }: { content: typeof FALLBACK }) {
   return (
     <motion.section
       initial="hidden"
@@ -275,9 +290,9 @@ function CTABanner() {
             <Send size={22} className="text-white" />
           </div>
           <div>
-            <div className="text-lg font-bold text-slate-900">Let's create impact together.</div>
+            <div className="text-lg font-bold text-slate-900">{content.ctaTitle}</div>
             <p className="mt-0.5 max-w-sm text-sm leading-relaxed text-slate-500">
-              We welcome passionate individuals and organizations who want to make a difference.
+              {content.ctaSubtitle}
             </p>
           </div>
         </div>
@@ -286,7 +301,7 @@ function CTABanner() {
           className="group inline-flex flex-shrink-0 items-center gap-2 rounded-xl border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-95"
           style={{ borderColor: ORANGE, color: ORANGE }}
         >
-          Contact Us
+          {content.ctaBtn}
           <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
         </button>
       </div>
@@ -296,9 +311,12 @@ function CTABanner() {
 
 /* ── Main Export ── */
 export function JoinUsPage() {
+  const { data } = usePublicJoinUs(FALLBACK);
+  const content = data ?? FALLBACK;
+
   return (
     <>
-      <HeroSection />
+      <HeroSection content={FALLBACK} hero={data as any} />
 
       {/* Two-column form area */}
       <section className="bg-white px-4 py-10">
@@ -310,13 +328,13 @@ export function JoinUsPage() {
             variants={stagger}
             className="grid gap-6 lg:grid-cols-2"
           >
-            <IncubationForm />
-            <JoinUsForm />
+            <IncubationForm content={content} />
+            <JoinUsForm content={content} />
           </motion.div>
         </div>
       </section>
 
-      <CTABanner />
+      <CTABanner content={content} />
     </>
   );
 }

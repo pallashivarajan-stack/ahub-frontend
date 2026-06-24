@@ -1,9 +1,6 @@
 import { motion, Variants } from "framer-motion";
-import ideationIcon from "@/assets/what-we-do/ideation.png";
-import mentorshipIcon from "@/assets/what-we-do/mentorship.png";
-import resourcesIcon from "@/assets/what-we-do/resources.png";
-import fundingIcon from "@/assets/what-we-do/funding.png";
-import whatWeDoBackground from "@/assets/What we do.png";
+import { usePublicWhatWeDo } from "@/services/usePublicContent";
+import { resolveLegacyAsset } from "@/lib/assets";
 
 type WhatWeDoCard = {
   number: string;
@@ -18,28 +15,28 @@ const cards: WhatWeDoCard[] = [
     title: "IDEATION & VALIDATION",
     description:
       "Helping ideas take shape through market research, mentorship, and validation.",
-    icon: ideationIcon,
+    icon: resolveLegacyAsset("/src/assets/what-we-do/ideation.png"),
   },
   {
     number: "02",
     title: "MENTORSHIP & GROWTH",
     description:
       "Connecting startups with industry experts and providing guidance to grow and scale.",
-    icon: mentorshipIcon,
+    icon: resolveLegacyAsset("/src/assets/what-we-do/mentorship.png"),
   },
   {
     number: "03",
     title: "RESOURCES & SUPPORT",
     description:
       "Providing access to essential resources, workspaces, and hands-on support at every stage.",
-    icon: resourcesIcon,
+    icon: resolveLegacyAsset("/src/assets/what-we-do/resources.png"),
   },
   {
     number: "04",
     title: "FUNDING & PARTNERSHIPS",
     description:
       "Facilitating funding opportunities and strategic partnerships to accelerate startup success.",
-    icon: fundingIcon,
+    icon: resolveLegacyAsset("/src/assets/what-we-do/funding.png"),
   },
 ];
 
@@ -65,6 +62,8 @@ const cardVariants: Variants = {
 };
 
 export function WhatWeDo() {
+  const { data: whatWeDoCards } = usePublicWhatWeDo(cards);
+
   return (
     <section
       id="what-we-do"
@@ -74,7 +73,7 @@ export function WhatWeDo() {
       {/* Background image with enhanced blending */}
       <div
         className="pointer-events-none absolute inset-0 -z-30 bg-cover bg-center bg-no-repeat opacity-[0.25]"
-        style={{ backgroundImage: `url("${whatWeDoBackground}")` }}
+        style={{ backgroundImage: `url("${resolveLegacyAsset("/src/assets/What we do.png")}")` }}
       />
       {/* Seamless gradient mask to sync with adjacent sections */}
       <div className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-b from-[#FFF9F2] via-transparent to-[#FFF9F2]" />
@@ -195,7 +194,7 @@ export function WhatWeDo() {
           viewport={{ once: true, margin: "-80px" }}
           className="mt-12 grid gap-6 sm:grid-cols-2"
         >
-          {cards.map((card) => (
+          {whatWeDoCards.map((card: any) => (
             <motion.div key={card.number} variants={cardVariants}>
               <WhatWeDoCard {...card} />
             </motion.div>

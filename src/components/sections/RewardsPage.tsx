@@ -7,9 +7,8 @@ import {
   Star,
   X,
 } from "lucide-react";
-import iic4Image from "@/assets/rewards/IIc 4.0 rating -4 star.png";
-import iic5Image from "@/assets/rewards/IIc 5.0 rating-4star.png";
-import nirfImage from "@/assets/rewards/nirf innovation ranking 2023- band 11-50.png";
+import { usePublicRewards } from "@/services/usePublicContent";
+import { resolveLegacyAsset } from "@/lib/assets";
 
 /* ─── carousel data ─────────────────────────────────────────────────────── */
 const SLIDES = [
@@ -17,21 +16,21 @@ const SLIDES = [
     id: 0,
     label: "IIC 5.0 Rating – 4 Star",
     desc: "Andhra University continues to maintain its top performance in Ministry of Education (MoE), Institution's Innovation Council (IIC) Ratings.",
-    img: iic5Image,
+    img: resolveLegacyAsset("/src/assets/rewards/IIc 5.0 rating-4star.png"),
     alt: "IIC 5.0 Certificate",
   },
   {
     id: 1,
     label: "IIC 4.0 Rating – 4 Star",
     desc: "Among the highest rated State Universities in India to achieve 4-star in Ministry of Education IIC Ratings in the very first attempt.",
-    img: iic4Image,
+    img: resolveLegacyAsset("/src/assets/rewards/IIc 4.0 rating -4 star.png"),
     alt: "IIC 4.0 Certificate",
   },
   {
     id: 2,
     label: "NIRF Innovation Ranking 2023",
     desc: "Andhra University (A hub) is rated in the Top 11-50 Band under NIRF Innovation Ranking 2023 in the very first year of its operations.",
-    img: nirfImage,
+    img: resolveLegacyAsset("/src/assets/rewards/nirf innovation ranking 2023- band 11-50.png"),
     alt: "NIRF Certificate",
   },
 ];
@@ -102,12 +101,14 @@ function CenterEmblem() {
 
 /* ─── main component ────────────────────────────────────────────────────── */
 export function RewardsPage() {
+  const { data: slidesData } = usePublicRewards(SLIDES);
+  const displaySlides = slidesData ?? SLIDES;
   const [slide, setSlide] = useState(0);
   const [lightbox, setLightbox] = useState<string | null>(null);
-  const current = SLIDES[slide];
+  const current = displaySlides[slide];
 
-  const prev = () => setSlide((s) => (s - 1 + SLIDES.length) % SLIDES.length);
-  const next = () => setSlide((s) => (s + 1) % SLIDES.length);
+  const prev = () => setSlide((s) => (s - 1 + displaySlides.length) % displaySlides.length);
+  const next = () => setSlide((s) => (s + 1) % displaySlides.length);
 
   return (
     <>
@@ -856,7 +857,7 @@ export function RewardsPage() {
 
               {/* dots */}
               <div className="rw-dots">
-                {SLIDES.map((s, i) => (
+                {displaySlides.map((s, i) => (
                   <button
                     key={s.id}
                     className={`rw-dot ${i === slide ? "active" : "inactive"}`}
@@ -915,9 +916,9 @@ export function RewardsPage() {
 
               <div
                 className="rw-rec-img-wrap"
-                onClick={() => setLightbox(nirfImage)}
+                onClick={() => setLightbox(resolveLegacyAsset("/src/assets/rewards/nirf innovation ranking 2023- band 11-50.png"))}
               >
-                <img src={nirfImage} alt="NIRF Certificate" />
+                <img src={resolveLegacyAsset("/src/assets/rewards/nirf innovation ranking 2023- band 11-50.png")} alt="NIRF Certificate" />
               </div>
 
               <h3 className="rw-rec-title">
@@ -931,7 +932,7 @@ export function RewardsPage() {
               </p>
               <button
                 className="rw-rec-link"
-                onClick={() => setLightbox(nirfImage)}
+                onClick={() => setLightbox(resolveLegacyAsset("/src/assets/rewards/nirf innovation ranking 2023- band 11-50.png"))}
               >
                 Explore Ranking <ArrowRight size={13} />
               </button>
@@ -963,9 +964,9 @@ export function RewardsPage() {
 
               <div
                 className="rw-rec-img-wrap"
-                onClick={() => setLightbox(iic4Image)}
+                onClick={() => setLightbox(resolveLegacyAsset("/src/assets/rewards/IIc 4.0 rating -4 star.png"))}
               >
-                <img src={iic4Image} alt="IIC 4.0 Certificate" />
+                <img src={resolveLegacyAsset("/src/assets/rewards/IIc 4.0 rating -4 star.png")} alt="IIC 4.0 Certificate" />
               </div>
 
               <h3 className="rw-rec-title">IIC 4.0 Rating – 4 Star</h3>
@@ -976,7 +977,7 @@ export function RewardsPage() {
               </p>
               <button
                 className="rw-rec-link"
-                onClick={() => setLightbox(iic4Image)}
+                onClick={() => setLightbox(resolveLegacyAsset("/src/assets/rewards/IIc 4.0 rating -4 star.png"))}
               >
                 View Certificate <ArrowRight size={13} />
               </button>

@@ -9,6 +9,7 @@ import {
   type BlogPost,
   type TimelineStep,
 } from "@/data/startupBlog";
+import { usePublicStartupBlog } from "@/services/usePublicContent";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -18,6 +19,9 @@ const fadeUp = {
 };
 
 export function StartupBlogPage() {
+  const blogFallback = { blogImages, featuredPosts, journeyTimeline, wideFeaturedPosts };
+  const { data: blogData } = usePublicStartupBlog(blogFallback);
+  const displayBlog = blogData ?? blogFallback;
   return (
     <section className="relative isolate overflow-hidden bg-[#FFF7ED] pb-24 pt-28 md:pb-32 md:pt-32 lg:pt-36">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -25,15 +29,15 @@ export function StartupBlogPage() {
       </div>
 
       <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <BlogHero />
-        <BlogCardsGrid />
-        <StartupJourneyTimeline />
+        <BlogHero images={displayBlog.blogImages} />
+        <BlogCardsGrid posts={displayBlog.featuredPosts} widePosts={displayBlog.wideFeaturedPosts} />
+        <StartupJourneyTimeline timeline={displayBlog.journeyTimeline} />
       </div>
     </section>
   );
 }
 
-function BlogHero() {
+function BlogHero({ images }: { images: typeof blogImages }) {
   return (
     <>
       <motion.div
@@ -57,7 +61,7 @@ function BlogHero() {
       >
         <div className="overflow-hidden rounded-2xl shadow-[0_20px_60px_-30px_rgba(28,25,23,0.18)]">
           <img
-            src={blogImages.hero}
+            src={images.hero}
             alt="Startup team collaborating at AHUB"
             className="aspect-[4/3] w-full object-cover lg:aspect-[5/4]"
           />
@@ -96,17 +100,17 @@ function BlogHero() {
   );
 }
 
-function BlogCardsGrid() {
+function BlogCardsGrid({ posts, widePosts }: { posts: typeof featuredPosts; widePosts: typeof wideFeaturedPosts }) {
   return (
     <motion.div {...fadeUp} className="mt-20 lg:mt-24">
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {featuredPosts.map((post, index) => (
+        {posts.map((post, index) => (
           <SmallBlogCard key={post.id} post={post} index={index} />
         ))}
       </div>
 
       <div className="mt-5 grid gap-5 lg:grid-cols-2">
-        {wideFeaturedPosts.map((post, index) => (
+        {widePosts.map((post, index) => (
           <WideBlogCard key={post.id} post={post} index={index} />
         ))}
       </div>
@@ -179,7 +183,7 @@ function WideBlogCard({ post, index }: { post: BlogPost; index: number }) {
   );
 }
 
-function StartupJourneyTimeline() {
+function StartupJourneyTimeline({ timeline }: { timeline: typeof journeyTimeline }) {
   return (
     <motion.div {...fadeUp} className="mt-20 lg:mt-28">
       <h2 className="text-center text-2xl font-[800] text-[#1C1917] md:text-3xl">Startup Journey Timeline</h2>
@@ -189,7 +193,7 @@ function StartupJourneyTimeline() {
         <div className="pointer-events-none absolute left-[10%] right-[10%] top-[88px] hidden h-px bg-gradient-to-r from-transparent via-[#F97316]/40 to-transparent lg:block" />
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {journeyTimeline.map((step, index) => (
+          {timeline.map((step, index) => (
             <TimelineCard key={step.id} step={step} index={index} />
           ))}
         </div>

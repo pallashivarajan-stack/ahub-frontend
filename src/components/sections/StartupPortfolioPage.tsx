@@ -14,9 +14,9 @@ import {
   type StartupItem,
 } from "@/data/startupPortfolio";
 import { cn } from "@/lib/utils";
+import { usePublicStartupPortfolio } from "@/services/usePublicContent";
 
 const PAGE_SIZE = 41;
-const marqueeLoop = [...logoMarquee, ...logoMarquee];
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -26,6 +26,14 @@ const fadeUp = {
 };
 
 export function StartupPortfolioPage() {
+  const { data: portfolioData } = usePublicStartupPortfolio({
+    categories,
+    fundingStages,
+    industries,
+    logoMarquee,
+    startupDirectory,
+  });
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [fundingStage, setFundingStage] = useState("All");
@@ -40,8 +48,8 @@ export function StartupPortfolioPage() {
   const [page, setPage] = useState(1);
 
   const filtered = useMemo(
-    () => filterStartups(startupDirectory, { ...applied, sort }),
-    [applied, sort],
+    () => filterStartups(portfolioData.startupDirectory, { ...applied, sort }),
+    [applied, sort, portfolioData.startupDirectory],
   );
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -72,8 +80,11 @@ export function StartupPortfolioPage() {
 
       <div className="relative mx-auto max-w-7xl px-6 md:px-10">
         <PortfolioHeader />
-        <LogoMarqueeShowcase />
+        <LogoMarqueeShowcase data={portfolioData.logoMarquee} />
         <FilterPanel
+          categories={portfolioData.categories}
+          fundingStages={portfolioData.fundingStages}
+          industries={portfolioData.industries}
           search={search}
           category={category}
           fundingStage={fundingStage}
@@ -130,7 +141,9 @@ function PortfolioHeader() {
   );
 }
 
-function LogoMarqueeShowcase() {
+function LogoMarqueeShowcase({ data }: { data: any }) {
+  const marqueeLoop = [...data, ...data];
+
   return (
     <motion.div {...fadeUp} className="relative mt-14 lg:mt-16">
       <div className="relative rounded-[32px] border border-white/80 bg-white/90 p-6 shadow-[0_20px_60px_-30px_rgba(45,27,27,0.12)] backdrop-blur-sm md:p-8">
@@ -139,7 +152,7 @@ function LogoMarqueeShowcase() {
 
         <div className="group/marquee overflow-hidden">
           <div className="flex w-max animate-marquee items-center group-hover/marquee:[animation-play-state:paused]">
-            {marqueeLoop.map((item, index) => (
+            {marqueeLoop.map((item: any, index: number) => (
               <div
                 key={`${item.name}-${index}`}
                 className="flex h-[130px] w-[180px] shrink-0 items-center justify-center px-6"
@@ -176,6 +189,9 @@ function FilterPanel({
   category,
   fundingStage,
   industry,
+  categories,
+  fundingStages,
+  industries,
   onSearchChange,
   onCategoryChange,
   onFundingChange,
@@ -187,6 +203,9 @@ function FilterPanel({
   category: string;
   fundingStage: string;
   industry: string;
+  categories: string[];
+  fundingStages: string[];
+  industries: string[];
   onSearchChange: (v: string) => void;
   onCategoryChange: (v: string) => void;
   onFundingChange: (v: string) => void;

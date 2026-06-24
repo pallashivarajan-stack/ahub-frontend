@@ -1,15 +1,19 @@
-import andhraTechLeagueImg from "@/assets/events/andhra texh league.jpg";
-import beenThereDoneThatImg from "@/assets/events/been there done that.jpeg";
-import beenThereDoneThat2Img from "@/assets/events/been there donw that 2.jpeg";
-import edsCompetitionImg from "@/assets/events/eds stduet design competittion.jpeg";
-import eyesWideShutImg from "@/assets/events/eyes wide shut.jpg";
-import googleStartupImg from "@/assets/events/google starup success days.jpg";
-import hackapImg from "@/assets/events/Hackap agritech hackathon.jpg";
-import ideathonImg from "@/assets/events/ideathon.jpg";
-import runninWildImg from "@/assets/events/runnin wild.jpeg";
-import startupSaturdayImg from "@/assets/events/Start Up saturday.jpeg";
-import startupSaturday2Img from "@/assets/events/startup saturday.jpeg";
-import startupSaturday3Img from "@/assets/events/starups staruday.jpg";
+import { resolveLegacyAsset } from "@/lib/assets";
+
+const [andhraTechLeagueImg, beenThereDoneThatImg, beenThereDoneThat2Img, edsCompetitionImg, eyesWideShutImg, googleStartupImg, hackapImg, ideathonImg, runninWildImg, startupSaturdayImg, startupSaturday2Img, startupSaturday3Img] = [
+  "/src/assets/events/andhra texh league.jpg",
+  "/src/assets/events/been there done that.jpeg",
+  "/src/assets/events/been there donw that 2.jpeg",
+  "/src/assets/events/eds stduet design competittion.jpeg",
+  "/src/assets/events/eyes wide shut.jpg",
+  "/src/assets/events/google starup success days.jpg",
+  "/src/assets/events/Hackap agritech hackathon.jpg",
+  "/src/assets/events/ideathon.jpg",
+  "/src/assets/events/runnin wild.jpeg",
+  "/src/assets/events/Start Up saturday.jpeg",
+  "/src/assets/events/startup saturday.jpeg",
+  "/src/assets/events/starups staruday.jpg",
+].map(resolveLegacyAsset);
 
 export type EcosystemEventType = "workshop" | "hackathon" | "seminar" | "competition" | "networking";
 

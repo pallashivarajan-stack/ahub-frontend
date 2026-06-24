@@ -1,6 +1,7 @@
 import { motion, type Variants } from "framer-motion";
 import { Linkedin, ArrowUpRight, Users, Star, Briefcase } from "lucide-react";
 import { mentors } from "@/data";
+import { usePublicMentors } from "@/services/usePublicContent";
 
 const EXPERTISE_TAGS: Record<string, string[]> = {
   "Deepak S. Madala": ["Strategy", "Operations", "Leadership"],
@@ -28,6 +29,8 @@ const cardVariants: Variants = {
 };
 
 export function Mentors() {
+  const { data: mentorsData } = usePublicMentors(mentors);
+
   return (
     <>
       <style>{`
@@ -287,7 +290,7 @@ export function Mentors() {
             viewport={{ once: true, margin: "-60px" }}
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {mentors.map((mentor) => (
+            {mentorsData.map((mentor: any) => (
               <MentorCard key={mentor.name} mentor={mentor} />
             ))}
           </motion.div>
@@ -317,8 +320,8 @@ export function Mentors() {
   );
 }
 
-function MentorCard({ mentor }: { mentor: (typeof mentors)[number] }) {
-  const tags = EXPERTISE_TAGS[mentor.name] ?? [];
+function MentorCard({ mentor }: { mentor: any }) {
+  const tags = mentor.tags || (EXPERTISE_TAGS[mentor.name] ?? []);
 
   return (
     <motion.div variants={cardVariants} className="group">
@@ -340,7 +343,7 @@ function MentorCard({ mentor }: { mentor: (typeof mentors)[number] }) {
 
           {tags.length > 0 && (
             <div className="mt-6 flex flex-wrap gap-2">
-              {tags.map((tag) => (
+              {tags.map((tag: string) => (
                 <span key={tag} className="mn-tag">
                   {tag}
                 </span>

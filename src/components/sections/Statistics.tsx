@@ -2,10 +2,13 @@ import { Award, Building2, TrendingUp, Users } from "lucide-react";
 import { stats } from "@/data";
 import { useCountUp } from "@/hooks/useCountUp";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
+import { usePublicStatistics } from "@/services/usePublicContent";
 
 const icons = [Building2, TrendingUp, Users, Award];
 
 export function Statistics() {
+  const { data: statsData } = usePublicStatistics(stats);
+
   return (
     <section className="relative overflow-hidden py-20 md:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80%_60%_at_50%_0%,rgba(90,30,44,0.08),transparent_52%),linear-gradient(180deg,color-mix(in_oklch,var(--background)_94%,white),color-mix(in_oklch,var(--background)_88%,white))]" />
@@ -13,7 +16,7 @@ export function Statistics() {
         <SectionHeading eyebrow="Numbers" title="An ecosystem measured by outcomes." align="center" />
 
         <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-4">
-          {stats.map((s, i) => {
+          {statsData.map((s: any, i: number) => {
             const Icon = icons[i];
             return <StatCard key={s.label} {...s} Icon={Icon} />;
           })}

@@ -9,12 +9,9 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
-import ahubImg from "@/assets/incubators/ahub.jpg";
-import auElementAhubImg from "@/assets/incubators/au element ahub.jpg";
-import marineAhubImg from "@/assets/incubators/marine ahub.jpg";
-import nasscomAhubImg from "@/assets/incubators/nasscom ahub.jpg";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
-import { usePublicIncubators } from "@/hooks/usePublicContent";
+import { usePublicIncubators } from "@/services/usePublicContent";
+import { resolveLegacyAsset } from "@/lib/assets";
 
 type StatItem = {
   value: string;
@@ -43,8 +40,8 @@ const incubators: Incubator[] = [
       "Modern infrastructure, dedicated incubation bays, and structured mentorship connect founders with capital, corporates, and academic expertise—supporting deep tech, health, and enterprise innovation from day one.",
     blurb:
       "Workshops, demo days, and investor connects help teams move from prototype to product–market fit inside a high-trust institutional environment.",
-    image: ahubImg,
-    card: auElementAhubImg,
+    image: resolveLegacyAsset("/src/assets/incubators/ahub.jpg"),
+    card: resolveLegacyAsset("/src/assets/incubators/au element ahub.jpg"),
     stats: [
       { value: "120+", label: "Startups", Icon: Rocket },
       { value: "80+", label: "Mentors", Icon: Users },
@@ -60,8 +57,8 @@ const incubators: Incubator[] = [
       "AU Element āHub provides domain labs, technical advisory, and industry linkages so teams can validate IP, run structured pilots, and build defensible products with academic rigour.",
     blurb:
       "Founders access expert mentors, shared R&D infrastructure, and partner networks tailored to science-led, high-impact ventures.",
-    image: auElementAhubImg,
-    card: marineAhubImg,
+    image: resolveLegacyAsset("/src/assets/incubators/au element ahub.jpg"),
+    card: resolveLegacyAsset("/src/assets/incubators/marine ahub.jpg"),
     stats: [
       { value: "40+", label: "Ventures", Icon: Rocket },
       { value: "25+", label: "Labs", Icon: Users },
@@ -77,8 +74,8 @@ const incubators: Incubator[] = [
       "Entrepreneurs gain access to specialised research facilities, field expertise, and academic mentorship to develop solutions for fisheries, coastal livelihoods, and the growing blue-economy sector.",
     blurb:
       "From lab validation to market pilots, Marine āHub connects science-driven founders with the resources needed to scale responsible, impact-focused marine ventures.",
-    image: marineAhubImg,
-    card: nasscomAhubImg,
+    image: resolveLegacyAsset("/src/assets/incubators/marine ahub.jpg"),
+    card: resolveLegacyAsset("/src/assets/incubators/nasscom ahub.jpg"),
     stats: [
       { value: "30+", label: "Ventures", Icon: Rocket },
       { value: "12+", label: "Research Labs", Icon: Users },
@@ -94,8 +91,8 @@ const incubators: Incubator[] = [
       "Startups receive structured go-to-market support, enterprise connects, and technology mentorship—helping teams refine products, win pilots, and prepare for institutional funding.",
     blurb:
       "NASSCOM āHub links founders to ecosystem programs, corporate innovation tracks, and a national network of operators and investors.",
-    image: nasscomAhubImg,
-    card: ahubImg,
+    image: resolveLegacyAsset("/src/assets/incubators/nasscom ahub.jpg"),
+    card: resolveLegacyAsset("/src/assets/incubators/ahub.jpg"),
     stats: [
       { value: "50+", label: "Tech Startups", Icon: Rocket },
       { value: "100+", label: "Mentors", Icon: Users },
@@ -166,7 +163,7 @@ export function IncubatorsShowcase() {
             <div className="rounded-[1.5rem] p-5" style={{ background: "var(--gradient-brand)" }}>
               <p className="text-sm font-medium text-neutral-900">{c.blurb}</p>
               <div className="mt-4 grid grid-cols-3 gap-3">
-                {c.stats.map(({ value, label, Icon }) => (
+                {c.stats.map(({ value, label, Icon }: StatItem) => (
                   <div
                     key={`${c.name}-${label}`}
                     className="rounded-2xl bg-white p-3"

@@ -1,23 +1,24 @@
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
-import { usePublicPartners } from "@/hooks/usePublicContent";
+import { usePublicPartners } from "@/services/usePublicContent";
+import { resolveLegacyAsset } from "@/lib/assets";
 
-import alcove from "@/assets/partners/alcove.jpg";
-import atpi from "@/assets/partners/atpi.jpg";
-import avanti from "@/assets/partners/avanti.png";
-import digifac from "@/assets/partners/digifac.png";
-import icompass from "@/assets/partners/icompass.png";
-import ministry from "@/assets/partners/ministry of sceince.png";
-import nasscom from "@/assets/partners/nasscom.png";
-import rosys from "@/assets/partners/rosys.jpg";
-import sandlogic from "@/assets/partners/sandlogic.jpg";
-import tie from "@/assets/partners/tie.jpg";
-
-const partnerLogos = [
-  alcove, atpi, avanti, digifac, icompass, ministry, nasscom, rosys, sandlogic, tie
+const legacyPaths = [
+  "/src/assets/partners/alcove.jpg",
+  "/src/assets/partners/atpi.jpg",
+  "/src/assets/partners/avanti.png",
+  "/src/assets/partners/digifac.png",
+  "/src/assets/partners/icompass.png",
+  "/src/assets/partners/ministry of sceince.png",
+  "/src/assets/partners/nasscom.png",
+  "/src/assets/partners/rosys.jpg",
+  "/src/assets/partners/sandlogic.jpg",
+  "/src/assets/partners/tie.jpg",
 ];
 
+const partnerFallback = legacyPaths.map(resolveLegacyAsset);
+
 export function Partners() {
-  const { data: partnerLogosData } = usePublicPartners(partnerLogos);
+  const { data: partnerLogosData } = usePublicPartners(partnerFallback);
   const row1 = partnerLogosData;
   const row2 = [...partnerLogosData].reverse();
 

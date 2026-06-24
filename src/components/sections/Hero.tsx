@@ -1,12 +1,11 @@
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import heroPoster from "@/assets/hero-poster.jpg";
-import heroVideo from "@/assets/AUIC NIDHI iTBI - a-hub (1080p, h264).mp4";
-import { usePublicHero } from "@/hooks/usePublicContent";
+import { usePublicHero } from "@/services/usePublicContent";
+import { resolveLegacyAsset } from "@/lib/assets";
 
 const fallbackHeroData = {
-  poster: heroPoster,
-  video: heroVideo,
+  poster: resolveLegacyAsset("/src/assets/hero-poster.jpg"),
+  video: resolveLegacyAsset("/src/assets/AUIC NIDHI iTBI - a-hub (1080p, h264).mp4"),
   heading: "A premium startup ecosystem for ambitious founders.",
   subheading: "Incubation, mentorship, and strategic support in a cinematic, high-trust setting.",
 };

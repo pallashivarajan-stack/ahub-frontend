@@ -7,33 +7,34 @@ import {
   Building2,
   CalendarDays,
   ChevronDown,
-  ChevronRight,
   Globe2,
   Layers3,
-  Menu,
   Rocket,
   ShieldCheck,
   Sparkles,
   Star,
   Users,
-  X,
   Zap,
 } from "lucide-react";
-import { events, institutions, partners, portfolio } from "@/data";
-import ahubLogo from "@/assets/AHub-Logo-1.png";
-import heroPoster from "@/assets/hero-poster.jpg";
-import event1 from "@/assets/event-1.jpg";
-import event2 from "@/assets/event-2.jpg";
-import event3 from "@/assets/event-3.jpg";
-import event4 from "@/assets/event-4.jpg";
-import inst1 from "@/assets/inst-1.jpg";
-import inst2 from "@/assets/inst-2.jpg";
-import inst3 from "@/assets/inst-3.jpg";
-import inst4 from "@/assets/inst-4.jpg";
-import inst5 from "@/assets/inst-5.jpg";
-import inst6 from "@/assets/inst-6.jpg";
+import { events, portfolio } from "@/data";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { resolveLegacyAsset } from "@/lib/assets";
 import { cn } from "@/lib/utils";
+
+const [ahubLogo, heroPoster, event1, event2, event3, event4, inst1, inst2, inst3, inst4, inst5, inst6] = [
+  "/src/assets/AHub-Logo-1.png",
+  "/src/assets/hero-poster.jpg",
+  "/src/assets/event-1.jpg",
+  "/src/assets/event-2.jpg",
+  "/src/assets/event-3.jpg",
+  "/src/assets/event-4.jpg",
+  "/src/assets/inst-1.jpg",
+  "/src/assets/inst-2.jpg",
+  "/src/assets/inst-3.jpg",
+  "/src/assets/inst-4.jpg",
+  "/src/assets/inst-5.jpg",
+  "/src/assets/inst-6.jpg",
+].map(resolveLegacyAsset);
 
 type PanelKey = "approach" | "aspire" | "associate" | "achieve" | "announcement" | "about";
 type IconType = ComponentType<{ className?: string; size?: number }>;
@@ -64,14 +65,14 @@ function NavLabel({ label }: { label: string }) {
   );
 }
 
-const PANEL_PARTICLES = [
+const _PANEL_PARTICLES = [
   { className: "left-[8%] top-[16%] h-1.5 w-1.5", delay: 0 },
   { className: "right-[12%] top-[12%] h-1 w-1", delay: 0.5 },
   { className: "left-[18%] bottom-[16%] h-1 w-1", delay: 0.8 },
   { className: "right-[20%] bottom-[18%] h-1.5 w-1.5", delay: 0.2 },
 ];
 
-const ecosystemCards = [
+const _ecosystemCards = [
   {
     icon: Sparkles,
     title: "Incubation Programs",
@@ -94,7 +95,7 @@ const ecosystemCards = [
   },
 ];
 
-const programCards = [
+const _programCards = [
   {
     icon: Rocket,
     title: "Aspire",
@@ -133,10 +134,10 @@ const programCards = [
   },
 ];
 
-const startupCards = portfolio.slice(0, 4);
-const eventCards = events.slice(0, 4);
+const _startupCards = portfolio.slice(0, 4);
+const _eventCards = events.slice(0, 4);
 
-const networkCards = [
+const _networkCards = [
   { icon: Building2, title: "Institutional Nodes", desc: "Research parks, university cells, and regional launchpads." },
   { icon: Users, title: "Partner Graph", desc: "Capital, operators, and enterprise allies connected into one ecosystem." },
   { icon: Globe2, title: "Distribution Reach", desc: "A layered network for pilots, procurement, and founder visibility." },
@@ -226,7 +227,7 @@ const PANEL_CONTENT: Record<PanelKey, { eyebrow: string; summary: string; links:
   },
 };
 
-const STUDENT_TABS: StudentTab[] = [
+const _STUDENT_TABS: StudentTab[] = [
   {
     label: "Internship Calendar",
     href: "/students/internship-calendar",

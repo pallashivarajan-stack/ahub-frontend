@@ -10,21 +10,20 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
-import calendarIllustration from "@/assets/calender.png";
+import { resolveLegacyAsset } from "@/lib/assets";
 import { Calendar } from "@/components/ui/calendar";
 import {
   ecosystemEvents,
   eventStats,
   eventTypeBadge,
   featuredEvents,
-  getEventDates,
-  getEventsForDate,
   heroBadges,
   legendItems,
   type EcosystemEvent,
   type EcosystemEventType,
 } from "@/data/eventsCalendar";
 import { cn } from "@/lib/utils";
+import { usePublicEventsCalendar } from "@/services/usePublicContent";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -36,27 +35,41 @@ const fadeUp = {
 const defaultDate = new Date(2023, 9, 15);
 
 export function EventsCalendarPage() {
+  const { data } = usePublicEventsCalendar({
+    ecosystemEvents,
+    eventStats,
+    featuredEvents,
+    heroBadges,
+    legendItems,
+  });
+
   const [selected, setSelected] = useState<Date>(defaultDate);
   const [month, setMonth] = useState<Date>(defaultDate);
 
-  const selectedEvents = useMemo(() => getEventsForDate(selected), [selected]);
-  const eventDates = useMemo(() => getEventDates(), []);
+  const selectedEvents = useMemo(() => {
+    const key = selected.toISOString().slice(0, 10);
+    return data.ecosystemEvents.filter((e: any) => e.date === key);
+  }, [selected, data.ecosystemEvents]);
+
+  const eventDates = useMemo(() => {
+    return data.ecosystemEvents.map((e: any) => new Date(e.date + "T12:00:00"));
+  }, [data.ecosystemEvents]);
 
   const modifiers = useMemo(() => {
     const byType: Partial<Record<EcosystemEventType, Date[]>> = {};
-    ecosystemEvents.forEach((e) => {
+    data.ecosystemEvents.forEach((e: any) => {
       const d = new Date(e.date + "T12:00:00");
-      if (!byType[e.type]) byType[e.type] = [];
-      byType[e.type]?.push(d);
+      if (!byType[e.type as EcosystemEventType]) byType[e.type as EcosystemEventType] = [];
+      byType[e.type as EcosystemEventType]?.push(d);
     });
     return { hasEvent: eventDates, ...byType };
-  }, [eventDates]);
+  }, [eventDates, data.ecosystemEvents]);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#FDF8F2] pb-16 pt-28 md:pb-24 md:pt-32 lg:pt-36">
       <BackgroundDecor />
       <div className="relative mx-auto max-w-7xl px-6 md:px-10">
-        <HeroSection />
+        <HeroSection badges={data.heroBadges} />
         <DashboardGrid
           selected={selected}
           month={month}
@@ -64,9 +77,11 @@ export function EventsCalendarPage() {
           onMonthChange={setMonth}
           selectedEvents={selectedEvents}
           modifiers={modifiers}
+          allEvents={data.ecosystemEvents}
+          legendItems={data.legendItems}
         />
-        <FeaturedEvents />
-        <AllEventsGrid />
+        <FeaturedEvents events={data.featuredEvents} stats={data.eventStats} />
+        <AllEventsGrid events={data.ecosystemEvents} />
       </div>
     </div>
   );
@@ -81,7 +96,7 @@ function BackgroundDecor() {
   );
 }
 
-function HeroSection() {
+function HeroSection({ badges }: { badges: any }) {
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
@@ -103,7 +118,7 @@ function HeroSection() {
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2">
-          {heroBadges.map((badge) => (
+          {badges.map((badge: any) => (
             <span
               key={badge.label}
               className="rounded-full border border-[#F59E42]/20 bg-white px-4 py-2 text-xs font-semibold text-[#2D1B1B] shadow-sm"
@@ -117,7 +132,7 @@ function HeroSection() {
       <div className="flex items-center justify-center">
         <div className="w-full max-w-md overflow-hidden rounded-[32px] border border-white/80 bg-white/95 p-6 shadow-[0_24px_60px_-30px_rgba(45,27,27,0.15)] md:p-8">
           <img
-            src={calendarIllustration}
+            src={resolveLegacyAsset("/src/assets/calender.png")}
             alt="Event calendar illustration"
             className="mx-auto w-full max-w-[340px] object-contain"
           />
@@ -134,6 +149,8 @@ function DashboardGrid({
   onMonthChange,
   selectedEvents,
   modifiers,
+  allEvents,
+  legendItems,
 }: {
   selected: Date;
   month: Date;
@@ -141,8 +158,10 @@ function DashboardGrid({
   onMonthChange: (d: Date) => void;
   selectedEvents: EcosystemEvent[];
   modifiers: Record<string, Date[]>;
+  allEvents: any[];
+  legendItems: any[];
 }) {
-  const upcoming = ecosystemEvents.filter((e) => e.date >= "2023-09-01").slice(0, 4);
+  const upcoming = allEvents.filter((e: any) => e.date >= "2023-09-01").slice(0, 4);
 
   return (
     <motion.div {...fadeUp} className="mt-12 grid gap-6 lg:grid-cols-[65%_35%]">
@@ -153,6 +172,7 @@ function DashboardGrid({
         onMonthChange={onMonthChange}
         selectedEvents={selectedEvents}
         modifiers={modifiers}
+        legendItems={legendItems}
       />
       <UpcomingPanel events={selectedEvents.length ? selectedEvents : upcoming} />
     </motion.div>
@@ -173,6 +193,7 @@ function CalendarCard({
   onMonthChange: (d: Date) => void;
   selectedEvents: EcosystemEvent[];
   modifiers: Record<string, Date[]>;
+  legendItems: any[];
 }) {
   return (
     <div className="rounded-[32px] bg-white p-6 shadow-[0_20px_60px_-30px_rgba(45,27,27,0.12)] md:p-8">
@@ -193,7 +214,7 @@ function CalendarCard({
           />
 
           <div className="mt-6 flex flex-wrap gap-4 border-t border-[#F5F0EB] pt-5">
-            {legendItems.map((item) => (
+            {legendItems.map((item: any) => (
               <div key={item.type} className="flex items-center gap-2 text-xs text-[#6C5E5B]">
                 <span className={cn("h-2.5 w-2.5 rounded-full", item.color)} />
                 {item.label}
@@ -270,8 +291,8 @@ function UpcomingPanel({ events }: { events: EcosystemEvent[] }) {
   );
 }
 
-function FeaturedEvents() {
-  const icons = { events: CalendarDays, month: Sparkles, workshops: Mic2, free: Ticket };
+function FeaturedEvents({ events, stats }: { events: any; stats: any }) {
+  const icons: Record<string, any> = { events: CalendarDays, month: Sparkles, workshops: Mic2, free: Ticket };
 
   return (
     <motion.div {...fadeUp} className="mt-12">
@@ -283,7 +304,7 @@ function FeaturedEvents() {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-3">
-        {featuredEvents.map((event, index) => (
+        {events.map((event: any, index: number) => (
           <motion.article
             key={event.id}
             initial={{ opacity: 0, y: 20 }}
@@ -322,7 +343,7 @@ function FeaturedEvents() {
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {eventStats.map((stat, index) => {
+        {stats.map((stat: any, index: number) => {
           const Icon = icons[stat.icon];
           return (
             <motion.div
@@ -346,13 +367,13 @@ function FeaturedEvents() {
   );
 }
 
-function AllEventsGrid() {
+function AllEventsGrid({ events }: { events: any }) {
   return (
     <motion.div {...fadeUp} className="mt-16">
       <div className="mb-8 flex items-end justify-between">
         <div>
           <h2 className="text-2xl font-[800] text-[#2D1B1B]">All Events</h2>
-          <p className="mt-1 text-sm text-[#6C5E5B]">September – October 2023 · {ecosystemEvents.length} events</p>
+          <p className="mt-1 text-sm text-[#6C5E5B]">September – October 2023 · {events.length} events</p>
         </div>
         <div className="flex items-center gap-1 text-xs text-[#6C5E5B]">
           <TrendingUp className="h-3.5 w-3.5 text-[#F59E42]" />
@@ -361,7 +382,7 @@ function AllEventsGrid() {
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-        {ecosystemEvents.map((event, index) => (
+        {events.map((event: any, index: number) => (
           <EventCard key={event.id} event={event} index={index} />
         ))}
       </div>

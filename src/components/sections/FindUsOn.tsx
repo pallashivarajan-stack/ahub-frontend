@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Instagram, Linkedin, Search, Twitter, MessageSquareQuote } from "lucide-react";
-import { usePublicSocialLinks } from "@/hooks/usePublicContent";
+import { usePublicSocialLinks } from "@/services/usePublicContent";
 
 const platforms = [
   {

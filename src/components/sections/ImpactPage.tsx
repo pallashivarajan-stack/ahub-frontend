@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { motion, type Variants } from "framer-motion";
 import {
   Rocket,
@@ -10,6 +11,7 @@ import {
   Building,
   Calendar,
 } from "lucide-react";
+import { usePublicImpact } from "@/services/usePublicContent";
 
 interface MetricItem {
   id: string;
@@ -142,6 +144,17 @@ const cardVariants: Variants = {
 };
 
 export function ImpactPage() {
+  const { data: impactData } = usePublicImpact(metrics);
+
+  const displayMetrics = useMemo(() => {
+    if (!impactData) return metrics;
+    if ('icon' in impactData[0]) return impactData as MetricItem[];
+    const apiMetrics = impactData as Array<{id: string; value: string; label: string; subLabel?: string}>;
+    return metrics.map(fallback => {
+      const api = apiMetrics.find(m => m.id === fallback.id);
+      return api ? { ...fallback, value: api.value, label: api.label, subLabel: api.subLabel ?? fallback.subLabel } : fallback;
+    });
+  }, [impactData]);
   return (
     <div className="relative bg-slate-50 pb-20">
       {/* Dark Teal Hero Section */}
@@ -214,7 +227,7 @@ export function ImpactPage() {
             animate="visible"
             className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {metrics.map((metric) => {
+            {displayMetrics.map((metric) => {
               const Icon = metric.icon;
               return (
                 <motion.div

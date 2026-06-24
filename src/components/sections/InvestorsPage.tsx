@@ -4,11 +4,15 @@ import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight, TrendingUp } from "lucide-react";
 import { featuredInvestors, marqueeInvestors } from "@/data/investorsPage";
+import { usePublicInvestors } from "@/services/usePublicContent";
 import { cn } from "@/lib/utils";
 
-const marqueeLoop = [...marqueeInvestors, ...marqueeInvestors];
-
 export function InvestorsPage() {
+  const { data: investorsData } = usePublicInvestors({ featuredInvestors, marqueeInvestors });
+  const displayFeatured = investorsData?.featuredInvestors ?? featuredInvestors;
+  const displayMarquee = investorsData?.marqueeInvestors ?? marqueeInvestors;
+  const marqueeLoop = [...displayMarquee, ...displayMarquee];
+
   return (
     <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-28 md:pb-32 md:pt-32 lg:pt-36">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -20,10 +24,10 @@ export function InvestorsPage() {
 
         <div className="mt-14 grid gap-8 lg:mt-16 lg:grid-cols-[48%_52%] lg:gap-8">
           <InvestWithUsCard />
-          <OurInvestorsSection />
+          <OurInvestorsSection marqueeLoop={marqueeLoop} />
         </div>
 
-        <FeaturedInvestorsCarousel />
+        <FeaturedInvestorsCarousel displayFeatured={displayFeatured} />
       </div>
     </section>
   );
@@ -83,7 +87,7 @@ function InvestWithUsCard() {
   );
 }
 
-function OurInvestorsSection() {
+function OurInvestorsSection({ marqueeLoop }: { marqueeLoop: typeof marqueeInvestors[] }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -125,7 +129,7 @@ function OurInvestorsSection() {
   );
 }
 
-function FeaturedInvestorsCarousel() {
+function FeaturedInvestorsCarousel({ displayFeatured }: { displayFeatured: typeof featuredInvestors }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -167,7 +171,7 @@ function FeaturedInvestorsCarousel() {
 
         <div ref={emblaRef} className="overflow-hidden">
           <div className="flex touch-pan-y gap-5">
-            {featuredInvestors.map((investor) => (
+            {displayFeatured.map((investor) => (
               <div
                 key={investor.name}
                 className="min-w-0 shrink-0 grow-0 basis-full sm:basis-[calc(50%-10px)] lg:basis-[calc(33.333%-14px)]"

@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { institutions } from "@/data";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
+import { usePublicInstitutionsClubs } from "@/services/usePublicContent";
 
 export function InstitutionsClubs() {
+  const { data: instData } = usePublicInstitutionsClubs(institutions);
+  const displayInstitutions = instData ?? institutions;
   return (
     <section id="aspire" className="relative overflow-hidden py-16 md:py-24">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80%_60%_at_50%_0%,rgba(90,30,44,0.07),transparent_52%),linear-gradient(180deg,color-mix(in_oklch,var(--background)_94%,white),color-mix(in_oklch,var(--background)_88%,white))]" />
@@ -10,7 +13,7 @@ export function InstitutionsClubs() {
         <SectionHeading eyebrow="Network" title="Institutions and clubs" subtitle="Campuses, student founder communities, and innovation chapters across the country." />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {institutions.map((inst, i) => (
+          {displayInstitutions.map((inst, i) => (
             <motion.div
               key={inst.name}
               initial={{ opacity: 0, y: 24 }}

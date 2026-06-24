@@ -1,30 +1,25 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { usePublicStartupsTicker } from "@/services/usePublicContent";
+import { resolveLegacyAsset } from "@/lib/assets";
 
-// Import logos from assets
-import interviewBuddy from "@/assets/startups/interview buddy.png";
-import edumoon from "@/assets/startups/edumoon.png";
-import greenjams from "@/assets/startups/greenjams_logo.jpg";
-import pickABook from "@/assets/startups/pick a book.png";
-import dataFoundary from "@/assets/startups/data foundary.png";
-import sweya from "@/assets/startups/sweya.png";
-import icompass from "@/assets/startups/icompass.png";
-import sandlogic from "@/assets/startups/sandlogic.png";
-
-const logos = [
-  interviewBuddy,
-  edumoon,
-  greenjams,
-  pickABook,
-  dataFoundary,
-  sweya,
-  icompass,
-  sandlogic,
+const legacyPaths = [
+  "/src/assets/startups/interview buddy.png",
+  "/src/assets/startups/edumoon.png",
+  "/src/assets/startups/greenjams_logo.jpg",
+  "/src/assets/startups/pick a book.png",
+  "/src/assets/startups/data foundary.png",
+  "/src/assets/startups/sweya.png",
+  "/src/assets/startups/icompass.png",
+  "/src/assets/startups/sandlogic.png",
 ];
 
-// Duplicate for smooth infinite scroll
-const marqueeLogos = [...logos, ...logos, ...logos];
+const logos = legacyPaths.map(resolveLegacyAsset);
 
 export function StartupsTicker() {
+  const { data: startupLogosData } = usePublicStartupsTicker(logos);
+  // Duplicate for smooth infinite scroll
+  const marqueeLogos = [...startupLogosData, ...startupLogosData, ...startupLogosData];
+
   return (
     <section
       id="startups-in-ahub"

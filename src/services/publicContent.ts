@@ -154,3 +154,172 @@ export async function fetchPublicSocialLinks() {
   if (!data?.length) return null;
   return data.map(mapSocialLinkFromApi);
 }
+
+export async function fetchPublicStartupsTicker() {
+  const data = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.startupsTicker);
+  if (!data?.length) return null;
+  // We can reuse mapPartnerFromApi since the ticker is also just a list of logos
+  return data.map(mapPartnerFromApi);
+}
+
+export async function fetchPublicGenericData(endpoint: string) {
+  const data = await fetchPublic<any>(endpoint);
+  return data ?? null;
+}
+
+export function mapMentorFromApi(item: Record<string, unknown>) {
+  return {
+    name: String(item.name ?? ""),
+    title: String(item.title ?? ""),
+    organization: String(item.company ?? item.organization ?? item.org ?? ""),
+    image: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? "")),
+    linkedIn: item.linked_in ? String(item.linked_in) : item.linkedIn ? String(item.linkedIn) : undefined,
+    tags: Array.isArray(item.tags) ? item.tags : undefined,
+  };
+}
+
+export function mapBoardMemberFromApi(item: Record<string, unknown>) {
+  return {
+    name: String(item.name ?? ""),
+    title: String(item.title ?? ""),
+    bio: String(item.bio ?? item.description ?? ""),
+    image: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? "")),
+    linkedIn: item.linked_in ? String(item.linked_in) : item.linkedIn ? String(item.linkedIn) : undefined,
+  };
+}
+
+export function mapVisitorFromApi(item: Record<string, unknown>) {
+  return {
+    name: String(item.name ?? ""),
+    role: String(item.role ?? item.title ?? ""),
+    org: String(item.org ?? item.organization ?? item.company ?? ""),
+    image: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? "")),
+  };
+}
+
+export function mapStatisticFromApi(item: Record<string, unknown>) {
+  return {
+    label: String(item.label ?? item.title ?? ""),
+    value: String(item.value ?? item.count ?? ""),
+  };
+}
+
+export function mapImpactMetricFromApi(item: Record<string, unknown>) {
+  return {
+    id: String(item.id ?? ""),
+    value: String(item.value ?? ""),
+    label: String(item.label ?? ""),
+    subLabel: item.sub_label ? String(item.sub_label) : item.subLabel ? String(item.subLabel) : undefined,
+  };
+}
+
+export function mapStartupEventFromApi(item: Record<string, unknown>) {
+  return {
+    id: String(item.id ?? ""),
+    title: String(item.title ?? ""),
+    image: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? "")),
+    logo: item.logo_url ? resolveBackendMediaUrl(String(item.logo_url)) : String(item.logo ?? ""),
+    date: {
+      month: String(item.month ?? "").toUpperCase(),
+      day: String(item.day ?? ""),
+      year: String(item.year ?? ""),
+    },
+    type: String(item.type ?? ""),
+    category: String(item.category ?? "all") as "workshops" | "webinars" | "hackathons" | "networking" | "pitch sessions" | "demo days" | "all",
+    location: String(item.location ?? ""),
+    time: String(item.time ?? ""),
+    description: String(item.description ?? ""),
+    status: String(item.status ?? "Upcoming") as "Upcoming" | "Live" | "Completed",
+    speakers: Array.isArray(item.speakers) ? item.speakers.map(mapSpeakerFromApi) : undefined,
+    detailedDescription: item.detailed_description ? String(item.detailed_description) : item.detailedDescription ? String(item.detailedDescription) : undefined,
+  };
+}
+
+export function mapSpeakerFromApi(item: Record<string, unknown>) {
+  return {
+    name: String(item.name ?? ""),
+    role: String(item.role ?? ""),
+    avatar: resolveBackendMediaUrl(String(item.avatar_url ?? item.image_url ?? item.avatar ?? "")),
+  };
+}
+
+export function mapStudentDashboardFromApi(item: Record<string, unknown>) {
+  return {
+    startups: Array.isArray(item.startups) ? item.startups.map(mapStartupOpportunityFromApi) : [],
+    roadmap: Array.isArray(item.roadmap) ? item.roadmap.map(mapRoadmapStepFromApi) : [],
+  };
+}
+
+export function mapStartupOpportunityFromApi(item: Record<string, unknown>) {
+  return {
+    id: String(item.id ?? ""),
+    name: String(item.name ?? ""),
+    role: String(item.role ?? ""),
+    duration: String(item.duration ?? ""),
+    stipend: String(item.stipend ?? ""),
+    locationType: String(item.location_type ?? item.locationType ?? "Remote") as "Remote" | "Hybrid" | "On-site",
+    logoUrl: resolveBackendMediaUrl(String(item.logo_url ?? item.logo ?? "")),
+  };
+}
+
+export function mapRoadmapStepFromApi(item: Record<string, unknown>) {
+  return {
+    id: String(item.id ?? ""),
+    title: String(item.title ?? ""),
+    date: String(item.date ?? ""),
+    desc: String(item.desc ?? item.description ?? ""),
+    status: String(item.status ?? "upcoming") as "completed" | "upcoming",
+  };
+}
+
+export const fetchPublicMentors = async () => {
+  const data = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.mentors);
+  return data?.length ? data.map(mapMentorFromApi) : null;
+};
+export const fetchPublicBoard = async () => {
+  const data = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.board);
+  return data?.length ? data.map(mapBoardMemberFromApi) : null;
+};
+export const fetchPublicStatistics = async () => {
+  const data = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.statistics);
+  return data?.length ? data.map(mapStatisticFromApi) : null;
+};
+export const fetchPublicInfrastructure = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.infrastructure);
+export const fetchPublicStartupPortfolio = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.startupPortfolio);
+export const fetchPublicEventsCalendar = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.eventsCalendar);
+export const fetchPublicVisionRoadmap = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.visionRoadmap);
+export const fetchPublicWhatWeDo = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.whatWeDo);
+export const fetchPublicStudentDashboard = async () => {
+  const data = await fetchPublic<Record<string, unknown>>(PUBLIC_CONTENT_ENDPOINTS.studentDashboard);
+  if (!data) return null;
+  const mapped = mapStudentDashboardFromApi(data);
+  if (!mapped.startups.length && !mapped.roadmap.length) return null;
+  return mapped;
+};
+export const fetchPublicStartupEvents = async () => {
+  const data = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.startupEvents);
+  if (!data?.length) return null;
+  return data.map(mapStartupEventFromApi);
+};
+export const fetchPublicRewards = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.rewards);
+export const fetchPublicInternshipRegistration = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.internshipRegistration);
+export const fetchPublicInternshipCalendar = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.internshipCalendar);
+export const fetchPublicInstitutionsClubs = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.institutionsClubs);
+export const fetchPublicStartupBlog = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.startupBlog);
+export const fetchPublicStartupFunding = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.startupFunding);
+export const fetchPublicInvestors = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.investors);
+export const fetchPublicAhubNetwork = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.ahubNetwork);
+export const fetchPublicDistinguishedVisitors = async () => {
+  const data = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.distinguishedVisitors);
+  return data?.length ? data.map(mapVisitorFromApi) : null;
+};
+export const fetchPublicPartnersPage = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.partnersPage);
+export const fetchPublicImpact = async () => {
+  const data = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.impact);
+  if (!data?.length) return null;
+  return data.map(mapImpactMetricFromApi);
+};
+export const fetchPublicOperationalModel = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.operationalModel);
+export const fetchPublicJoinUs = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.joinUs);
+export const fetchPublicPitchToUs = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.pitchToUs);
+export const fetchPublicStartupRegistration = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.startupRegistration);

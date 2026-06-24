@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { usePublicInternshipRegistration } from "@/services/usePublicContent";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Rocket,
@@ -17,12 +18,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-import interviewBuddyLogo from "@/assets/startups/interview buddy.png";
-import edumoonLogo from "@/assets/startups/edumoon.png";
-import greenjamsLogo from "@/assets/startups/greenjams_logo.jpg";
-import pickABookLogo from "@/assets/startups/pick a book.png";
-import sweyaLogo from "@/assets/startups/sweya.png";
-import antarLogo from "@/assets/startups/antar iot.png";
+import { resolveLegacyAsset } from "@/lib/assets";
 
 type StartupInternship = {
   id: string;
@@ -35,43 +31,42 @@ type StartupInternship = {
   status: "Open" | "Applied" | "New";
 };
 
-export function InternshipRegistrationPage() {
-  const [internships, setInternships] = useState<StartupInternship[]>([
-    {
-      id: "ib-ai",
-      companyName: "InterviewBuddy",
-      role: "AI Platform Intern",
-      logo: interviewBuddyLogo,
-      duration: "12 Weeks",
-      location: "Remote",
-      domain: "AI/ML",
-      status: "Applied",
-    },
-    {
-      id: "em-fe",
-      companyName: "Edumoon",
-      role: "Frontend Intern",
-      logo: edumoonLogo,
-      duration: "8 Weeks",
-      location: "Hybrid",
-      domain: "Frontend",
-      status: "Open",
-    },
-    {
-      id: "gd-be",
-      companyName: "GreenDams",
-      role: "Backend Intern",
-      logo: greenjamsLogo,
-      duration: "12 Weeks",
-      location: "On-site",
-      domain: "Backend",
-      status: "Open",
-    },
-    {
-      id: "pb-da",
-      companyName: "Pick A Book",
+const DEFAULT_INTERNSHIPS: StartupInternship[] = [
+  {
+    id: "ib-ai",
+    companyName: "InterviewBuddy",
+    role: "AI Platform Intern",
+    logo: resolveLegacyAsset("/src/assets/startups/interview buddy.png"),
+    duration: "12 Weeks",
+    location: "Remote",
+    domain: "AI/ML",
+    status: "Applied",
+  },
+  {
+    id: "em-fe",
+    companyName: "Edumoon",
+    role: "Frontend Intern",
+    logo: resolveLegacyAsset("/src/assets/startups/edumoon.png"),
+    duration: "8 Weeks",
+    location: "Hybrid",
+    domain: "Frontend",
+    status: "Open",
+  },
+  {
+    id: "gd-be",
+    companyName: "GreenDams",
+    role: "Backend Intern",
+    logo: resolveLegacyAsset("/src/assets/startups/greenjams_logo.jpg"),
+    duration: "12 Weeks",
+    location: "On-site",
+    domain: "Backend",
+    status: "Open",
+  },
+  {
+    id: "pb-da",
+    companyName: "Pick A Book",
       role: "Data Analyst Intern",
-      logo: pickABookLogo,
+      logo: resolveLegacyAsset("/src/assets/startups/pick a book.png"),
       duration: "8 Weeks",
       location: "Remote",
       domain: "Data Science",
@@ -81,7 +76,7 @@ export function InternshipRegistrationPage() {
       id: "ta-ml",
       companyName: "Tierra Automations",
       role: "ML Ops Intern",
-      logo: antarLogo,
+      logo: resolveLegacyAsset("/src/assets/startups/antar iot.png"),
       duration: "12 Weeks",
       location: "Hybrid",
       domain: "AI/ML",
@@ -91,13 +86,17 @@ export function InternshipRegistrationPage() {
       id: "sw-pd",
       companyName: "Swaya",
       role: "Product Design Intern",
-      logo: sweyaLogo,
+      logo: resolveLegacyAsset("/src/assets/startups/sweya.png"),
       duration: "8 Weeks",
       location: "Remote",
       domain: "Product Design",
       status: "New",
     },
-  ]);
+];
+
+export function InternshipRegistrationPage() {
+  const { data: internshipsData } = usePublicInternshipRegistration(DEFAULT_INTERNSHIPS);
+  const [internships, setInternships] = useState<StartupInternship[]>(internshipsData ?? DEFAULT_INTERNSHIPS);
 
   const [formData, setFormData] = useState({
     fullName: "",

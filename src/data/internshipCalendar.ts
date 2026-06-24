@@ -1,11 +1,15 @@
-import interviewBuddyLogo from "@/assets/startups/interview buddy.png";
-import edumoonLogo from "@/assets/startups/edumoon.png";
-import greenjamsLogo from "@/assets/startups/greenjams_logo.jpg";
-import sandlogicLogo from "@/assets/startups/sandlogic.png";
-import sweyaLogo from "@/assets/startups/sweya.png";
-import icompassLogo from "@/assets/startups/icompass.png";
-import digiotaiLogo from "@/assets/startups/digiotai.jpg";
-import dataFoundryLogo from "@/assets/startups/data foundary.png";
+import { resolveLegacyAsset } from "@/lib/assets";
+
+const [interviewBuddyLogo, edumoonLogo, greenjamsLogo, sandlogicLogo, sweyaLogo, icompassLogo, digiotaiLogo, dataFoundryLogo] = [
+  "/src/assets/startups/interview buddy.png",
+  "/src/assets/startups/edumoon.png",
+  "/src/assets/startups/greenjams_logo.jpg",
+  "/src/assets/startups/sandlogic.png",
+  "/src/assets/startups/sweya.png",
+  "/src/assets/startups/icompass.png",
+  "/src/assets/startups/digiotai.jpg",
+  "/src/assets/startups/data foundary.png",
+].map(resolveLegacyAsset);
 
 export type EventType = "application" | "assessment" | "interview" | "offer" | "deadline";
 

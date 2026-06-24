@@ -15,6 +15,7 @@ import {
 import { type ComponentType } from "react";
 import Tilt from "react-parallax-tilt";
 import { useCountUp } from "@/hooks/useCountUp";
+import { usePublicAhubNetwork } from "@/services/usePublicContent";
 
 type IconType = ComponentType<{ size?: number; className?: string }>;
 
@@ -89,6 +90,8 @@ const cardVariants: Variants = {
 };
 
 export function AhubNetwork() {
+  const { data: networkCards } = usePublicAhubNetwork(cards);
+  const displayCards = networkCards ?? cards;
   return (
     <section id="ahub-network" className="relative overflow-hidden bg-[linear-gradient(135deg,#FFF8F0_0%,#FFE8D6_100%)] py-16 md:py-24">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_20%,rgba(255,140,50,0.08),transparent_60%)]" />
@@ -136,7 +139,7 @@ export function AhubNetwork() {
           viewport={{ once: true, margin: "-80px" }}
           className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4"
         >
-          {cards.map((card) => (
+          {displayCards.map((card) => (
             <motion.div key={card.label} variants={cardVariants}>
               <StatCard {...card} />
             </motion.div>

@@ -10,6 +10,7 @@ import {
   fundingStatusStyle,
   fundingStatuses,
 } from "@/data/startupFunding";
+import { usePublicStartupFunding } from "@/services/usePublicContent";
 import { categories, fundingBadgeStyle } from "@/data/startupPortfolio";
 import { cn } from "@/lib/utils";
 
@@ -21,14 +22,18 @@ const fadeUp = {
 };
 
 export function StartupFundingPage() {
+  const fundingFallback = { fundingHighlights, featuredFundingStartups, fundingStartups, fundingStatuses };
+  const { data: fundingData } = usePublicStartupFunding(fundingFallback);
+  const displayData = fundingData ?? fundingFallback;
+
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
   const [category, setCategory] = useState("All");
   const [applied, setApplied] = useState({ search: "", status: "All", category: "All" });
 
   const filtered = useMemo(
-    () => filterFundingStartups(fundingStartups, applied),
-    [applied],
+    () => filterFundingStartups(displayData.fundingStartups, applied),
+    [applied, displayData.fundingStartups],
   );
 
   const applyFilters = () => setApplied({ search, status, category });
@@ -44,9 +49,10 @@ export function StartupFundingPage() {
       <BackgroundDecor />
 
       <div className="relative mx-auto max-w-7xl px-6 md:px-10">
-        <FundingHeader />
-        <FeaturedGrid />
+        <FundingHeader highlights={displayData.fundingHighlights} />
+        <FeaturedGrid highlights={displayData.fundingHighlights} featured={displayData.featuredFundingStartups} />
         <FilterSection
+          statuses={displayData.fundingStatuses}
           search={search}
           status={status}
           category={category}
@@ -72,7 +78,7 @@ function BackgroundDecor() {
   );
 }
 
-function FundingHeader() {
+function FundingHeader({ highlights }: { highlights: typeof fundingHighlights }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -98,7 +104,7 @@ function FundingHeader() {
   );
 }
 
-function FeaturedGrid() {
+function FeaturedGrid({ highlights, featured }: { highlights: typeof fundingHighlights; featured: typeof featuredFundingStartups }) {
   return (
     <motion.div {...fadeUp} className="mt-14 lg:mt-16">
       <div className="mb-8 max-w-2xl">
@@ -109,7 +115,7 @@ function FeaturedGrid() {
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {fundingHighlights.map((item, index) => (
+        {highlights.map((item, index) => (
           <motion.article
             key={item.id}
             initial={{ opacity: 0, y: 20 }}
@@ -159,6 +165,7 @@ function FeaturedGrid() {
 }
 
 function FilterSection({
+  statuses,
   search,
   status,
   category,
@@ -168,6 +175,7 @@ function FilterSection({
   onApply,
   onReset,
 }: {
+  statuses: string[];
   search: string;
   status: string;
   category: string;
@@ -211,7 +219,7 @@ function FilterSection({
               onChange={(e) => onStatusChange(e.target.value)}
               className="w-full rounded-2xl border border-[#E8E0D8] bg-[#FAFAFA] px-4 py-3 text-sm text-[#2D1B1B] outline-none focus:border-[#F59E42]/40"
             >
-              {fundingStatuses.map((opt) => (
+              {statuses.map((opt) => (
                 <option key={opt} value={opt}>
                   {opt === "All" ? "All Status" : opt}
                 </option>

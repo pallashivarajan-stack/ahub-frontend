@@ -9,7 +9,8 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
-import calendarIllustration from "@/assets/calender.png";
+import { usePublicInternshipCalendar } from "@/services/usePublicContent";
+import { resolveLegacyAsset } from "@/lib/assets";
 import { Calendar } from "@/components/ui/calendar";
 import {
   calendarEvents,
@@ -38,6 +39,10 @@ const fadeUp = {
 const defaultDate = new Date(2025, 5, 12);
 
 export function InternshipCalendarPage() {
+  const calendarFallback = { calendarEvents, companies, deadlines, eventBadgeStyle, featuredInternships, heroBadges, legendItems, quickStats, recentActivity };
+  const { data: calData } = usePublicInternshipCalendar(calendarFallback);
+  const displayData = calData ?? calendarFallback;
+
   const [selected, setSelected] = useState<Date>(defaultDate);
   const [month, setMonth] = useState<Date>(defaultDate);
 
@@ -46,7 +51,7 @@ export function InternshipCalendarPage() {
 
   const modifiers = useMemo(() => {
     const byType: Partial<Record<EventType, Date[]>> = {};
-    calendarEvents.forEach((e) => {
+    displayData.calendarEvents.forEach((e) => {
       const d = new Date(e.date + "T12:00:00");
       if (!byType[e.type]) byType[e.type] = [];
       byType[e.type]?.push(d);
@@ -58,7 +63,7 @@ export function InternshipCalendarPage() {
     <div className="relative min-h-screen overflow-hidden bg-[#FDF8F2] pb-16 pt-28 md:pb-24 md:pt-32 lg:pt-36">
       <BackgroundDecor />
       <div className="relative mx-auto max-w-7xl px-6 md:px-10">
-        <HeroSection />
+        <HeroSection badges={displayData.heroBadges} />
         <DashboardGrid
           selected={selected}
           month={month}
@@ -66,9 +71,13 @@ export function InternshipCalendarPage() {
           onMonthChange={setMonth}
           selectedEvents={selectedEvents}
           modifiers={modifiers}
+          legendItems={displayData.legendItems}
+          companies={displayData.companies}
+          eventBadgeStyle={displayData.eventBadgeStyle}
+          calendarEvents={displayData.calendarEvents}
         />
-        <FeaturedInternships />
-        <BottomSection />
+        <FeaturedInternships internships={displayData.featuredInternships} stats={displayData.quickStats} />
+        <BottomSection deadlines={displayData.deadlines} activities={displayData.recentActivity} companies={displayData.companies} />
       </div>
     </div>
   );
@@ -84,7 +93,7 @@ function BackgroundDecor() {
   );
 }
 
-function HeroSection() {
+function HeroSection({ badges }: { badges: typeof heroBadges }) {
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
@@ -106,7 +115,7 @@ function HeroSection() {
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2">
-          {heroBadges.map((badge) => (
+          {badges.map((badge) => (
             <span
               key={badge.label}
               className="rounded-full border border-[#F59E42]/20 bg-white px-4 py-2 text-xs font-semibold text-[#2D1B1B] shadow-sm"
@@ -120,7 +129,7 @@ function HeroSection() {
       <div className="relative flex items-center justify-center">
         <div className="w-full max-w-md overflow-hidden rounded-[32px] border border-white/80 bg-white/95 p-6 shadow-[0_24px_60px_-30px_rgba(45,27,27,0.15)] backdrop-blur-sm md:p-8">
           <img
-            src={calendarIllustration}
+            src={resolveLegacyAsset("/src/assets/calender.png")}
             alt="Internship calendar illustration"
             className="mx-auto w-full max-w-[340px] object-contain drop-shadow-sm"
           />
@@ -137,6 +146,10 @@ function DashboardGrid({
   onMonthChange,
   selectedEvents,
   modifiers,
+  legendItems,
+  companies,
+  eventBadgeStyle,
+  calendarEvents,
 }: {
   selected: Date;
   month: Date;
@@ -144,6 +157,10 @@ function DashboardGrid({
   onMonthChange: (d: Date) => void;
   selectedEvents: CalendarEvent[];
   modifiers: Record<string, Date[]>;
+  legendItems: typeof import("@/data/internshipCalendar").legendItems;
+  companies: typeof import("@/data/internshipCalendar").companies;
+  eventBadgeStyle: typeof import("@/data/internshipCalendar").eventBadgeStyle;
+  calendarEvents: typeof import("@/data/internshipCalendar").calendarEvents;
 }) {
   return (
     <motion.div {...fadeUp} className="mt-12 grid gap-6 lg:grid-cols-[65%_35%]">
@@ -154,8 +171,9 @@ function DashboardGrid({
         onMonthChange={onMonthChange}
         selectedEvents={selectedEvents}
         modifiers={modifiers}
+        legendItems={legendItems}
       />
-      <TodaySchedule events={selectedEvents.length ? selectedEvents : calendarEvents.filter((e) => e.date === "2025-06-12")} />
+      <TodaySchedule events={selectedEvents.length ? selectedEvents : calendarEvents.filter((e) => e.date === "2025-06-12")} companies={companies} eventBadgeStyle={eventBadgeStyle} />
     </motion.div>
   );
 }
@@ -167,6 +185,7 @@ function CalendarCard({
   onMonthChange,
   selectedEvents,
   modifiers,
+  legendItems,
 }: {
   selected: Date;
   month: Date;
@@ -174,6 +193,7 @@ function CalendarCard({
   onMonthChange: (d: Date) => void;
   selectedEvents: CalendarEvent[];
   modifiers: Record<string, Date[]>;
+  legendItems: typeof import("@/data/internshipCalendar").legendItems;
 }) {
   return (
     <div className="rounded-[32px] bg-white p-6 shadow-[0_20px_60px_-30px_rgba(45,27,27,0.12)] md:p-8">
@@ -240,7 +260,7 @@ function CalendarCard({
   );
 }
 
-function TodaySchedule({ events }: { events: CalendarEvent[] }) {
+function TodaySchedule({ events, companies: comps, eventBadgeStyle: badgeFn }: { events: CalendarEvent[]; companies: typeof import("@/data/internshipCalendar").companies; eventBadgeStyle: typeof import("@/data/internshipCalendar").eventBadgeStyle }) {
   return (
     <div className="rounded-[32px] bg-white p-6 shadow-[0_20px_60px_-30px_rgba(45,27,27,0.12)] md:p-7">
       <div className="flex items-center justify-between">
@@ -250,7 +270,7 @@ function TodaySchedule({ events }: { events: CalendarEvent[] }) {
 
       <div className="mt-5 space-y-4">
         {events.slice(0, 4).map((event) => (
-          <ScheduleEventCard key={event.id} event={event} />
+          <ScheduleEventCard key={event.id} event={event} companies={comps} eventBadgeStyle={badgeFn} />
         ))}
       </div>
     </div>
@@ -274,7 +294,7 @@ function StartupLogoBanner({ logo, name, size = "md" }: { logo: string; name: st
   );
 }
 
-function ScheduleEventCard({ event }: { event: CalendarEvent }) {
+function ScheduleEventCard({ event, companies, eventBadgeStyle }: { event: CalendarEvent; companies: typeof import("@/data/internshipCalendar").companies; eventBadgeStyle: typeof import("@/data/internshipCalendar").eventBadgeStyle }) {
   const company = companies[event.companyId];
   if (!company) return null;
 
@@ -308,7 +328,7 @@ function ScheduleEventCard({ event }: { event: CalendarEvent }) {
   );
 }
 
-function FeaturedInternships() {
+function FeaturedInternships({ internships, stats }: { internships: typeof featuredInternships; stats: typeof quickStats }) {
   return (
     <motion.div {...fadeUp} className="mt-12">
       <div className="mb-6 flex items-end justify-between">
@@ -320,13 +340,13 @@ function FeaturedInternships() {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-3">
-        {featuredInternships.map((company, index) => (
+        {internships.map((company, index) => (
           <FeaturedCard key={company.id} company={company} progress={[72, 58, 85][index] ?? 65} />
         ))}
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {quickStats.map((stat, index) => (
+        {stats.map((stat, index) => (
           <StatCard key={stat.label} stat={stat} index={index} />
         ))}
       </div>
@@ -414,7 +434,7 @@ function StatCard({
   );
 }
 
-function BottomSection() {
+function BottomSection({ deadlines, activities, companies }: { deadlines: typeof import("@/data/internshipCalendar").deadlines; activities: typeof import("@/data/internshipCalendar").recentActivity; companies: typeof import("@/data/internshipCalendar").companies }) {
   return (
     <motion.div {...fadeUp} className="mt-12 grid gap-6 lg:grid-cols-2">
       <div className="rounded-[32px] bg-white p-6 shadow-[0_20px_60px_-30px_rgba(45,27,27,0.12)] md:p-8">
@@ -466,7 +486,7 @@ function BottomSection() {
           <Sparkles className="h-4 w-4 text-[#F59E42]" />
         </div>
         <div className="space-y-4">
-          {recentActivity.map((item) => (
+          {activities.map((item) => (
             <div key={item.id} className="flex gap-4">
               <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", item.color)}>
                 <TrendingUp className="h-4 w-4" />

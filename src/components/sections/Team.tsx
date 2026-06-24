@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Linkedin, ArrowUpRight, Users } from "lucide-react";
 import { team, teamGroupPhoto } from "@/data";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
+import { usePublicTeam } from "@/services/usePublicContent";
 
 const ROLE_COLORS: Record<string, string> = {
   Manager: "bg-[#fff3e8] text-[#d85211] border-[#ffd4a8]",
@@ -18,6 +19,8 @@ function getRoleBadge(title: string) {
 }
 
 export function Team() {
+  const { data: teamData } = usePublicTeam(team);
+
   return (
     <section id="team" className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#FFF7F2_0%,#FFF8F3_100%)] py-16 md:py-24">
       {/* Background */}
@@ -56,7 +59,7 @@ export function Team() {
                 <div>
                   <div className="text-xs uppercase tracking-widest text-white/70 mb-1">The A-Hub Family</div>
                   <h3 className="text-xl md:text-2xl font-bold text-white">
-                    {team.length} Members · One Mission
+                    {teamData.length} Members · One Mission
                   </h3>
                   <p className="mt-1 text-sm text-white/75">
                     Building Andhra Pradesh's premier startup incubation ecosystem
@@ -64,7 +67,7 @@ export function Team() {
                 </div>
                 <div className="hidden sm:flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 backdrop-blur-sm">
                   <Users size={16} className="text-white/80" />
-                  <span className="text-sm font-semibold text-white">{team.length} Team Members</span>
+                  <span className="text-sm font-semibold text-white">{teamData.length} Team Members</span>
                 </div>
               </div>
             </div>
@@ -73,7 +76,7 @@ export function Team() {
 
         {/* Team Grid */}
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {team.map((member, index) => (
+          {teamData.map((member: any, index: number) => (
             <TeamCard key={member.name} member={member} index={index} />
           ))}
         </div>
@@ -86,7 +89,7 @@ function TeamCard({
   member,
   index,
 }: {
-  member: (typeof team)[number];
+  member: any;
   index: number;
 }) {
   const [isHovered, setIsHovered] = useState(false);

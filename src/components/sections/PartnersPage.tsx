@@ -4,11 +4,15 @@ import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight, Handshake } from "lucide-react";
 import { marqueePartners, popularPartners } from "@/data/partnersPage";
+import { usePublicPartnersPage } from "@/services/usePublicContent";
 import { cn } from "@/lib/utils";
 
-const marqueeLoop = [...marqueePartners, ...marqueePartners];
-
 export function PartnersPage() {
+  const { data: partnersData } = usePublicPartnersPage({ marqueePartners, popularPartners });
+  const displayMarquee = partnersData?.marqueePartners ?? marqueePartners;
+  const displayPopular = partnersData?.popularPartners ?? popularPartners;
+  const marqueeLoop = [...displayMarquee, ...displayMarquee];
+
   return (
     <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-28 md:pb-32 md:pt-32 lg:pt-36">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -20,10 +24,10 @@ export function PartnersPage() {
 
         <div className="mt-14 grid gap-8 lg:mt-16 lg:grid-cols-[48%_52%] lg:gap-8">
           <PartnerWithUsCard />
-          <OurPartnersSection />
+          <OurPartnersSection marqueeLoop={marqueeLoop} />
         </div>
 
-        <PopularPartnersCarousel />
+        <PopularPartnersCarousel displayPopular={displayPopular} />
       </div>
     </section>
   );
@@ -82,7 +86,7 @@ function PartnerWithUsCard() {
   );
 }
 
-function OurPartnersSection() {
+function OurPartnersSection({ marqueeLoop }: { marqueeLoop: typeof marqueePartners }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -126,7 +130,7 @@ function OurPartnersSection() {
   );
 }
 
-function PopularPartnersCarousel() {
+function PopularPartnersCarousel({ displayPopular }: { displayPopular: typeof popularPartners }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -175,7 +179,7 @@ function PopularPartnersCarousel() {
 
         <div ref={emblaRef} className="overflow-hidden">
           <div className="flex touch-pan-y gap-5">
-            {popularPartners.map((partner) => (
+            {displayPopular.map((partner) => (
               <div
                 key={partner.name}
                 className="min-w-0 shrink-0 grow-0 basis-full sm:basis-[calc(50%-10px)] lg:basis-[calc(33.333%-14px)]"

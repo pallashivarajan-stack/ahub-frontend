@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
 import { gsap } from "@/lib/gsap";
-import { usePublicEvents } from "@/hooks/usePublicContent";
+import { usePublicEvents } from "@/services/usePublicContent";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
 
 export function LatestEvents() {

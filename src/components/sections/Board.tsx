@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { boardMembers } from "@/data/boardPage";
+import { usePublicBoard } from "@/services/usePublicContent";
 
 /* ── Inline LinkedIn SVG (no extra dep) ── */
 function LinkedInIcon({ className }: { className?: string }) {
@@ -25,7 +26,7 @@ function MemberCardContent({
   member,
   isActive,
 }: {
-  member: (typeof boardMembers)[number];
+  member: any;
   isActive: boolean;
 }) {
   return (
@@ -112,8 +113,9 @@ function MemberCardContent({
 
 /* ── Main export ── */
 export function Board() {
+  const { data: boardData } = usePublicBoard(boardMembers);
   const [active, setActive] = useState(1);
-  const total = boardMembers.length;
+  const total = boardData.length;
 
   const next = () => setActive((a) => (a + 1) % total);
   const prev = () => setActive((a) => (a - 1 + total) % total);
@@ -248,7 +250,7 @@ export function Board() {
 
           {/* ══ Desktop cards stage ══ */}
           <div className="relative hidden h-[620px] w-full max-w-5xl md:block">
-            {boardMembers.map((member, i) => {
+            {boardData.map((member: any, i: number) => {
               const offset = getOffset(i, active, total);
               const isActive = offset === 0;
 
@@ -282,7 +284,7 @@ export function Board() {
           <div className="relative w-full md:hidden">
             <AnimatePresence mode="wait">
               <motion.article
-                key={boardMembers[active].name}
+                key={boardData[active].name}
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -40 }}
@@ -290,7 +292,7 @@ export function Board() {
                 className="mx-auto w-full max-w-sm rounded-[32px] border border-white/60 bg-white/80 p-7 backdrop-blur-xl"
                 style={{ boxShadow: "var(--board-shadow-elegant)" }}
               >
-                <MemberCardContent member={boardMembers[active]} isActive />
+                <MemberCardContent member={boardData[active]} isActive />
               </motion.article>
             </AnimatePresence>
 
@@ -306,7 +308,7 @@ export function Board() {
               </button>
 
               <div className="flex gap-2">
-                {boardMembers.map((_, i) => (
+                {boardData.map((_: any, i: number) => (
                   <button
                     key={i}
                     aria-label={`Go to slide ${i + 1}`}

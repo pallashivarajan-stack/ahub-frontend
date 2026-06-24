@@ -1,44 +1,48 @@
-import agriDnaLogo from "@/assets/startups/agri dna.jpg";
-import antarIotLogo from "@/assets/startups/antar iot.png";
-import austhraaMotorsLogo from "@/assets/startups/austhraa_motors_logo.jpg";
-import billboLogo from "@/assets/startups/billbo.jpg";
-import bizproLogo from "@/assets/startups/bizpro.png";
-import cirusLogo from "@/assets/startups/cirus.jpg";
-import dataFoundryLogo from "@/assets/startups/data foundary.png";
-import derAutoBotLogo from "@/assets/startups/der auto bot.jpg";
-import digiotaiLogo from "@/assets/startups/digiotai.jpg";
-import edumoonLogo from "@/assets/startups/edumoon.png";
-import furpsqLogo from "@/assets/startups/furpsq.jpg";
-import greenjamsLogo from "@/assets/startups/greenjams_logo.jpg";
-import happyDriversLogo from "@/assets/startups/happy drivers.jpg";
-import houseInstaLogo from "@/assets/startups/house insta.png";
-import icompassLogo from "@/assets/startups/icompass.png";
-import innoccitoLogo from "@/assets/startups/innoccito.jpg";
-import interviewBuddyLogo from "@/assets/startups/interview buddy.png";
-import ipmgLogo from "@/assets/startups/ipmg.jpg";
-import jaitraLogo from "@/assets/startups/jaitra.jpg";
-import jnanaLogo from "@/assets/startups/jnana.jpg";
-import jooraLogo from "@/assets/startups/joora_drone_consultants_logo.jpg";
-import matricServicesLogo from "@/assets/startups/matric services.png";
-import nestWebhostLogo from "@/assets/startups/nest webhost.png";
-import nrTechcreatzLogo from "@/assets/startups/nr techcreatz.png";
-import pickABookLogo from "@/assets/startups/pick a book.png";
-import returnTrucksLogo from "@/assets/startups/retruntrucks_logo.jpg";
-import rollsMamaLogo from "@/assets/startups/rolls mama.jpg";
-import sandlogicLogo from "@/assets/startups/sandlogic.png";
-import schemaxLogo from "@/assets/startups/schemax.png";
-import sconexLogo from "@/assets/startups/sconex.jpg";
-import spiceRouteLogo from "@/assets/startups/spice route.jpg";
-import spotTimesLogo from "@/assets/startups/spot times.png";
-import starbeatLogo from "@/assets/startups/starbeat.jpg";
-import starryStoriesLogo from "@/assets/startups/starry stories.png";
-import sweyaLogo from "@/assets/startups/sweya.png";
-import talentSpotifyLogo from "@/assets/startups/talentspotify_logo.jpg";
-import taramandalLogo from "@/assets/startups/taramandal.jpg";
-import tessracLogo from "@/assets/startups/tessrac_logo.jpg";
-import trainDhabaLogo from "@/assets/startups/train dhaba.avif";
-import vihaanLogo from "@/assets/startups/vihaan.jpg";
-import vyomastraLogo from "@/assets/startups/vyomastra.jpg";
+import { resolveLegacyAsset } from "@/lib/assets";
+
+const [agriDnaLogo, antarIotLogo, austhraaMotorsLogo, billboLogo, bizproLogo, cirusLogo, dataFoundryLogo, derAutoBotLogo, digiotaiLogo, edumoonLogo, furpsqLogo, greenjamsLogo, happyDriversLogo, houseInstaLogo, icompassLogo, innoccitoLogo, interviewBuddyLogo, ipmgLogo, jaitraLogo, jnanaLogo, jooraLogo, matricServicesLogo, nestWebhostLogo, nrTechcreatzLogo, pickABookLogo, returnTrucksLogo, rollsMamaLogo, sandlogicLogo, schemaxLogo, sconexLogo, spiceRouteLogo, spotTimesLogo, starbeatLogo, starryStoriesLogo, sweyaLogo, talentSpotifyLogo, taramandalLogo, tessracLogo, trainDhabaLogo, vihaanLogo, vyomastraLogo] = [
+  "/src/assets/startups/agri dna.jpg",
+  "/src/assets/startups/antar iot.png",
+  "/src/assets/startups/austhraa_motors_logo.jpg",
+  "/src/assets/startups/billbo.jpg",
+  "/src/assets/startups/bizpro.png",
+  "/src/assets/startups/cirus.jpg",
+  "/src/assets/startups/data foundary.png",
+  "/src/assets/startups/der auto bot.jpg",
+  "/src/assets/startups/digiotai.jpg",
+  "/src/assets/startups/edumoon.png",
+  "/src/assets/startups/furpsq.jpg",
+  "/src/assets/startups/greenjams_logo.jpg",
+  "/src/assets/startups/happy drivers.jpg",
+  "/src/assets/startups/house insta.png",
+  "/src/assets/startups/icompass.png",
+  "/src/assets/startups/innoccito.jpg",
+  "/src/assets/startups/interview buddy.png",
+  "/src/assets/startups/ipmg.jpg",
+  "/src/assets/startups/jaitra.jpg",
+  "/src/assets/startups/jnana.jpg",
+  "/src/assets/startups/joora_drone_consultants_logo.jpg",
+  "/src/assets/startups/matric services.png",
+  "/src/assets/startups/nest webhost.png",
+  "/src/assets/startups/nr techcreatz.png",
+  "/src/assets/startups/pick a book.png",
+  "/src/assets/startups/retruntrucks_logo.jpg",
+  "/src/assets/startups/rolls mama.jpg",
+  "/src/assets/startups/sandlogic.png",
+  "/src/assets/startups/schemax.png",
+  "/src/assets/startups/sconex.jpg",
+  "/src/assets/startups/spice route.jpg",
+  "/src/assets/startups/spot times.png",
+  "/src/assets/startups/starbeat.jpg",
+  "/src/assets/startups/starry stories.png",
+  "/src/assets/startups/sweya.png",
+  "/src/assets/startups/talentspotify_logo.jpg",
+  "/src/assets/startups/taramandal.jpg",
+  "/src/assets/startups/tessrac_logo.jpg",
+  "/src/assets/startups/train dhaba.avif",
+  "/src/assets/startups/vihaan.jpg",
+  "/src/assets/startups/vyomastra.jpg",
+].map(resolveLegacyAsset);
 
 export type StartupItem = {
   id: string;

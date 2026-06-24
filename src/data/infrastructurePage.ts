@@ -10,10 +10,14 @@ import {
   Wifi,
 } from "lucide-react";
 
-import ahubImg from "@/assets/infastructure/ahub.jpg";
-import collaborativeImg from "@/assets/infastructure/collabrative environment.png";
-import conferenceHallImg from "@/assets/infastructure/confenrce hall.jpg";
-import iotLabsImg from "@/assets/infastructure/iot labs.jpeg";
+import { resolveLegacyAsset } from "@/lib/assets";
+
+const [ahubImg, collaborativeImg, conferenceHallImg, iotLabsImg] = [
+  "/src/assets/infastructure/ahub.jpg",
+  "/src/assets/infastructure/collabrative environment.png",
+  "/src/assets/infastructure/confenrce hall.jpg",
+  "/src/assets/infastructure/iot labs.jpeg",
+].map(resolveLegacyAsset);
 
 export type FacilityItem = {
   title: string;
