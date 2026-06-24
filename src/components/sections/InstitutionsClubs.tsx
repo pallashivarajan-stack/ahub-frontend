@@ -1,21 +1,6 @@
 import { motion } from "framer-motion";
 import { institutions } from "@/data";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
-import inst1 from "@/assets/inst-1.jpg";
-import inst2 from "@/assets/inst-2.jpg";
-import inst3 from "@/assets/inst-3.jpg";
-import inst4 from "@/assets/inst-4.jpg";
-import inst5 from "@/assets/inst-5.jpg";
-import inst6 from "@/assets/inst-6.jpg";
-
-const imgMap: Record<string, string> = {
-  "/src/assets/inst-1.jpg": inst1,
-  "/src/assets/inst-2.jpg": inst2,
-  "/src/assets/inst-3.jpg": inst3,
-  "/src/assets/inst-4.jpg": inst4,
-  "/src/assets/inst-5.jpg": inst5,
-  "/src/assets/inst-6.jpg": inst6,
-};
 
 export function InstitutionsClubs() {
   return (
@@ -35,7 +20,7 @@ export function InstitutionsClubs() {
               className={`group relative overflow-hidden rounded-[28px] ${i === 0 ? "md:col-span-2" : ""}`}
             >
               <img
-                src={imgMap[inst.img]}
+                src={inst.img}
                 alt={inst.name}
                 loading="lazy"
                 className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105"

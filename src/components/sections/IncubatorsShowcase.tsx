@@ -14,6 +14,7 @@ import auElementAhubImg from "@/assets/incubators/au element ahub.jpg";
 import marineAhubImg from "@/assets/incubators/marine ahub.jpg";
 import nasscomAhubImg from "@/assets/incubators/nasscom ahub.jpg";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
+import { usePublicIncubators } from "@/hooks/usePublicContent";
 
 type StatItem = {
   value: string;
@@ -104,15 +105,16 @@ const incubators: Incubator[] = [
 ];
 
 export function IncubatorsShowcase() {
+  const { data: incubatorsData } = usePublicIncubators(incubators);
   const [i, setI] = useState(0);
   const dragX = useMotionValue(0);
   const rotate = useTransform(dragX, [-200, 200], [-8, 8]);
   const constraintsRef = useRef<HTMLDivElement>(null);
 
-  const c = incubators[i];
+  const c = incubatorsData[i];
 
-  const next = () => setI((x) => (x + 1) % incubators.length);
-  const prev = () => setI((x) => (x - 1 + incubators.length) % incubators.length);
+  const next = () => setI((x) => (x + 1) % incubatorsData.length);
+  const prev = () => setI((x) => (x - 1 + incubatorsData.length) % incubatorsData.length);
 
   return (
     <section className="py-16 md:py-24">

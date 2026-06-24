@@ -1,39 +1,11 @@
 import { useEffect, useRef } from "react";
 import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
 import { gsap } from "@/lib/gsap";
-import { events } from "@/data";
+import { usePublicEvents } from "@/hooks/usePublicContent";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
 
-/* ── Event image imports ── */
-import startupSaturday1 from "@/assets/events/startup saturday.jpeg";
-import beenThereDoneThat1 from "@/assets/events/been there done that.jpeg";
-import googleStartupDays from "@/assets/events/google starup success days.jpg";
-import ideathon from "@/assets/events/ideathon.jpg";
-import startUpSaturday2 from "@/assets/events/Start Up saturday.jpeg";
-import beenThereDoneThat2 from "@/assets/events/been there donw that 2.jpeg";
-import andhraTechLeague from "@/assets/events/andhra texh league.jpg";
-import hackapHackathon from "@/assets/events/Hackap agritech hackathon.jpg";
-import startupsSaturday3 from "@/assets/events/starups staruday.jpg";
-import runninWild from "@/assets/events/runnin wild.jpeg";
-import edsCompetition from "@/assets/events/eds stduet design competittion.jpeg";
-import eyesWideShut from "@/assets/events/eyes wide shut.jpg";
-
-const imgMap: Record<string, string> = {
-  "/src/assets/events/startup saturday.jpeg": startupSaturday1,
-  "/src/assets/events/been there done that.jpeg": beenThereDoneThat1,
-  "/src/assets/events/google starup success days.jpg": googleStartupDays,
-  "/src/assets/events/ideathon.jpg": ideathon,
-  "/src/assets/events/Start Up saturday.jpeg": startUpSaturday2,
-  "/src/assets/events/been there donw that 2.jpeg": beenThereDoneThat2,
-  "/src/assets/events/andhra texh league.jpg": andhraTechLeague,
-  "/src/assets/events/Hackap agritech hackathon.jpg": hackapHackathon,
-  "/src/assets/events/starups staruday.jpg": startupsSaturday3,
-  "/src/assets/events/runnin wild.jpeg": runninWild,
-  "/src/assets/events/eds stduet design competittion.jpeg": edsCompetition,
-  "/src/assets/events/eyes wide shut.jpg": eyesWideShut,
-};
-
 export function LatestEvents() {
+  const { data: events = [] } = usePublicEvents();
   const trackRef = useRef<HTMLDivElement | null>(null);
   const animationRef = useRef<gsap.core.Tween | null>(null);
 
@@ -104,7 +76,7 @@ export function LatestEvents() {
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={imgMap[e.img]}
+                  src={e.img}
                   alt={e.title}
                   loading="eager"
                   draggable={false}

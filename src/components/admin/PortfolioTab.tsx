@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { toast } from "sonner";
 import { useCompanies, useCreateCompany, useUpdateCompany, useDeleteCompany } from "@/hooks/useCMS";
 
-const BACKEND_URL = "http://localhost:8000";
+import { resolveBackendMediaUrl } from "@/lib/media";
 
 export function PortfolioTab() {
   const { data: companiesData, isLoading } = useCompanies();
@@ -170,7 +170,7 @@ export function PortfolioTab() {
                       <TableCell>
                         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border overflow-hidden">
                           {company.logo_image ? (
-                            <img src={company.logo_image.startsWith('http') ? company.logo_image : `${BACKEND_URL}${company.logo_image}`} alt={company.company_name} className="h-7 w-7 object-contain" />
+                            <img src={resolveBackendMediaUrl(company.logo_image)} alt={company.company_name} className="h-7 w-7 object-contain" />
                           ) : <Building2 className="h-4 w-4 text-slate-300" />}
                         </div>
                       </TableCell>

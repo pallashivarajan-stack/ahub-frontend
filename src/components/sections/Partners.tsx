@@ -1,4 +1,5 @@
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
+import { usePublicPartners } from "@/hooks/usePublicContent";
 
 import alcove from "@/assets/partners/alcove.jpg";
 import atpi from "@/assets/partners/atpi.jpg";
@@ -16,8 +17,9 @@ const partnerLogos = [
 ];
 
 export function Partners() {
-  const row1 = partnerLogos;
-  const row2 = [...partnerLogos].reverse();
+  const { data: partnerLogosData } = usePublicPartners(partnerLogos);
+  const row1 = partnerLogosData;
+  const row2 = [...partnerLogosData].reverse();
 
   const loop1 = [...row1, ...row1];
   const loop2 = [...row2, ...row2];

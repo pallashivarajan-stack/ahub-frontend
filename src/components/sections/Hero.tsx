@@ -2,12 +2,22 @@ import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import heroPoster from "@/assets/hero-poster.jpg";
 import heroVideo from "@/assets/AUIC NIDHI iTBI - a-hub (1080p, h264).mp4";
+import { usePublicHero } from "@/hooks/usePublicContent";
+
+const fallbackHeroData = {
+  poster: heroPoster,
+  video: heroVideo,
+  heading: "A premium startup ecosystem for ambitious founders.",
+  subheading: "Incubation, mentorship, and strategic support in a cinematic, high-trust setting.",
+};
 
 export function Hero() {
   const [videoFailed, setVideoFailed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const prefersReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  
+  const { data: heroData } = usePublicHero(fallbackHeroData);
 
   // Detect mobile to prevent loading heavy video
   useEffect(() => {
@@ -47,18 +57,18 @@ export function Hero() {
           loop
           playsInline
           preload="auto"
-          poster={heroPoster}
+          poster={heroData.poster}
           onError={() => {
-            console.error("Video failed to load:", heroVideo);
+            console.error("Video failed to load:", heroData.video);
             setVideoFailed(true);
           }}
-          onLoadStart={() => console.log("Video loading:", heroVideo)}
+          onLoadStart={() => console.log("Video loading:", heroData.video)}
           aria-hidden="true"
           crossOrigin="anonymous"
           controlsList="nodownload"
           disablePictureInPicture
         >
-          <source src={heroVideo} type="video/mp4" />
+          <source src={heroData.video} type="video/mp4" />
           Your browser does not support HTML5 video.
         </video>
       ) : (
@@ -104,12 +114,12 @@ export function Hero() {
         <div className="max-w-xl text-white">
           {/* Main Heading */}
           <h1 className="text-balance font-display text-3xl font-semibold leading-[1.2] sm:leading-[1.05] tracking-tight sm:text-4xl xl:text-[3.5rem] drop-shadow-[0_12px_32px_rgba(0,0,0,0.6)]">
-            A premium startup ecosystem for ambitious founders.
+            {heroData.heading}
           </h1>
 
           {/* Subheading */}
           <p className="mt-6 max-w-lg text-base leading-relaxed text-white/88 md:text-lg drop-shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
-            Incubation, mentorship, and strategic support in a cinematic, high-trust setting.
+            {heroData.subheading}
           </p>
 
           {/* CTA Button */}

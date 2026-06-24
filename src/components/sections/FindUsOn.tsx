@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Instagram, Linkedin, Search, Twitter, MessageSquareQuote } from "lucide-react";
+import { usePublicSocialLinks } from "@/hooks/usePublicContent";
 
 const platforms = [
   {
@@ -46,6 +47,7 @@ const platforms = [
 
 export function FindUsOn() {
   const [cursor, setCursor] = useState({ x: 50, y: 50 });
+  const { data: platformsData } = usePublicSocialLinks(platforms);
 
   return (
     <section id="social" className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#FFF8F3_0%,#FFFFFF_100%)] py-16 text-foreground md:py-24">
@@ -70,7 +72,7 @@ export function FindUsOn() {
         </div>
 
         <div className="mt-12 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {platforms.map((platform, index) => (
+          {platformsData.map((platform: any, index: number) => (
             <SocialCard
               key={platform.name}
               platform={platform}
@@ -91,12 +93,17 @@ function SocialCard({
   cursor,
   setCursor,
 }: {
-  platform: (typeof platforms)[number];
+  platform: any;
   index: number;
   cursor: { x: number; y: number };
   setCursor: (value: { x: number; y: number }) => void;
 }) {
-  const Icon = platform.icon;
+  const iconMap: Record<string, any> = {
+    Linkedin: Linkedin,
+    Twitter: Twitter,
+    Instagram: Instagram,
+  };
+  const Icon = platform.icon || iconMap[platform.iconName] || Search;
 
   return (
     <motion.a

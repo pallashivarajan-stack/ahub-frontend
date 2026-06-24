@@ -1,74 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Briefcase, MessageSquare, Users, Loader2 } from "lucide-react";
-import { portfolio as localPortfolio } from "@/data";
+import { usePublicPortfolio } from "@/hooks/usePublicContent";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
-
-const BACKEND_URL = "http://localhost:8000";
-
-interface PortfolioItem {
-  id: number;
-  startup: string;
-  company_name?: string; // from backend
-  industry: string;
-  tag?: string; // from backend
-  category?: string;
-  desc: string;
-  description?: string; // from backend
-  achievements: string[];
-  funding?: string;
-  logo: string;
-  logo_image?: string; // from backend
-  founder: string;
-  founder_name?: string; // from backend
-  founderTitle?: string;
-  founder_designation?: string; // from backend
-  founderImage: string;
-  founder_image?: string; // from backend
-  website_url?: string;
-  websiteUrl?: string;
-}
 
 export function PortfolioCompanies() {
   const [active, setActive] = useState(0);
-  const [portfolio, setPortfolio] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadPortfolio() {
-      try {
-        const res = await fetch(`${BACKEND_URL}/api/public/portfolio-companies`);
-        if (!res.ok) throw new Error("Failed to fetch public portfolio companies");
-        const data = await res.json();
-        
-        // Map backend response structure to fit React component expectations
-        const mappedData = data.map((item: any) => ({
-          startup: item.company_name,
-          industry: item.tag,
-          category: item.tag.toUpperCase(),
-          desc: item.description,
-          achievements: ["AI Powered", "Incubated", "Innovator"], // Default labels for dynamic entries
-          logo: item.logo_image ? `${BACKEND_URL}${item.logo_image}` : "",
-          founder: item.founder_name,
-          founderTitle: item.founder_designation,
-          founderImage: item.founder_image ? `${BACKEND_URL}${item.founder_image}` : "",
-          websiteUrl: item.website_url,
-        }));
-        
-        if (mappedData.length > 0) {
-          setPortfolio(mappedData);
-        } else {
-          setPortfolio(localPortfolio);
-        }
-      } catch (err) {
-        console.warn("Backend API not reachable, falling back to local static portfolio data.", err);
-        setPortfolio(localPortfolio);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadPortfolio();
-  }, []);
+  const { data: portfolio = [], isLoading: loading } = usePublicPortfolio();
 
   if (loading) {
     return (
@@ -121,7 +59,6 @@ export function PortfolioCompanies() {
                     isActive ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
                   }`}
                 >
-                  {/* LEFT SIDE */}
                   <div className="flex flex-col justify-center max-w-[500px]">
                     <div className="space-y-4 md:space-y-5">
                       <div className="flex items-center gap-3">
@@ -195,7 +132,6 @@ export function PortfolioCompanies() {
                     )}
                   </div>
 
-                  {/* RIGHT SIDE – Founder Portrait + Glass Card */}
                   <div className="hidden md:flex relative h-full flex-col items-center justify-center">
                     <div className="relative w-full max-w-[180px]">
                       <div className="h-[220px] rounded-[20px] overflow-hidden bg-gradient-to-b from-[#FFF0E2] via-[#FFE3CC] to-[#FFF0E2] border border-[#FFE0C9]/30 shadow-sm">
@@ -214,7 +150,6 @@ export function PortfolioCompanies() {
                         )}
                       </div>
 
-                      {/* Founder Card — matches reference exactly */}
                       <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 w-[85%] bg-white/95 backdrop-blur-sm rounded-2xl px-5 py-4 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-orange-100/30 transition-all duration-300 ease-out group-hover:-translate-y-1.5 group-hover:shadow-[0_14px_40px_rgba(0,0,0,0.10)] z-20 text-center">
                         <p className="text-[13px] font-semibold text-[#F97316] tracking-wide leading-none">
                           Founded by
