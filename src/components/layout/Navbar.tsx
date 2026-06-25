@@ -1,4 +1,12 @@
-import { useEffect, useRef, useState, type ComponentType } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  forwardRef,
+  type ComponentType,
+  type RefObject,
+} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
@@ -21,7 +29,20 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { resolveLegacyAsset } from "@/lib/assets";
 import { cn } from "@/lib/utils";
 
-const [ahubLogo, heroPoster, event1, event2, event3, event4, inst1, inst2, inst3, inst4, inst5, inst6] = [
+const [
+  ahubLogo,
+  heroPoster,
+  event1,
+  event2,
+  event3,
+  event4,
+  inst1,
+  inst2,
+  inst3,
+  inst4,
+  inst5,
+  inst6,
+] = [
   "/src/assets/AHub-Logo-1.png",
   "/src/assets/hero-poster.jpg",
   "/src/assets/event-1.jpg",
@@ -138,9 +159,21 @@ const _startupCards = portfolio.slice(0, 4);
 const _eventCards = events.slice(0, 4);
 
 const _networkCards = [
-  { icon: Building2, title: "Institutional Nodes", desc: "Research parks, university cells, and regional launchpads." },
-  { icon: Users, title: "Partner Graph", desc: "Capital, operators, and enterprise allies connected into one ecosystem." },
-  { icon: Globe2, title: "Distribution Reach", desc: "A layered network for pilots, procurement, and founder visibility." },
+  {
+    icon: Building2,
+    title: "Institutional Nodes",
+    desc: "Research parks, university cells, and regional launchpads.",
+  },
+  {
+    icon: Users,
+    title: "Partner Graph",
+    desc: "Capital, operators, and enterprise allies connected into one ecosystem.",
+  },
+  {
+    icon: Globe2,
+    title: "Distribution Reach",
+    desc: "A layered network for pilots, procurement, and founder visibility.",
+  },
 ];
 
 type MenuLink = { label: string; href: string; description: string; image: string };
@@ -153,77 +186,237 @@ type StudentTab = {
   stats: string[];
 };
 
-const PANEL_CONTENT: Record<PanelKey, { eyebrow: string; summary: string; links: MenuLink[]; compact?: boolean; spotlight?: { image: string; caption: string; note: string } }> = {
+const PANEL_CONTENT: Record<
+  PanelKey,
+  {
+    eyebrow: string;
+    summary: string;
+    links: MenuLink[];
+    compact?: boolean;
+    spotlight?: { image: string; caption: string; note: string };
+  }
+> = {
   approach: {
     eyebrow: "Approach",
-    summary: "Our core approach — vision, roadmap, and the operational model that drives our ecosystem.",
+    summary:
+      "Our core approach — vision, roadmap, and the operational model that drives our ecosystem.",
     links: [
-      { label: "Vision & Roadmap", href: "/about/vision-roadmap", description: "Mission, milestones, and growth direction.", image: heroPoster },
-      { label: "Operational Model", href: "/approach/operational-model", description: "How we build, validate, and scale startups.", image: inst4 },
+      {
+        label: "Vision & Roadmap",
+        href: "/about/vision-roadmap",
+        description: "Mission, milestones, and growth direction.",
+        image: heroPoster,
+      },
+      {
+        label: "Operational Model",
+        href: "/approach/operational-model",
+        description: "How we build, validate, and scale startups.",
+        image: inst4,
+      },
     ],
     compact: true,
-    spotlight: { image: heroPoster, caption: "Strategic clarity", note: "Vision, roadmap, and operational structure" },
+    spotlight: {
+      image: heroPoster,
+      caption: "Strategic clarity",
+      note: "Vision, roadmap, and operational structure",
+    },
   },
   aspire: {
     eyebrow: "Aspire",
-    summary: "Explore the startup portfolio, infrastructure, partners, investors, and startup events.",
+    summary:
+      "Explore the startup portfolio, infrastructure, partners, investors, and startup events.",
     links: [
-      { label: "Startup Portfolio", href: "/startups/startup-portfolio", description: "Explore our incubated startups and their journeys.", image: inst2 },
-      { label: "Infrastructure", href: "/ecosystem/infrastructure", description: "Labs, halls, and collaboration spaces.", image: inst4 },
-      { label: "Partners", href: "/ecosystem/partners", description: "Institutional logos and collaboration network.", image: inst3 },
-      { label: "Investors", href: "/ecosystem/investors", description: "Funding partners, angels, and venture support.", image: inst2 },
-      { label: "Startup Events", href: "/events/startups-events", description: "Demo days, pitch sessions, and founder meetups.", image: event2 },
+      {
+        label: "Startup Portfolio",
+        href: "/startups/startup-portfolio",
+        description: "Explore our incubated startups and their journeys.",
+        image: inst2,
+      },
+      {
+        label: "Infrastructure",
+        href: "/ecosystem/infrastructure",
+        description: "Labs, halls, and collaboration spaces.",
+        image: inst4,
+      },
+      {
+        label: "Partners",
+        href: "/ecosystem/partners",
+        description: "Institutional logos and collaboration network.",
+        image: inst3,
+      },
+      {
+        label: "Investors",
+        href: "/ecosystem/investors",
+        description: "Funding partners, angels, and venture support.",
+        image: inst2,
+      },
+      {
+        label: "Startup Events",
+        href: "/events/startups-events",
+        description: "Demo days, pitch sessions, and founder meetups.",
+        image: event2,
+      },
     ],
-    spotlight: { image: inst2, caption: "Aspire ecosystem layer", note: "Portfolio, infrastructure, and investor access" },
+    spotlight: {
+      image: inst2,
+      caption: "Aspire ecosystem layer",
+      note: "Portfolio, infrastructure, and investor access",
+    },
   },
   associate: {
     eyebrow: "Associate",
     summary: "Join our ecosystem — programs, startup support, and venue bookings.",
     links: [
-      { label: "Join Us", href: "/programs/join-us", description: "Community onboarding and membership.", image: event4 },
-      { label: "Pitch To Us", href: "/programs/pitch-to-us", description: "Startup submission and founder intake.", image: event3 },
-      { label: "Seminar Hall Booking", href: "/ecosystem/seminar-hall-booking", description: "Request a venue, date, and support package.", image: event1 },
-      { label: "Startup Funding", href: "/startups/startup-funding", description: "Funding pathways, grants, and investor access.", image: inst5 },
+      {
+        label: "Join Us",
+        href: "/programs/join-us",
+        description: "Community onboarding and membership.",
+        image: event4,
+      },
+      {
+        label: "Pitch To Us",
+        href: "/programs/pitch-to-us",
+        description: "Startup submission and founder intake.",
+        image: event3,
+      },
+      {
+        label: "Seminar Hall Booking",
+        href: "/ecosystem/seminar-hall-booking",
+        description: "Request a venue, date, and support package.",
+        image: event1,
+      },
+      {
+        label: "Startup Funding",
+        href: "/startups/startup-funding",
+        description: "Funding pathways, grants, and investor access.",
+        image: inst5,
+      },
     ],
     compact: true,
-    spotlight: { image: event4, caption: "Associate programs", note: "Join, pitch, fund, and book" },
+    spotlight: {
+      image: event4,
+      caption: "Associate programs",
+      note: "Join, pitch, fund, and book",
+    },
   },
   achieve: {
     eyebrow: "Achieve",
     summary: "Impact metrics, recognition, and reports showcasing ecosystem outcomes.",
     links: [
-      { label: "Impact", href: "/achieve/impact", description: "Ecosystem impact metrics and founder outcomes.", image: inst1 },
-      { label: "Reward & Recognition", href: "/about/rewards", description: "Awards, accolades, and ecosystem milestones.", image: event3 },
-      { label: "Reports", href: "/about/reports", description: "Annual reports, impact metrics, and data insights.", image: event4 },
+      {
+        label: "Impact",
+        href: "/achieve/impact",
+        description: "Ecosystem impact metrics and founder outcomes.",
+        image: inst1,
+      },
+      {
+        label: "Reward & Recognition",
+        href: "/about/rewards",
+        description: "Awards, accolades, and ecosystem milestones.",
+        image: event3,
+      },
+      {
+        label: "Reports",
+        href: "/about/reports",
+        description: "Annual reports, impact metrics, and data insights.",
+        image: event4,
+      },
     ],
     compact: true,
-    spotlight: { image: event3, caption: "Achievement & recognition", note: "Impact, rewards, and transparent reporting" },
+    spotlight: {
+      image: event3,
+      caption: "Achievement & recognition",
+      note: "Impact, rewards, and transparent reporting",
+    },
   },
   announcement: {
     eyebrow: "Announcement",
     summary: "Press, case studies, events, registrations, blogs, and career opportunities.",
     links: [
-      { label: "Press", href: "/about/press", description: "Media coverage, news features, and publications.", image: event2 },
-      { label: "Case Studies", href: "/events/case-studies", description: "Impact stories and startup journey highlights.", image: inst3 },
-      { label: "Events Calendar", href: "/events/calendar", description: "Interactive event schedule and upcoming dates.", image: event1 },
-      { label: "Startup Blogs", href: "/startups/blog", description: "Insights, stories, and innovation updates.", image: heroPoster },
-      { label: "Event Registration", href: "/events/event-registration", description: "Register and RSVP for upcoming events.", image: event2 },
-      { label: "Startup Registration", href: "/startups/startup-registration", description: "Onboarding for founders and teams.", image: inst6 },
-      { label: "Internship Registration", href: "/students/internship-registration", description: "Apply for internships and track status.", image: event2 },
-      { label: "Internship Calendar", href: "/students/internship-calendar", description: "Internship schedules, openings, and timelines.", image: event1 },
+      {
+        label: "Press",
+        href: "/about/press",
+        description: "Media coverage, news features, and publications.",
+        image: event2,
+      },
+      {
+        label: "Case Studies",
+        href: "/events/case-studies",
+        description: "Impact stories and startup journey highlights.",
+        image: inst3,
+      },
+      {
+        label: "Events Calendar",
+        href: "/events/calendar",
+        description: "Interactive event schedule and upcoming dates.",
+        image: event1,
+      },
+      {
+        label: "Startup Blogs",
+        href: "/startups/blog",
+        description: "Insights, stories, and innovation updates.",
+        image: heroPoster,
+      },
+      {
+        label: "Event Registration",
+        href: "/events/event-registration",
+        description: "Register and RSVP for upcoming events.",
+        image: event2,
+      },
+      {
+        label: "Startup Registration",
+        href: "/startups/startup-registration",
+        description: "Onboarding for founders and teams.",
+        image: inst6,
+      },
+      {
+        label: "Internship Registration",
+        href: "/students/internship-registration",
+        description: "Apply for internships and track status.",
+        image: event2,
+      },
+      {
+        label: "Internship Calendar",
+        href: "/students/internship-calendar",
+        description: "Internship schedules, openings, and timelines.",
+        image: event1,
+      },
     ],
-    spotlight: { image: event2, caption: "Announcements & updates", note: "Press, events, registrations, and blogs" },
+    spotlight: {
+      image: event2,
+      caption: "Announcements & updates",
+      note: "Press, events, registrations, and blogs",
+    },
   },
   about: {
     eyebrow: "About",
     summary: "Meet the mentors, board, and team behind the AUIC ecosystem.",
     links: [
-      { label: "Mentors", href: "/about/mentors", description: "Industry experts, office hours, and domain guidance.", image: inst1 },
-      { label: "Board", href: "/about/board", description: "Governance, leadership, and strategic oversight.", image: inst5 },
-      { label: "Team", href: "/about/team", description: "Core team, coordinators, and student leaders.", image: inst6 },
+      {
+        label: "Mentors",
+        href: "/about/mentors",
+        description: "Industry experts, office hours, and domain guidance.",
+        image: inst1,
+      },
+      {
+        label: "Board",
+        href: "/about/board",
+        description: "Governance, leadership, and strategic oversight.",
+        image: inst5,
+      },
+      {
+        label: "Team",
+        href: "/about/team",
+        description: "Core team, coordinators, and student leaders.",
+        image: inst6,
+      },
     ],
     compact: true,
-    spotlight: { image: inst5, caption: "Institutional leadership", note: "Mentors, board, and team" },
+    spotlight: {
+      image: inst5,
+      caption: "Institutional leadership",
+      note: "Mentors, board, and team",
+    },
   },
 };
 
@@ -245,7 +438,8 @@ const _STUDENT_TABS: StudentTab[] = [
   {
     label: "Dashboard",
     href: "/students/dashboard",
-    description: "Track programs, opportunities, registrations, and application status in one view.",
+    description:
+      "Track programs, opportunities, registrations, and application status in one view.",
     image: heroPoster,
     stats: ["Program tracking", "Startup opportunities", "RSVP status"],
   },
@@ -257,13 +451,15 @@ function scrollToSection(id: string) {
   window.history.replaceState(null, "", `#${id}`);
 }
 
-function MobileMenuToggle({ open, onClick }: { open: boolean; onClick: () => void }) {
-  return (
+const MobileMenuToggle = forwardRef<HTMLButtonElement, { open: boolean; onClick: () => void }>(
+  ({ open, onClick }, ref) => (
     <button
+      ref={ref}
       type="button"
       aria-label={open ? "Close menu" : "Open menu"}
       aria-expanded={open}
-      className="grid h-10 w-10 place-items-center rounded-lg border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.08)] text-white transition hover:border-[rgba(255,255,255,0.25)] hover:bg-[rgba(255,255,255,0.12)] focus:outline-none"
+      aria-controls="mobile-menu-panel"
+      className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.08)] text-white transition hover:border-[rgba(255,255,255,0.25)] hover:bg-[rgba(255,255,255,0.12)] focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
       onClick={onClick}
     >
       <span className="relative flex h-4 w-4 items-center justify-center">
@@ -287,9 +483,8 @@ function MobileMenuToggle({ open, onClick }: { open: boolean; onClick: () => voi
         />
       </span>
     </button>
-  );
-}
-
+  ),
+);
 
 function MegaMenuPanel({
   activePanel,
@@ -297,7 +492,7 @@ function MegaMenuPanel({
   onNavigate,
 }: {
   activePanel: PanelKey | null;
-  panelRef: React.RefObject<HTMLDivElement | null>;
+  panelRef: RefObject<HTMLDivElement | null>;
   onNavigate: () => void;
 }) {
   const panel = activePanel ? PANEL_CONTENT[activePanel] : null;
@@ -321,32 +516,41 @@ function MegaMenuPanel({
         >
           <div className="relative flex items-center justify-between gap-4 border-b border-slate-200 px-2 pb-4">
             <div>
-              <div className="text-xs uppercase tracking-widest text-slate-500">{panel.eyebrow}</div>
+              <div className="text-xs uppercase tracking-widest text-slate-500">
+                {panel.eyebrow}
+              </div>
             </div>
           </div>
 
           <div className="relative overflow-y-auto max-h-[calc(100vh-200px)] px-2 pb-2 pt-3">
-            <div className={cn("grid gap-3", panel.compact ? "sm:grid-cols-2" : "sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4")}>
+            <div
+              className={cn(
+                "grid gap-3",
+                panel.compact ? "sm:grid-cols-2" : "sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4",
+              )}
+            >
               {panel.links.map((item) => {
                 // Map labels to appropriate icons
                 const iconMap: Record<string, IconType> = {
-                  "Mentors": Users,
-                  "Board": Building2,
-                  "Team": Users,
-                  "Incubation": Rocket,
-                  "Innovation": Layers3,
-                  "Mentorship": Users,
-                  "Funding": BadgeDollarSign,
-                  "Partners": Building2,
-                  "Infrastructure": Layers3,
-                  "Dashboard": Zap,
-                  "Calendar": CalendarDays,
-                  "Registration": ShieldCheck,
-                  "Login": ShieldCheck,
+                  Mentors: Users,
+                  Board: Building2,
+                  Team: Users,
+                  Incubation: Rocket,
+                  Innovation: Layers3,
+                  Mentorship: Users,
+                  Funding: BadgeDollarSign,
+                  Partners: Building2,
+                  Infrastructure: Layers3,
+                  Dashboard: Zap,
+                  Calendar: CalendarDays,
+                  Registration: ShieldCheck,
+                  Login: ShieldCheck,
                 };
-                
-                const Icon = Object.entries(iconMap).find(([key]) => item.label.includes(key))?.[1] || Sparkles;
-                
+
+                const Icon =
+                  Object.entries(iconMap).find(([key]) => item.label.includes(key))?.[1] ||
+                  Sparkles;
+
                 return (
                   <Link
                     key={item.href}
@@ -362,9 +566,14 @@ function MegaMenuPanel({
                     <div className="p-3.5">
                       <div className="flex items-center justify-between gap-3">
                         <div className="text-sm font-medium text-slate-900">{item.label}</div>
-                        <ArrowRight className="text-[#e75710] opacity-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:opacity-100" size={14} />
+                        <ArrowRight
+                          className="text-[#e75710] opacity-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:opacity-100"
+                          size={14}
+                        />
                       </div>
-                      <p className="mt-1.5 text-xs leading-relaxed text-slate-600">{item.description}</p>
+                      <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
+                        {item.description}
+                      </p>
                     </div>
                   </Link>
                 );
@@ -389,10 +598,45 @@ export function Navbar() {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const navRef = useRef<HTMLDivElement | null>(null);
 
-  const closeMenus = () => {
+  const toggleRef = useRef<HTMLButtonElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const closeMenus = useCallback(() => {
     setActivePanel(null);
     setMobileOpen(false);
-  };
+  }, []);
+
+  // Focus trap for mobile menu
+  useEffect(() => {
+    if (!mobileOpen || !menuRef.current) return;
+    const menu = menuRef.current;
+    const focusable = menu.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    // Focus first element after open
+    first?.focus();
+    const trap = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+    menu.addEventListener("keydown", trap);
+    return () => {
+      menu.removeEventListener("keydown", trap);
+      toggleRef.current?.focus();
+    };
+  }, [mobileOpen]);
 
   useEffect(() => {
     // use ScrollTrigger so Lenis-driven scrolling controls the header state
@@ -423,7 +667,9 @@ export function Navbar() {
     const ids = NAV_ITEMS.map((item) => item.href.slice(1));
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
         if (visible[0]?.target instanceof HTMLElement) {
           setActiveSection(visible[0].target.id);
         }
@@ -441,12 +687,37 @@ export function Navbar() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeMenus();
+      if (event.key === "Escape") {
+        closeMenus();
+        return;
+      }
+      // Arrow navigation in dropdown panels
+      if (activePanel && (event.key === "ArrowDown" || event.key === "ArrowUp")) {
+        const panel = panelRef.current;
+        if (!panel) return;
+        const focusable = panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        );
+        if (focusable.length === 0) return;
+        event.preventDefault();
+        const currentIndex = Array.from(focusable).indexOf(document.activeElement as HTMLElement);
+        if (event.key === "ArrowDown") {
+          const next = focusable[(currentIndex + 1) % focusable.length];
+          next?.focus();
+        } else {
+          const prev = focusable[(currentIndex - 1 + focusable.length) % focusable.length];
+          prev?.focus();
+        }
+      }
+      // ArrowDown on trigger with no active panel: open panel and focus first item
+      if (activePanel === null && event.key === "ArrowDown") {
+        // handled per-item via onFocus
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [activePanel, closeMenus]);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -488,28 +759,24 @@ export function Navbar() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.04 }}
       className="fixed inset-x-0 top-0 z-50 pointer-events-none"
     >
-      <div
-        ref={navRef}
-        className="relative w-full"
-        onMouseLeave={() => setActivePanel(null)}
-      >
+      <div ref={navRef} className="relative w-full" onMouseLeave={() => setActivePanel(null)}>
         {/* Subtle overlay behind navbar */}
         <div className="pointer-events-auto absolute inset-x-0 top-0 h-[60px] bg-gradient-to-b from-white/20 to-transparent" />
         {/* Left black overlay for contrast (desktop) */}
         <div className="hidden lg:block pointer-events-none absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-r from-black/80 to-transparent z-0" />
 
         <nav
+          aria-label="Primary navigation"
           className={cn(
-            "pointer-events-auto relative mx-auto flex h-[64px] w-full items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-5 md:px-6 lg:px-6 transition-all duration-400",
+            "pointer-events-auto relative mx-auto flex h-[64px] w-full items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-5 md:px-6 lg:px-6 transition-[box-shadow] duration-400",
             scrolled ? "shadow-sm" : "",
           )}
         >
           {/* Logo section - left aligned */}
           <div className="flex shrink-0 items-center gap-3 pr-0 lg:pr-1">
-            <button 
-              type="button" 
-              onClick={() => navigate({ to: "/" })} 
-              className="group flex items-center gap-3 focus:outline-none transition-opacity hover:opacity-70"
+            <Link
+              to="/"
+              className="group flex items-center gap-3 transition-opacity hover:opacity-70 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
             >
               <img
                 src={ahubLogo}
@@ -518,10 +785,14 @@ export function Navbar() {
                 draggable={false}
               />
               <div className="flex flex-col leading-tight">
-                <span className="text-[0.95rem] font-semibold text-slate-950 tracking-tight">AUIC</span>
-                <span className="text-[0.68rem] text-slate-700 font-medium uppercase tracking-[0.22em]">Incubation Hub</span>
+                <span className="text-[0.95rem] font-semibold text-slate-950 tracking-tight">
+                  AUIC
+                </span>
+                <span className="text-[0.68rem] text-slate-700 font-medium uppercase tracking-[0.22em]">
+                  Incubation Hub
+                </span>
               </div>
-            </button>
+            </Link>
           </div>
 
           {/* Center navigation links - hidden on mobile */}
@@ -534,12 +805,14 @@ export function Navbar() {
                   <li key={item.label}>
                     <button
                       type="button"
-                      className="group flex items-center gap-1 rounded-lg px-3 py-2 text-[0.78rem] font-semibold tracking-[0.06em] text-slate-700 transition-colors duration-300 hover:text-[#e75710]"
+                      className="group flex items-center gap-1 rounded-lg px-3 py-2 text-[0.78rem] font-semibold tracking-[0.06em] text-slate-700 transition-colors duration-300 hover:text-[#e75710] focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
                       onMouseEnter={() => item.panel && setActivePanel(item.panel)}
                       onFocus={() => item.panel && setActivePanel(item.panel)}
                       onClick={() => {
                         if (hasPanel) {
-                          setActivePanel((current) => (current === item.panel ? null : item.panel ?? null));
+                          setActivePanel((current) =>
+                            current === item.panel ? null : (item.panel ?? null),
+                          );
                           return;
                         }
                         if (item.href === "#home") {
@@ -570,18 +843,28 @@ export function Navbar() {
 
           {/* CTA Button - right aligned */}
           <div className="flex shrink-0 items-center gap-2 pl-0 lg:pl-1">
-            <button
-              type="button"
-              onClick={() => scrollToSection("announcement")}
-              className="group hidden lg:inline-flex items-center gap-2 rounded-xl bg-[#e75710] px-3.5 py-2.5 text-xs font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#d85211] hover:shadow-[0_10px_24px_rgba(231,87,16,0.28)] focus:outline-none active:scale-95"
+            <a
+              href="#announcement"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("announcement");
+              }}
+              className="group hidden lg:inline-flex items-center gap-2 rounded-xl bg-[#c94a0a] px-3.5 py-2.5 text-xs font-medium text-white transition-transform duration-300 hover:-translate-y-0.5 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
             >
               Join Ecosystem
-              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-            </button>
+              <ArrowRight
+                size={15}
+                className="transition-transform duration-300 group-hover:translate-x-0.5"
+              />
+            </a>
 
             {/* Mobile menu toggle */}
             <div className="flex lg:hidden">
-              <MobileMenuToggle open={mobileOpen} onClick={() => setMobileOpen((value) => !value)} />
+              <MobileMenuToggle
+                ref={toggleRef}
+                open={mobileOpen}
+                onClick={() => setMobileOpen((value) => !value)}
+              />
             </div>
           </div>
         </nav>
@@ -600,16 +883,28 @@ export function Navbar() {
           >
             {/* Dark overlay background */}
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-            
+
             {/* Mobile menu panel */}
-            <div className="absolute inset-x-4 top-24 rounded-2xl border border-[rgba(255,255,255,0.12)] bg-black/80 backdrop-blur-xl p-6 shadow-2xl max-h-[calc(100vh-120px)] overflow-y-auto">
+            <div
+              ref={menuRef}
+              id="mobile-menu-panel"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Main navigation menu"
+              className="absolute inset-x-4 top-24 rounded-2xl border border-[rgba(255,255,255,0.12)] bg-black/80 backdrop-blur-xl p-6 shadow-2xl max-h-[calc(100vh-120px)] overflow-y-auto"
+            >
               {/* Header */}
               <div className="flex items-center justify-between gap-3 pb-6 border-b border-[rgba(255,255,255,0.1)]">
                 <div className="flex items-center gap-3">
-                    <img src={ahubLogo} alt="AUIC" className="h-11 w-auto object-contain" draggable={false} />
+                  <img
+                    src={ahubLogo}
+                    alt="AUIC"
+                    className="h-11 w-auto object-contain"
+                    draggable={false}
+                  />
                   <div>
-                      <div className="text-xs uppercase tracking-widest text-white/60">AUIC</div>
-                      <div className="text-sm font-semibold text-white">Incubation Hub</div>
+                    <div className="text-xs uppercase tracking-widest text-white/60">AUIC</div>
+                    <div className="text-sm font-semibold text-white">Incubation Hub</div>
                   </div>
                 </div>
                 <MobileMenuToggle open onClick={closeMenus} />
@@ -626,7 +921,8 @@ export function Navbar() {
                 className="mt-6 grid gap-2"
               >
                 {NAV_ITEMS.map((item) => {
-                  const isActive = activeSection === item.href.slice(1) || activePanel === item.panel;
+                  const isActive =
+                    activeSection === item.href.slice(1) || activePanel === item.panel;
                   return (
                     <motion.li
                       key={item.label}
@@ -636,7 +932,9 @@ export function Navbar() {
                         type="button"
                         onClick={() => {
                           if (item.panel) {
-                            setActivePanel((current) => (current === item.panel ? null : item.panel ?? null));
+                            setActivePanel((current) =>
+                              current === item.panel ? null : (item.panel ?? null),
+                            );
                             return;
                           }
                           if (item.href === "#home") {
@@ -647,10 +945,10 @@ export function Navbar() {
                           closeMenus();
                         }}
                         className={cn(
-                            "w-full rounded-lg px-4 py-3 text-left text-sm font-medium uppercase tracking-widest transition-all duration-300 border",
+                          "w-full rounded-lg px-4 py-3 text-left text-sm font-medium uppercase tracking-widest transition-all duration-300 border",
                           isActive
-                              ? "border-[#e75710]/40 bg-[#e75710]/10 text-white"
-                              : "border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] text-white/80 hover:border-[rgba(255,255,255,0.2)] hover:text-white",
+                            ? "border-[#e75710]/40 bg-[#e75710]/10 text-white"
+                            : "border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] text-white/80 hover:border-[rgba(255,255,255,0.2)] hover:text-white",
                         )}
                       >
                         <NavLabel label={item.label} />
@@ -663,8 +961,12 @@ export function Navbar() {
               {/* Active panel content */}
               {activePanel ? (
                 <div className="mt-6 rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] p-4">
-                  <div className="text-xs uppercase tracking-widest text-white/60">{PANEL_CONTENT[activePanel].eyebrow}</div>
-                  <p className="mt-2 text-sm leading-relaxed text-white/70">{PANEL_CONTENT[activePanel].summary}</p>
+                  <div className="text-xs uppercase tracking-widest text-white/60">
+                    {PANEL_CONTENT[activePanel].eyebrow}
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-white/70">
+                    {PANEL_CONTENT[activePanel].summary}
+                  </p>
                   <div className="mt-4 grid gap-2 max-h-64 overflow-y-auto">
                     {PANEL_CONTENT[activePanel].links.map((item) => (
                       <Link
@@ -674,7 +976,9 @@ export function Navbar() {
                         className="rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] px-3 py-2.5 text-left text-sm transition hover:border-[rgba(255,255,255,0.2)] hover:bg-[rgba(255,255,255,0.08)]"
                       >
                         <div className="font-medium text-white">{item.label}</div>
-                        <div className="mt-0.5 text-xs uppercase tracking-widest text-white/60">{item.description}</div>
+                        <div className="mt-0.5 text-xs uppercase tracking-widest text-white/60">
+                          {item.description}
+                        </div>
                       </Link>
                     ))}
                   </div>
@@ -682,17 +986,21 @@ export function Navbar() {
               ) : null}
 
               {/* CTA Button */}
-              <button
-                type="button"
-                onClick={() => {
+              <a
+                href="#announcement"
+                onClick={(e) => {
+                  e.preventDefault();
                   scrollToSection("announcement");
                   closeMenus();
                 }}
-                className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#e75710] px-5 py-2.5 text-xs font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#d85211] hover:shadow-[0_10px_24px_rgba(231,87,16,0.28)] active:scale-95"
+                className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#c94a0a] px-5 py-2.5 text-xs font-medium text-white transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(201,74,10,0.28)] active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
               >
                 Join Ecosystem
-                <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-              </button>
+                <ArrowRight
+                  size={15}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5"
+                />
+              </a>
             </div>
           </motion.div>
         )}

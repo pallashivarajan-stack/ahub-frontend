@@ -3,14 +3,47 @@ import { usePublicStartupsTicker } from "@/services/usePublicContent";
 import { resolveLegacyAsset } from "@/lib/assets";
 
 const legacyPaths = [
-  "/src/assets/startups/interview buddy.png",
-  "/src/assets/startups/edumoon.png",
-  "/src/assets/startups/greenjams_logo.jpg",
-  "/src/assets/startups/pick a book.png",
+  "/src/assets/startups/agri dna.jpg",
+  "/src/assets/startups/antar iot.png",
+  "/src/assets/startups/austhraa_motors_logo.jpg",
+  "/src/assets/startups/billbo.jpg",
+  "/src/assets/startups/bizpro.png",
+  "/src/assets/startups/cirus.jpg",
   "/src/assets/startups/data foundary.png",
-  "/src/assets/startups/sweya.png",
+  "/src/assets/startups/der auto bot.jpg",
+  "/src/assets/startups/digiotai.jpg",
+  "/src/assets/startups/edumoon.png",
+  "/src/assets/startups/furpsq.jpg",
+  "/src/assets/startups/greenjams_logo.jpg",
+  "/src/assets/startups/happy drivers.jpg",
+  "/src/assets/startups/house insta.png",
   "/src/assets/startups/icompass.png",
+  "/src/assets/startups/innoccito.jpg",
+  "/src/assets/startups/interview buddy.png",
+  "/src/assets/startups/ipmg.jpg",
+  "/src/assets/startups/jaitra.jpg",
+  "/src/assets/startups/jnana.jpg",
+  "/src/assets/startups/joora_drone_consultants_logo.jpg",
+  "/src/assets/startups/matric services.png",
+  "/src/assets/startups/nest webhost.png",
+  "/src/assets/startups/nr techcreatz.png",
+  "/src/assets/startups/pick a book.png",
+  "/src/assets/startups/retruntrucks_logo.jpg",
+  "/src/assets/startups/rolls mama.jpg",
   "/src/assets/startups/sandlogic.png",
+  "/src/assets/startups/schemax.png",
+  "/src/assets/startups/sconex.jpg",
+  "/src/assets/startups/spice route.jpg",
+  "/src/assets/startups/spot times.png",
+  "/src/assets/startups/starbeat.jpg",
+  "/src/assets/startups/starry stories.png",
+  "/src/assets/startups/sweya.png",
+  "/src/assets/startups/talentspotify_logo.jpg",
+  "/src/assets/startups/taramandal.jpg",
+  "/src/assets/startups/tessrac_logo.jpg",
+  "/src/assets/startups/train dhaba.avif",
+  "/src/assets/startups/vihaan.jpg",
+  "/src/assets/startups/vyomastra.jpg",
 ];
 
 const logos = legacyPaths.map(resolveLegacyAsset);
@@ -32,7 +65,7 @@ export function StartupsTicker() {
             100% { transform: translateX(-33.333333%); }
           }
           .animate-infinite-scroll {
-            animation: infinite-scroll 35s linear infinite;
+            animation: infinite-scroll 70s linear infinite;
             will-change: transform;
           }
         `}

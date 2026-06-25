@@ -6,7 +6,7 @@ import {
 
 /** Vite-resolved local URLs for every file under src/assets */
 const assetModules = import.meta.glob<string>(
-  "../assets/**/*.{jpg,jpeg,png,gif,webp,avif}",
+  "../assets/**/*.{jpg,jpeg,png,gif,webp,avif,mp4}",
   { eager: true, query: "?url", import: "default" },
 ) as Record<string, string>;
 

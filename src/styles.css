@@ -38,6 +38,7 @@
   --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
   --font-brand: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --breakpoint-xs: 400px;
 }
 
 :root {
@@ -48,63 +49,63 @@
   --card: #ffffff;
   --card-foreground: #5a1e2c;
   --popover: #ffffff;
-  --gradient-brand: linear-gradient(135deg, #FF9800 0%, #FFA726 100%);
+  --gradient-brand: linear-gradient(135deg, #ff9800 0%, #ffa726 100%);
   --shadow-brand: 0 30px 60px -20px rgba(255, 152, 0, 0.45);
   --shadow-card: 0 10px 30px -12px rgba(20, 20, 40, 0.12);
   --popover-foreground: #5a1e2c;
 
   --primary: #5b0e2d;
-  --primary-foreground: #FFFFFF;
+  --primary-foreground: #ffffff;
   --secondary: #7a163b;
-  --secondary-foreground: #FFFFFF;
+  --secondary-foreground: #ffffff;
 
-  --muted: rgba(91,14,45,0.06);
-  --muted-foreground: rgba(90,30,44,0.72);
-  --accent: rgba(91,14,45,0.05);
+  --muted: rgba(91, 14, 45, 0.06);
+  --muted-foreground: rgba(90, 30, 44, 0.72);
+  --accent: rgba(91, 14, 45, 0.05);
   --accent-foreground: #5a1e2c;
 
   --destructive: #b33b3b;
   --destructive-foreground: #fff;
-  --border: rgba(91,14,45,0.08);
-  --input: rgba(91,14,45,0.12);
-  --ring: rgba(91,14,45,0.22);
+  --border: rgba(91, 14, 45, 0.08);
+  --input: rgba(91, 14, 45, 0.12);
+  --ring: rgba(91, 14, 45, 0.22);
 
   /* Brand Design Tokens */
-  --gradient-brand: linear-gradient(135deg, #FF9800 0%, #FFA726 100%);
+  --gradient-brand: linear-gradient(135deg, #ff9800 0%, #ffa726 100%);
   --shadow-brand: 0 30px 60px -20px rgba(255, 152, 0, 0.45);
   --shadow-card: 0 10px 30px -12px rgba(20, 20, 40, 0.12);
 
   /* Board Section Tokens */
-  --board-cream: #FFF8F1;
-  --board-cream-deep: #F5E6D3;
-  --board-primary: #FF6B00;
+  --board-cream: #fff8f1;
+  --board-cream-deep: #f5e6d3;
+  --board-primary: #ff6b00;
   --board-primary-fg: #ffffff;
-  --board-foreground: #1A0F0A;
-  --board-muted-fg: #8A7B76;
+  --board-foreground: #1a0f0a;
+  --board-muted-fg: #8a7b76;
   --board-shadow-elegant: 0 30px 60px -20px rgba(255, 107, 0, 0.28);
   --board-shadow-soft: 0 10px 30px -10px rgba(255, 107, 0, 0.18);
-  --board-gradient-orange: linear-gradient(135deg, #FF8C42 0%, #FFB776 100%);
+  --board-gradient-orange: linear-gradient(135deg, #ff8c42 0%, #ffb776 100%);
   --board-font-serif: "Playfair Display", Georgia, serif;
 }
 
 .dark {
   --background: #1a1215;
   --foreground: #f7ebdc;
-  --card: rgba(91,14,45,0.12);
+  --card: rgba(91, 14, 45, 0.12);
   --card-foreground: #f7ebdc;
-  --popover: rgba(26,18,21,0.94);
+  --popover: rgba(26, 18, 21, 0.94);
   --popover-foreground: #f7ebdc;
   --primary: #c86b8a;
   --primary-foreground: #1a1215;
   --secondary: #8f3d59;
-  --secondary-foreground: #FFFFFF;
-  --border: rgba(91,14,45,0.18);
-  --input: rgba(91,14,45,0.22);
-  --muted: rgba(91,14,45,0.14);
-  --muted-foreground: rgba(247,235,220,0.72);
-  --accent: rgba(91,14,45,0.2);
+  --secondary-foreground: #ffffff;
+  --border: rgba(91, 14, 45, 0.18);
+  --input: rgba(91, 14, 45, 0.22);
+  --muted: rgba(91, 14, 45, 0.14);
+  --muted-foreground: rgba(247, 235, 220, 0.72);
+  --accent: rgba(91, 14, 45, 0.2);
   --accent-foreground: #f7ebdc;
-  --ring: rgba(200,107,138,0.3);
+  --ring: rgba(200, 107, 138, 0.3);
 }
 
 @layer base {
@@ -118,74 +119,134 @@
   }
   body {
     background-image:
-      radial-gradient(1000px 500px at 14% 10%, rgba(91,14,45,0.09), transparent 18%),
-      radial-gradient(860px 440px at 88% 14%, rgba(216,176,140,0.16), transparent 20%),
+      radial-gradient(1000px 500px at 14% 10%, rgba(91, 14, 45, 0.09), transparent 18%),
+      radial-gradient(860px 440px at 88% 14%, rgba(216, 176, 140, 0.16), transparent 20%),
       linear-gradient(180deg, #fcf8f6 0%, #fffdfc 58%, #ffffff 100%);
-    background-size: cover, cover, 100% 100%;
+    background-size:
+      cover,
+      cover,
+      100% 100%;
     background-repeat: no-repeat;
     color: var(--color-foreground);
     font-family: var(--font-sans);
   }
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
 }
 
 @layer utilities {
-  .font-brand { font-family: var(--font-brand); }
-  .font-display { font-family: var(--font-display); }
-  .font-navbar { font-family: "Inter", ui-sans-serif, system-ui, sans-serif; }
+  .font-brand {
+    font-family: var(--font-brand);
+  }
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-navbar {
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  }
 
   .glass {
-    background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(252,248,246,0.55));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(252, 248, 246, 0.55));
     backdrop-filter: blur(16px) saturate(135%);
     -webkit-backdrop-filter: blur(16px) saturate(135%);
-    border: 1px solid rgba(91,14,45,0.08);
+    border: 1px solid rgba(91, 14, 45, 0.08);
   }
   .glass-dark {
-    background: linear-gradient(180deg, rgba(91,14,45,0.8), rgba(122,22,59,0.72));
+    background: linear-gradient(180deg, rgba(91, 14, 45, 0.8), rgba(122, 22, 59, 0.72));
     backdrop-filter: blur(18px) saturate(140%);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
-    border: 1px solid rgba(247,235,220,0.1);
+    border: 1px solid rgba(247, 235, 220, 0.1);
   }
-  .text-balance { text-wrap: balance; }
-  .scrollbar-none::-webkit-scrollbar { display: none; }
-  .scrollbar-none { scrollbar-width: none; }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
 
   .maroon-gradient-border {
     position: relative;
   }
   .maroon-gradient-border::before {
     content: "";
-    position: absolute; inset: 0;
+    position: absolute;
+    inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, var(--primary), color-mix(in oklch, var(--secondary) 72%, white), transparent 70%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    background: linear-gradient(
+      135deg,
+      var(--primary),
+      color-mix(in oklch, var(--secondary) 72%, white),
+      transparent 70%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
-            mask-composite: exclude;
+    mask-composite: exclude;
     pointer-events: none;
   }
 }
 
 @keyframes marquee {
-  from { transform: translate3d(0,0,0); }
-  to   { transform: translate3d(-50%,0,0); }
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
-.animate-marquee { animation: marquee 40s linear infinite; }
-.animate-marquee-slow { animation: marquee 80s linear infinite; }
+.animate-marquee {
+  animation: marquee 70s linear infinite;
+}
+.animate-marquee-slow {
+  animation: marquee 80s linear infinite;
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-fadeIn {
+  animation: heroFadeIn 0.5s ease both;
+}
 
 @keyframes float-y {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
-.animate-float { animation: float-y 6s ease-in-out infinite; }
+.animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
 
 @keyframes gradient-pan {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 .animate-gradient-pan {
   background-size: 200% 200%;
@@ -193,5 +254,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee, .animate-marquee-slow, .animate-float, .animate-gradient-pan { animation: none !important; }
+  .animate-marquee,
+  .animate-marquee-slow,
+  .animate-float,
+  .animate-gradient-pan,
+  .animate-fadeIn {
+    animation: none !important;
+  }
 }

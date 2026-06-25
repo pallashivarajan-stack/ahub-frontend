@@ -60,6 +60,11 @@ export function StartupPortfolioPage() {
     setPage(1);
   }, [applied, sort]);
 
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setApplied((prev) => ({ ...prev, search: value }));
+  };
+
   const applyFilters = () => {
     setApplied({ search, category, fundingStage, industry });
   };
@@ -89,7 +94,7 @@ export function StartupPortfolioPage() {
           category={category}
           fundingStage={fundingStage}
           industry={industry}
-          onSearchChange={setSearch}
+          onSearchChange={handleSearchChange}
           onCategoryChange={setCategory}
           onFundingChange={setFundingStage}
           onIndustryChange={setIndustry}
