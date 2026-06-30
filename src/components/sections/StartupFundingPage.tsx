@@ -45,7 +45,7 @@ export function StartupFundingPage() {
   };
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-28 md:pb-32 md:pt-32 lg:pt-36">
+    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-14 md:pb-32 md:pt-16 lg:pt-20">
       <BackgroundDecor />
 
       <div className="relative mx-auto max-w-7xl px-6 md:px-10">
@@ -91,7 +91,7 @@ function FundingHeader({ highlights }: { highlights: typeof fundingHighlights })
         Startup Funding
       </div>
 
-      <h1 className="mt-6 font-display text-4xl font-[800] leading-[1.05] tracking-tight text-[#2D1B1B] sm:text-5xl lg:text-[64px]">
+      <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl">
         Startup Funding
       </h1>
 

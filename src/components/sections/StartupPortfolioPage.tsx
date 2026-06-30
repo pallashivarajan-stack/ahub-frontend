@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import React, { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
-import { Calendar, ChevronLeft, ChevronRight, Globe, Rocket, Search } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Globe, Rocket, Search } from "lucide-react";
 import {
   categories,
   filterStartups,
-  fundingBadgeStyle,
   fundingStages,
   industries,
   logoMarquee,
@@ -65,8 +64,13 @@ export function StartupPortfolioPage() {
     setApplied((prev) => ({ ...prev, search: value }));
   };
 
+  const resultsRef = useRef<HTMLDivElement>(null);
+
   const applyFilters = () => {
     setApplied({ search, category, fundingStage, industry });
+    setTimeout(() => {
+      resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   };
 
   const resetFilters = () => {
@@ -80,7 +84,7 @@ export function StartupPortfolioPage() {
   };
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-28 md:pb-32 md:pt-32 lg:pt-36">
+    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-20 md:pb-32 md:pt-24">
       <BackgroundDecor />
 
       <div className="relative mx-auto max-w-7xl px-6 md:px-10">
@@ -101,7 +105,7 @@ export function StartupPortfolioPage() {
           onApply={applyFilters}
           onReset={resetFilters}
         />
-        <DirectoryGrid startups={paginated} total={filtered.length} sort={sort} onSortChange={setSort} />
+        <DirectoryGrid ref={resultsRef} startups={paginated} total={filtered.length} sort={sort} onSortChange={setSort} />
         <Pagination page={page} totalPages={totalPages} pageNumbers={pageNumbers} onPageChange={setPage} />
       </div>
     </section>
@@ -128,20 +132,22 @@ function PortfolioHeader() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="flex flex-col items-center text-center"
     >
-      <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E42]/30 bg-[#FFF8F3] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#F59E42]">
-        <Rocket className="h-3.5 w-3.5" />
-        Startup Portfolio
+      <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-[#F59E42]/20 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#F59E42] shadow-sm">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#F59E42]" />
+        Startups Ecosystem
       </div>
 
-      <h1 className="mt-6 font-display text-4xl font-[800] leading-[1.05] tracking-tight text-[#2D1B1B] sm:text-5xl lg:text-[72px]">
-        Startup Portfolio
-      </h1>
+      <div className="mt-6 flex items-center justify-center gap-4">
+        <span className="hidden h-px w-12 bg-[#F59E42]/40 sm:block" />
+        <h1 className="text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl">
+          Startup <span className="text-[#F59E42]">Portfolio</span>
+        </h1>
+        <span className="hidden h-px w-12 bg-[#F59E42]/40 sm:block" />
+      </div>
 
-      <p className="mt-5 max-w-2xl text-sm leading-relaxed text-[#6C5E5B] md:text-base">
+      <p className="mx-auto mt-4 max-w-xl text-base text-[#6C5E5B]">
         Discover successful startups and explore innovative companies.
       </p>
-
-      <div className="mt-5 h-1 w-16 rounded-full bg-[#F59E42]" />
     </motion.div>
   );
 }
@@ -221,50 +227,45 @@ function FilterPanel({
   return (
     <motion.div
       {...fadeUp}
-      className="relative mt-14 overflow-hidden rounded-[32px] border border-[#F59E42]/8 bg-white p-8 shadow-[0_20px_60px_-30px_rgba(45,27,27,0.1)] md:p-10"
+      className="sticky top-20 z-30 mt-10 overflow-hidden rounded-2xl border border-[#F59E42]/8 bg-white/95 px-5 py-4 shadow-[0_8px_30px_-12px_rgba(45,27,27,0.08)] backdrop-blur-sm md:px-6"
     >
-      <div className="pointer-events-none absolute -bottom-4 -left-2 opacity-[0.07]">
-        <Rocket className="h-24 w-24 text-[#F59E42]" />
+      {/* Search row */}
+      <div className="relative">
+        <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#B0A8A4]" />
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => onSearchChange(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && onApply()}
+          placeholder="Search startups, keywords, industries..."
+          className="w-full rounded-xl border border-[#E8E0D8] bg-[#FAFAFA] py-2.5 pl-10 pr-3 text-sm text-[#2D1B1B] outline-none transition-all focus:border-[#F59E42]/40 focus:ring-2 focus:ring-[#F59E42]/15"
+        />
       </div>
 
-      <div className="text-center">
-        <h2 className="text-xl font-[800] text-[#2D1B1B] md:text-2xl">Search & Filter Startups</h2>
-        <p className="mt-2 text-sm text-[#6C5E5B]">Find startups by name, industry, or category.</p>
-      </div>
-
-      <div className="relative mt-8 grid gap-4 md:grid-cols-2">
-        <div className="relative md:col-span-2">
-          <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#B0A8A4]" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => onSearchChange(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && onApply()}
-            placeholder="Search startups, keywords, industries..."
-            className="w-full rounded-2xl border border-[#E8E0D8] bg-[#FAFAFA] py-3.5 pl-11 pr-4 text-sm text-[#2D1B1B] outline-none transition-all focus:border-[#F59E42]/40 focus:ring-2 focus:ring-[#F59E42]/15"
-          />
+      {/* Filters row */}
+      <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2.5">
+        <div className="flex flex-1 flex-col gap-2 min-[480px]:flex-row min-[480px]:items-center min-[480px]:gap-2.5">
+          <FilterSelect label="Category" value={category} options={categories} onChange={onCategoryChange} />
+          <FilterSelect label="Funding Stage" value={fundingStage} options={fundingStages} onChange={onFundingChange} />
+          <FilterSelect label="Industry" value={industry} options={industries} onChange={onIndustryChange} />
         </div>
 
-        <FilterSelect label="Category" value={category} options={categories} onChange={onCategoryChange} />
-        <FilterSelect label="Funding Stage" value={fundingStage} options={fundingStages} onChange={onFundingChange} />
-        <FilterSelect label="Industry" value={industry} options={industries} onChange={onIndustryChange} className="md:col-span-2 md:max-w-sm md:justify-self-center" />
-      </div>
-
-      <div className="relative mt-8 flex flex-wrap items-center justify-center gap-3">
-        <button
-          type="button"
-          onClick={onReset}
-          className="rounded-full border-2 border-[#F59E42] bg-white px-6 py-2.5 text-sm font-semibold text-[#F59E42] transition-all duration-300 hover:bg-[#FFF4E8]"
-        >
-          Reset
-        </button>
-        <button
-          type="button"
-          onClick={onApply}
-          className="rounded-full bg-gradient-to-r from-[#F59E42] to-[#FF8C42] px-8 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(245,158,66,0.55)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-8px_rgba(245,158,66,0.65)]"
-        >
-          Apply Filters
-        </button>
+        <div className="flex items-center gap-2 sm:flex-shrink-0">
+          <button
+            type="button"
+            onClick={onReset}
+            className="rounded-xl border border-[#E8E0D8] bg-white px-4 py-2.5 text-xs font-semibold text-[#6C5E5B] transition-all duration-300 hover:border-[#F59E42]/30 hover:bg-[#FFF4E8] hover:text-[#F59E42]"
+          >
+            Reset
+          </button>
+          <button
+            type="button"
+            onClick={onApply}
+            className="rounded-xl bg-gradient-to-r from-[#F59E42] to-[#FF8C42] px-5 py-2.5 text-xs font-semibold text-white shadow-[0_4px_12px_-4px_rgba(245,158,66,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_20px_-4px_rgba(245,158,66,0.55)]"
+          >
+            Apply Filters
+          </button>
+        </div>
       </div>
     </motion.div>
   );
@@ -275,21 +276,21 @@ function FilterSelect({
   value,
   options,
   onChange,
-  className,
 }: {
   label: string;
   value: string;
   options: string[];
   onChange: (v: string) => void;
-  className?: string;
 }) {
   return (
-    <label className={cn("block", className)}>
-      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[#6C5E5B]">{label}</span>
+    <label className="flex flex-1 flex-col min-[480px]:flex-row min-[480px]:items-center min-[480px]:gap-2">
+      <span className="text-[10px] font-semibold uppercase tracking-wider text-[#6C5E5B] min-[480px]:w-[85px] min-[480px]:shrink-0 min-[480px]:text-right">
+        {label}
+      </span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full appearance-none rounded-2xl border border-[#E8E0D8] bg-[#FAFAFA] px-4 py-3 text-sm text-[#2D1B1B] outline-none transition-all focus:border-[#F59E42]/40 focus:ring-2 focus:ring-[#F59E42]/15"
+        className="w-full appearance-none rounded-xl border border-[#E8E0D8] bg-[#FAFAFA] px-3 py-2.5 pr-7 text-sm text-[#2D1B1B] outline-none transition-all focus:border-[#F59E42]/40 focus:ring-2 focus:ring-[#F59E42]/15"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>
@@ -301,19 +302,14 @@ function FilterSelect({
   );
 }
 
-function DirectoryGrid({
-  startups,
-  total,
-  sort,
-  onSortChange,
-}: {
+const DirectoryGrid = React.forwardRef<HTMLDivElement, {
   startups: StartupItem[];
   total: number;
   sort: SortOption;
   onSortChange: (v: SortOption) => void;
-}) {
+}>(function DirectoryGrid({ startups, total, sort, onSortChange }, ref) {
   return (
-    <motion.div {...fadeUp} className="mt-14">
+    <motion.div ref={ref} {...fadeUp} className="mt-14">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2 className="text-2xl font-[800] text-[#2D1B1B]">All Startups</h2>
@@ -351,7 +347,9 @@ function DirectoryGrid({
       )}
     </motion.div>
   );
-}
+});
+
+const noiseSvg = `data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E`;
 
 function StartupGridCard({ startup, index }: { startup: StartupItem; index: number }) {
   return (
@@ -360,50 +358,93 @@ function StartupGridCard({ startup, index }: { startup: StartupItem; index: numb
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: (index % 4) * 0.05 }}
-      className="group flex flex-col rounded-[24px] bg-white p-5 shadow-[0_12px_40px_-24px_rgba(45,27,27,0.1)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-20px_rgba(245,158,66,0.18)]"
+      style={{ borderRadius: 28 }}
+      className="group relative flex flex-col overflow-hidden border border-[#FDEAD4] bg-white shadow-[0_10px_30px_rgba(249,115,22,0.08),0_25px_80px_rgba(249,115,22,0.12)] transition-all duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:scale-[1.015] hover:border-[#FDBA74]/40 hover:shadow-[0_16px_40px_rgba(249,115,22,0.12),0_40px_100px_rgba(249,115,22,0.18)]"
     >
-      <div className="flex h-[88px] items-center justify-center">
-        <img src={startup.logo} alt={startup.name} className="max-h-[80px] max-w-[140px] object-contain" />
+      {/* Noise texture */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.035] mix-blend-soft-light"
+        style={{ backgroundImage: `url("${noiseSvg}")`, backgroundSize: "128px" }}
+      />
+
+      {/* Radial glow */}
+      <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br from-[#F97316]/8 to-transparent blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-16 -left-16 h-32 w-32 rounded-full bg-gradient-to-tr from-[#FDBA74]/10 to-transparent blur-2xl" />
+
+      {/* Gradient accent top */}
+      <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-[#F97316]/0 via-[#F97316] to-[#F97316]/0 opacity-0 transition-opacity duration-[450ms] group-hover:opacity-100" />
+
+      {/* ── Image Section ── */}
+      <div className="relative mx-4 mt-4 overflow-hidden rounded-[22px] bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]">
+        <div className="flex items-center justify-center px-8 py-9">
+          <img
+            src={startup.logo}
+            alt={startup.name}
+            className="max-h-[72px] max-w-[160px] object-contain transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+          />
+        </div>
+        {/* Reflection overlay */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-black/[0.02]" />
       </div>
 
-      <h3 className="mt-4 text-base font-[800] leading-tight text-[#2D1B1B]">{startup.name}</h3>
-      <p className="mt-1 text-xs font-semibold text-[#F59E42]">{startup.industry}</p>
-
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        <span className={cn("rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide", fundingBadgeStyle(startup.fundingStage))}>
-          {startup.fundingStage}
-        </span>
-        <span className="inline-flex items-center gap-1 text-xs text-[#6C5E5B]">
-          <Calendar className="h-3 w-3 text-[#F59E42]" />
-          {startup.founded}
-        </span>
-      </div>
-
-      <p className="mt-3 line-clamp-3 flex-1 text-xs leading-relaxed text-[#6C5E5B]">{startup.description}</p>
-
-      <div className="mt-5 flex items-center justify-between border-t border-[#F5F0EB] pt-4">
-        {startup.website ? (
-          <a
-            href={startup.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[#6C5E5B] transition-colors hover:bg-[#FFF4E8] hover:text-[#F59E42]"
-            aria-label={`Visit ${startup.name} website`}
-          >
-            <Globe className="h-4 w-4" />
-          </a>
-        ) : (
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[#D4CCC6]">
-            <Globe className="h-4 w-4" />
+      {/* ── Content ── */}
+      <div className="flex flex-1 flex-col px-5 pb-3 pt-4">
+        {/* Top row: name + year */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="text-base font-[700] leading-snug tracking-tight text-[#111827]">
+              {startup.name}
+            </h3>
+            {/* Industry badge */}
+            <span className="mt-2 inline-flex items-center gap-1 rounded-full border border-[#FDEAD4] bg-white/80 px-3 py-0.5 text-[10px] font-semibold tracking-wide text-[#F97316] shadow-[0_1px_3px_rgba(249,115,22,0.06)] backdrop-blur-sm">
+              {startup.industry}
+            </span>
+          </div>
+          {/* Year glass pill */}
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#FDEAD4] bg-white/70 px-2.5 py-1 text-[11px] font-medium text-[#6B7280] shadow-[0_1px_3px_rgba(0,0,0,0.02)] backdrop-blur-sm">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#F97316] shadow-[0_0_6px_rgba(249,115,22,0.3)]" />
+            {startup.founded}
           </span>
-        )}
+        </div>
 
-        <button
-          type="button"
-          className="rounded-full border-2 border-[#F59E42] bg-white px-4 py-1.5 text-xs font-semibold text-[#F59E42] transition-all duration-300 group-hover:bg-[#F59E42] group-hover:text-white"
-        >
-          View Details
-        </button>
+        {/* Description */}
+        <p className="mt-3 line-clamp-3 flex-1 text-xs leading-[1.7] text-[#4B5563]">
+          {startup.description}
+        </p>
+
+        {/* Gradient divider */}
+        <div className="relative mb-2 mt-4">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#F97316]/25 to-transparent" />
+        </div>
+
+        {/* ── Bottom row ── */}
+        <div className="flex items-center justify-between">
+          {/* Globe glass button */}
+          {startup.website ? (
+            <a
+              href={startup.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#FDEAD4] bg-white/70 text-[#F97316] shadow-[0_2px_6px_rgba(249,115,22,0.06)] backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-[#FFF7ED] hover:shadow-[0_4px_12px_rgba(249,115,22,0.15)]"
+              aria-label={`Visit ${startup.name} website`}
+            >
+              <Globe className="h-3.5 w-3.5" />
+            </a>
+          ) : (
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#F0EBE5] bg-gray-50 text-[#D4CCC6]">
+              <Globe className="h-3.5 w-3.5" />
+            </span>
+          )}
+
+          {/* CTA */}
+          <button
+            type="button"
+            className="group/cta inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#F97316] to-[#FB923C] px-4 py-2 text-xs font-semibold text-white shadow-[0_4px_14px_rgba(249,115,22,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+          >
+            <span>View Details</span>
+            <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover/cta:translate-x-0.5" />
+          </button>
+        </div>
       </div>
     </motion.article>
   );

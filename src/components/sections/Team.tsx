@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Linkedin, ArrowUpRight, Users } from "lucide-react";
-import { team, teamGroupPhoto } from "@/data";
-import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
-import { usePublicTeam } from "@/services/usePublicContent";
+import { ArrowUpRight, Users } from "lucide-react";
+import { team, teamGroupPhoto, teamPageData } from "@/data";
+import { usePublicTeam, usePublicTeamPage } from "@/services/usePublicContent";
 
 const ROLE_COLORS: Record<string, string> = {
   Manager: "bg-[#fff3e8] text-[#d85211] border-[#ffd4a8]",
@@ -18,8 +17,20 @@ function getRoleBadge(title: string) {
   return ROLE_COLORS[key ?? "Intern"];
 }
 
+function getRoleLabel(title: string) {
+  if (title.includes("Intern")) return "Intern";
+  if (title.includes("Manager")) return "Manager";
+  if (title.includes("Engineer")) return "Engineer";
+  if (title.includes("Executive")) return "Executive";
+  if (title.includes("Assistant")) return "Assistant";
+  return "Team";
+}
+
 export function Team() {
   const { data: teamData } = usePublicTeam(team);
+  const { data: meta } = usePublicTeamPage(teamPageData);
+
+  const pageMeta = meta ?? teamPageData;
 
   return (
     <section id="team" className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#FFF7F2_0%,#FFF8F3_100%)] py-16 md:py-24">
@@ -32,12 +43,38 @@ export function Team() {
 
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         {/* Section Header */}
-        <SectionHeading
-          eyebrow="OUR TEAM"
-          title="Dedicated Operators Building the Ecosystem"
-          subtitle="Passionate team members committed to fostering innovation, supporting founders, and creating a world-class startup environment."
-          align="center"
-        />
+        <div className="mx-auto max-w-3xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#ff8901]/20 px-4 py-1.5 text-xs uppercase tracking-[0.18em] text-[#ff8901]/80"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-[#ff8901]" />
+            OUR TEAM
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+            className="text-balance font-display font-bold leading-[1.08] tracking-tight text-3xl md:text-4xl lg:text-5xl"
+            style={{ color: "#000000" }}
+          >
+            Dedicated Operators<br />
+            <span className="text-[#ff8901]">Building the Ecosystem</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
+            className="mt-5 text-balance text-base leading-relaxed md:text-lg text-muted-foreground"
+          >
+            Passionate team members committed to fostering innovation, supporting founders, and creating a world-class startup environment.
+          </motion.p>
+        </div>
 
         {/* Group Photo Banner */}
         <motion.div
@@ -49,7 +86,7 @@ export function Team() {
         >
           <div className="relative h-64 sm:h-80 md:h-96">
             <img
-              src={teamGroupPhoto}
+              src={pageMeta.groupPhoto || teamGroupPhoto}
               alt="A-Hub Team Group Photo"
               className="h-full w-full object-cover object-top"
             />
@@ -57,17 +94,19 @@ export function Team() {
             <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
               <div className="flex items-end justify-between gap-4">
                 <div>
-                  <div className="text-xs uppercase tracking-widest text-white/70 mb-1">The A-Hub Family</div>
-                  <h3 className="text-xl md:text-2xl font-bold text-white">
-                    {teamData.length} Members · One Mission
-                  </h3>
-                  <p className="mt-1 text-sm text-white/75">
-                    Building Andhra Pradesh's premier startup incubation ecosystem
-                  </p>
+                  {pageMeta.title && (
+                    <div className="text-xs uppercase tracking-widest text-white/70 mb-1">{pageMeta.title}</div>
+                  )}
+                  {pageMeta.subtitle && (
+                    <h3 className="text-xl md:text-2xl font-bold text-white">{pageMeta.subtitle}</h3>
+                  )}
+                  {pageMeta.description && (
+                    <p className="mt-1 text-sm text-white/75">{pageMeta.description}</p>
+                  )}
                 </div>
                 <div className="hidden sm:flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 backdrop-blur-sm">
                   <Users size={16} className="text-white/80" />
-                  <span className="text-sm font-semibold text-white">{teamData.length} Team Members</span>
+                  <span className="text-sm font-semibold text-white">{teamData.length} {pageMeta.memberCountLabel || "Team Members"}</span>
                 </div>
               </div>
             </div>
@@ -94,6 +133,8 @@ function TeamCard({
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const badgeClass = getRoleBadge(member.title);
+
+  const handleLink = member.visitLink || member.linkedIn;
 
   return (
     <motion.div
@@ -136,29 +177,27 @@ function TeamCard({
         <div>
           <h3 className="text-sm font-semibold text-slate-900 leading-snug">{member.name}</h3>
           <p className="mt-1.5 text-xs font-medium text-[#e75710]">{member.title}</p>
+          {member.tagline && (
+            <p className="mt-2 text-xs text-slate-500 leading-relaxed line-clamp-2">{member.tagline}</p>
+          )}
           <div className="mt-3">
             <span className={`inline-block rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${badgeClass}`}>
-              {member.title.includes("Intern") ? "Intern" :
-               member.title.includes("Manager") ? "Manager" :
-               member.title.includes("Engineer") ? "Engineer" :
-               member.title.includes("Executive") ? "Executive" :
-               member.title.includes("Assistant") ? "Assistant" : "Team"}
+              {getRoleLabel(member.title)}
             </span>
           </div>
         </div>
 
-        {/* LinkedIn */}
-        {member.linkedIn && (
+        {/* Visit Link */}
+        {handleLink && (
           <motion.a
-            href={member.linkedIn}
+            href={handleLink}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 inline-flex items-center justify-center gap-2 rounded-lg border border-[#0A66C2]/20 bg-[#0A66C2]/6 px-3 py-2 text-xs font-semibold text-[#0A66C2] transition-all duration-300 hover:border-[#0A66C2]/40 hover:bg-[#0A66C2]/12 hover:shadow-md"
             whileHover={{ y: -1.5 }}
             whileTap={{ scale: 0.97 }}
           >
-            <Linkedin size={13} className="flex-shrink-0" />
-            <span>LinkedIn</span>
+            <span>Visit Profile</span>
             <motion.span animate={{ x: isHovered ? 2 : 0 }} transition={{ duration: 0.25 }}>
               <ArrowUpRight size={12} className="flex-shrink-0" />
             </motion.span>

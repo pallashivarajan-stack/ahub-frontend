@@ -15,6 +15,7 @@ import {
   fetchPublicSocialLinks,
   fetchPublicStartupsTicker,
   fetchPublicTeam,
+  fetchPublicTeamPage,
   fetchPublicMentors,
   fetchPublicBoard,
   fetchPublicStatistics,
@@ -40,6 +41,10 @@ import {
   fetchPublicJoinUs,
   fetchPublicPitchToUs,
   fetchPublicStartupRegistration,
+  fetchPublicCaseStudies,
+  fetchPublicPress,
+  fetchPublicPressPage,
+  fetchPublicPartnerItems,
 } from "@/services/publicContent";
 import { portfolio as staticPortfolio, events as staticEvents } from "@/data";
 
@@ -149,13 +154,62 @@ function useGenericPublicContent<T>(key: string, fetcher: () => Promise<any>, fa
   });
 }
 
+function getAdminLocalStorage<T>(key: string): T | null {
+  try {
+    if (typeof window === "undefined") return null;
+    const raw = localStorage.getItem(key);
+    if (raw) return JSON.parse(raw) as T;
+  } catch { /* ignore */ }
+  return null;
+}
+
+const ADMIN_MENTORS_KEY = "ahub_admin_mentors_data";
+const ADMIN_TEAM_KEY = "ahub_admin_team_data";
+const ADMIN_INFRASTRUCTURE_KEY = "ahub_admin_infrastructure_data";
+
 /* ── Generic-based hooks ───────────────────────────────────────────────── */
 
-export const usePublicTeam = <T>(fallbackData: T) => useGenericPublicContent("team", fetchPublicTeam, fallbackData);
-export const usePublicMentors = <T>(fallbackData: T) => useGenericPublicContent("mentors", fetchPublicMentors, fallbackData);
+export const usePublicMentors = <T>(fallbackData: T) =>
+  useGenericPublicContent("mentors", async () => {
+    const data = await fetchPublicMentors();
+    if (data) return data;
+    const admin = getAdminLocalStorage<T>(ADMIN_MENTORS_KEY);
+    return admin ?? fallbackData;
+  }, fallbackData);
+
+export const usePublicTeam = <T>(fallbackData: T) =>
+  useGenericPublicContent("team", async () => {
+    const data = await fetchPublicTeam();
+    if (data) return data;
+    const stored = getAdminLocalStorage<{ meta: unknown; members: T }>(ADMIN_TEAM_KEY);
+    if (stored?.members) return stored.members;
+    return fallbackData;
+  }, fallbackData);
+
+export const usePublicTeamPage = <T>(fallbackData: T) =>
+  useGenericPublicContent("teamPage", async () => {
+    const data = await fetchPublicTeamPage();
+    if (data) return data;
+    const stored = getAdminLocalStorage<{ meta: T; members: unknown }>(ADMIN_TEAM_KEY);
+    if (stored?.meta) return stored.meta;
+    return fallbackData;
+  }, fallbackData);
 export const usePublicBoard = <T>(fallbackData: T) => useGenericPublicContent("board", fetchPublicBoard, fallbackData);
 export const usePublicStatistics = <T>(fallbackData: T) => useGenericPublicContent("statistics", fetchPublicStatistics, fallbackData);
-export const usePublicInfrastructure = <T>(fallbackData: T) => useGenericPublicContent("infrastructure", fetchPublicInfrastructure, fallbackData);
+export const usePublicInfrastructure = <T extends Record<string, unknown>>(fallbackData: T) =>
+  useGenericPublicContent("infrastructure", async () => {
+    const data = await fetchPublicInfrastructure();
+    if (data) return { ...fallbackData, ...data } as T;
+    const stored = getAdminLocalStorage<Record<string, string>>(ADMIN_INFRASTRUCTURE_KEY);
+    if (stored?.hero) {
+      const merged = { ...fallbackData } as Record<string, unknown>;
+      const imgKey = "infrastructureImages" as const;
+      const currentImages = (merged[imgKey] ?? {}) as Record<string, string>;
+      merged[imgKey] = { ...currentImages, ...stored };
+      return merged as T;
+    }
+    return fallbackData;
+  }, fallbackData);
 export const usePublicStartupPortfolio = <T>(fallbackData: T) => useGenericPublicContent("startupPortfolio", fetchPublicStartupPortfolio, fallbackData);
 export const usePublicEventsCalendar = <T>(fallbackData: T) => useGenericPublicContent("eventsCalendar", fetchPublicEventsCalendar, fallbackData);
 export const usePublicVisionRoadmap = <T>(fallbackData: T) => useGenericPublicContent("visionRoadmap", fetchPublicVisionRoadmap, fallbackData);
@@ -177,3 +231,7 @@ export const usePublicOperationalModel = <T>(fallbackData: T) => useGenericPubli
 export const usePublicJoinUs = <T>(fallbackData: T) => useGenericPublicContent("joinUs", fetchPublicJoinUs, fallbackData);
 export const usePublicPitchToUs = <T>(fallbackData: T) => useGenericPublicContent("pitchToUs", fetchPublicPitchToUs, fallbackData);
 export const usePublicStartupRegistration = <T>(fallbackData: T) => useGenericPublicContent("startupRegistration", fetchPublicStartupRegistration, fallbackData);
+export const usePublicCaseStudies = <T>(fallbackData: T) => useGenericPublicContent("caseStudies", fetchPublicCaseStudies, fallbackData);
+export const usePublicPress = <T>(fallbackData: T) => useGenericPublicContent("press", fetchPublicPress, fallbackData);
+export const usePublicPressPage = <T>(fallbackData: T) => useGenericPublicContent("pressPage", fetchPublicPressPage, fallbackData);
+export const usePublicPartnerItems = <T>(fallbackData: T) => useGenericPublicContent("partnerItems", fetchPublicPartnerItems, fallbackData);

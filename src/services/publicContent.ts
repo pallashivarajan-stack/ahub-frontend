@@ -60,7 +60,20 @@ export function mapTeamMemberFromApi(item: Record<string, unknown>) {
     name: String(item.name ?? ""),
     title: String(item.title ?? ""),
     image: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? "")),
+    tagline: item.tagline ? String(item.tagline) : undefined,
+    visitLink: item.visit_link ? String(item.visit_link) : item.visitLink ? String(item.visitLink) : undefined,
     linkedIn: item.linked_in ? String(item.linked_in) : item.linkedIn ? String(item.linkedIn) : undefined,
+  };
+}
+
+/** Map backend team page metadata → TeamPageMeta shape */
+export function mapTeamPageFromApi(item: Record<string, unknown>) {
+  return {
+    groupPhoto: resolveBackendMediaUrl(String(item.group_photo ?? item.groupPhoto ?? "")),
+    title: String(item.title ?? ""),
+    subtitle: String(item.subtitle ?? ""),
+    description: String(item.description ?? ""),
+    memberCountLabel: String(item.member_count_label ?? item.memberCountLabel ?? ""),
   };
 }
 
@@ -86,6 +99,14 @@ export async function fetchPublicTeam() {
   );
   if (!data?.length) return null;
   return data.map(mapTeamMemberFromApi);
+}
+
+export async function fetchPublicTeamPage() {
+  const data = await fetchPublic<Record<string, unknown>>(
+    PUBLIC_CONTENT_ENDPOINTS.teamPage,
+  );
+  if (!data) return null;
+  return mapTeamPageFromApi(data);
 }
 
 export async function fetchPublicContentSeed() {
@@ -115,7 +136,26 @@ export function mapIncubatorFromApi(item: Record<string, unknown>) {
 }
 
 export function mapPartnerFromApi(item: Record<string, unknown>) {
-  return resolveBackendMediaUrl(String(item.logo ?? item.image ?? item.url ?? ""));
+  return resolveBackendMediaUrl(String(item.logo_url ?? item.logo ?? item.image ?? item.url ?? ""));
+}
+
+/** Map backend partner item → frontend PartnerItem shape (marquee / popular) */
+export function mapPartnerItemFromApi(item: Record<string, unknown>) {
+  return {
+    name: String(item.name ?? ""),
+    logo: resolveBackendMediaUrl(String(item.logo_url ?? "")),
+    description: String(item.description ?? ""),
+    href: item.website_url ? String(item.website_url) : undefined,
+  };
+}
+
+export async function fetchPublicPartnerItems() {
+  const data = await fetchPublic<Record<string, unknown>[]>(
+    PUBLIC_CONTENT_ENDPOINTS.partnerItems,
+  );
+  if (!data?.length) return null;
+  const all = data.map(mapPartnerItemFromApi);
+  return { marqueePartners: all };
 }
 
 export function mapSocialLinkFromApi(item: Record<string, unknown>) {
@@ -285,9 +325,57 @@ export const fetchPublicStatistics = async () => {
   return data?.length ? data.map(mapStatisticFromApi) : null;
 };
 export const fetchPublicInfrastructure = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.infrastructure);
-export const fetchPublicStartupPortfolio = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.startupPortfolio);
+export function mapStartupPortfolioFromApi(data: Record<string, unknown>) {
+  if (!data) return null;
+  const directory = ((data.startupDirectory ?? []) as any[]).map((s: any) => ({
+    id: String(s.id ?? ""),
+    name: String(s.name ?? ""),
+    logo: resolveBackendMediaUrl(s.logo),
+    category: String(s.category ?? ""),
+    industry: String(s.industry ?? ""),
+    founded: Number(s.founded ?? 0),
+    fundingStage: String(s.fundingStage ?? ""),
+    description: String(s.description ?? ""),
+    website: s.website ? String(s.website) : undefined,
+    popularity: Number(s.popularity ?? 0),
+    addedOrder: Number(s.addedOrder ?? 0),
+  }));
+  const marquee = ((data.logoMarquee ?? []) as any[]).map((m: any) => ({
+    name: String(m.name ?? ""),
+    logo: resolveBackendMediaUrl(m.logo),
+  }));
+  return {
+    startupDirectory: directory,
+    logoMarquee: marquee,
+    categories: Array.isArray(data.categories) ? data.categories as string[] : ["All"],
+    fundingStages: Array.isArray(data.fundingStages) ? data.fundingStages as string[] : ["All"],
+    industries: Array.isArray(data.industries) ? data.industries as string[] : ["All"],
+  };
+}
+
+export const fetchPublicStartupPortfolio = async () => {
+  const data = await fetchPublic<Record<string, unknown>>(PUBLIC_CONTENT_ENDPOINTS.startupPortfolio);
+  return data ? mapStartupPortfolioFromApi(data) : null;
+};
 export const fetchPublicEventsCalendar = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.eventsCalendar);
-export const fetchPublicVisionRoadmap = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.visionRoadmap);
+export const fetchPublicVisionRoadmap = async () => {
+  const data = await fetchPublic<Record<string, unknown>>(PUBLIC_CONTENT_ENDPOINTS.visionRoadmap);
+  if (!data) return null;
+  return {
+    visionData: ((data.visionData ?? []) as any[]).map((v: any) => ({
+      ...v,
+      image: resolveBackendMediaUrl(v.image),
+    })),
+    roadmapData: {
+      ...(data.roadmapData as any),
+      image: resolveBackendMediaUrl((data.roadmapData as any)?.image),
+    },
+    timelineYears: ((data.timelineYears ?? []) as any[]).map((t: any) => ({
+      ...t,
+      image: resolveBackendMediaUrl(t.image),
+    })),
+  };
+};
 export const fetchPublicWhatWeDo = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.whatWeDo);
 export const fetchPublicStudentDashboard = async () => {
   const data = await fetchPublic<Record<string, unknown>>(PUBLIC_CONTENT_ENDPOINTS.studentDashboard);
@@ -323,3 +411,51 @@ export const fetchPublicOperationalModel = () => fetchPublicGenericData(PUBLIC_C
 export const fetchPublicJoinUs = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.joinUs);
 export const fetchPublicPitchToUs = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.pitchToUs);
 export const fetchPublicStartupRegistration = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.startupRegistration);
+
+export function mapCaseStudyFromApi(item: Record<string, unknown>) {
+  const title = String(item.title ?? "");
+  const companyMatch = title.match(/^([^:]+)/);
+  return {
+    number: String(item.id ?? "").padStart(2, "0"),
+    company: companyMatch ? companyMatch[1].trim().toUpperCase() : title,
+    title,
+    category: "",
+    description: String(item.description ?? ""),
+    image: resolveBackendMediaUrl(String(item.image_url ?? "")),
+    url: String(item.visit_link ?? item.url ?? ""),
+    stats: [],
+  };
+}
+
+export const fetchPublicCaseStudies = async () => {
+  const data = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.caseStudies);
+  return data?.length ? data.map(mapCaseStudyFromApi) : null;
+};
+
+export function mapPressFromApi(item: Record<string, unknown>) {
+  return {
+    title: String(item.title ?? ""),
+    date: String(item.date ?? ""),
+    url: String(item.url ?? ""),
+    description: String(item.description ?? ""),
+    source: String(item.source ?? ""),
+    tag: String(item.tag ?? ""),
+  };
+}
+
+export function mapPressPageFromApi(item: Record<string, unknown>) {
+  return {
+    heading: String(item.heading ?? "Press"),
+    subheading: String(item.subheading ?? ""),
+  };
+}
+
+export const fetchPublicPress = async () => {
+  const data = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.press);
+  return data?.length ? data.map(mapPressFromApi) : null;
+};
+
+export const fetchPublicPressPage = async () => {
+  const data = await fetchPublic<Record<string, unknown>>(PUBLIC_CONTENT_ENDPOINTS.pressPage);
+  return data ? mapPressPageFromApi(data) : null;
+};

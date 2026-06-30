@@ -129,14 +129,14 @@ export const mentors = [
     name: "Deepak S. Madala",
     title: "Strategy & Operations Expert",
     organization: "Incubation Council",
-    image: asset("/src/assets/mentors/Deepak S.Madala.png"),
+    image: asset("/src/assets/mentors/Deepak_S_Madala.png"),
     linkedIn: "https://linkedin.com/in/deepak-madala",
   },
   {
     name: "Dr. Diwakar K Vadapalli",
     title: "Technology Innovation Lead",
     organization: "Incubation Council",
-    image: asset("/src/assets/mentors/Dr Diwakar K Vadapalli.jpg"),
+    image: asset("/src/assets/mentors/Dr_Diwakar_K_Vadapalli.jpg"),
     linkedIn: "https://linkedin.com/in/diwakar-vadapalli",
   },
   {
@@ -174,14 +174,14 @@ export const board = [
     name: "Deepak S. Madala",
     title: "Board Chair",
     organization: "Incubation Council",
-    image: asset("/src/assets/mentors/Deepak S.Madala.png"),
+    image: asset("/src/assets/mentors/Deepak_S_Madala.png"),
     linkedIn: "https://linkedin.com/in/deepak-madala",
   },
   {
     name: "Dr. Diwakar K Vadapalli",
     title: "Board Member",
     organization: "Incubation Council",
-    image: asset("/src/assets/mentors/Dr Diwakar K Vadapalli.jpg"),
+    image: asset("/src/assets/mentors/Dr_Diwakar_K_Vadapalli.jpg"),
     linkedIn: "https://linkedin.com/in/diwakar-vadapalli",
   },
   {
@@ -193,5 +193,7 @@ export const board = [
   },
 ];
 
-export { teamMembers as team, groupPhoto as teamGroupPhoto } from "./teamPage";
-export type { TeamMember } from "./teamPage";
+export { teamMembers as team, groupPhoto as teamGroupPhoto, teamPageData } from "./teamPage";
+export type { TeamMember, TeamPageMeta } from "./teamPage";
+export { pressItems, defaultPressPageMeta } from "./pressPage";
+export type { PressItem, PressPageMeta } from "./pressPage";

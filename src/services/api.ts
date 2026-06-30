@@ -10,28 +10,31 @@ const api = axios.create({
   },
 });
 
-// Helper to get token
-const getAccessToken = () => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('access_token');
-  }
-  return null;
+const ssrStorage = {
+  getItem(key: string): string | null {
+    if (typeof window === "undefined") return null;
+    try { return localStorage.getItem(key); } catch { return null; }
+  },
+  setItem(key: string, value: string) {
+    if (typeof window === "undefined") return;
+    try { localStorage.setItem(key, value); } catch { /* quota */ }
+  },
+  removeItem(key: string) {
+    if (typeof window === "undefined") return;
+    try { localStorage.removeItem(key); } catch { /* ignore */ }
+  },
 };
 
-// Helper to set tokens
+const getAccessToken = () => ssrStorage.getItem("access_token");
+
 export const setTokens = (accessToken: string, refreshToken: string) => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('access_token', accessToken);
-    localStorage.setItem('refresh_token', refreshToken);
-  }
+  ssrStorage.setItem("access_token", accessToken);
+  ssrStorage.setItem("refresh_token", refreshToken);
 };
 
-// Helper to clear tokens
 export const clearTokens = () => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-  }
+  ssrStorage.removeItem("access_token");
+  ssrStorage.removeItem("refresh_token");
 };
 
 // Request Interceptor: Attach access token
@@ -90,12 +93,12 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       isRefreshing = true;
 
-      const refreshToken = typeof window !== 'undefined' ? localStorage.getItem('refresh_token') : null;
+      const refreshToken = ssrStorage.getItem("refresh_token");
 
       if (!refreshToken) {
         clearTokens();
-        if (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')) {
-          window.location.href = '/admin/login';
+        if (typeof window !== "undefined" && window.location.pathname.startsWith("/admin")) {
+          window.location.href = "/admin/login";
         }
         return Promise.reject(error);
       }

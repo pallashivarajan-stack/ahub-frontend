@@ -14,7 +14,7 @@ export function InvestorsPage() {
   const marqueeLoop = [...displayMarquee, ...displayMarquee];
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-28 md:pb-32 md:pt-32 lg:pt-36">
+    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-14 md:pb-32 md:pt-16 lg:pt-20">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_85%_8%,rgba(245,158,66,0.12),transparent_55%),radial-gradient(50%_45%_at_10%_15%,rgba(245,158,66,0.08),transparent_50%)]" />
       </div>
@@ -46,9 +46,13 @@ function InvestorsHeader() {
         Investors
       </div>
 
-      <h1 className="mt-6 font-display text-4xl font-[800] leading-[1.05] tracking-tight text-[#2D1B1B] sm:text-5xl lg:text-[64px]">
+      <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl">
         Investors
       </h1>
+
+      <p className="mx-auto mt-4 max-w-xl text-base text-[#6C5E5B]">
+        Connecting visionary founders with strategic capital and expertise.
+      </p>
 
       <div className="mt-5 h-1 w-16 rounded-full bg-[#F59E42]" />
     </motion.div>

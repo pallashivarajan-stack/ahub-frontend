@@ -3,18 +3,17 @@ import { Link } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight, Handshake } from "lucide-react";
-import { marqueePartners, popularPartners } from "@/data/partnersPage";
-import { usePublicPartnersPage } from "@/services/usePublicContent";
+import { marqueePartners } from "@/data/partnersPage";
+import { usePublicPartnerItems } from "@/services/usePublicContent";
 import { cn } from "@/lib/utils";
 
 export function PartnersPage() {
-  const { data: partnersData } = usePublicPartnersPage({ marqueePartners, popularPartners });
+  const { data: partnersData } = usePublicPartnerItems({ marqueePartners });
   const displayMarquee = partnersData?.marqueePartners ?? marqueePartners;
-  const displayPopular = partnersData?.popularPartners ?? popularPartners;
   const marqueeLoop = [...displayMarquee, ...displayMarquee];
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-28 md:pb-32 md:pt-32 lg:pt-36">
+    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-14 md:pb-32 md:pt-16 lg:pt-20">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_85%_8%,rgba(245,158,66,0.12),transparent_55%),radial-gradient(50%_45%_at_10%_15%,rgba(245,158,66,0.08),transparent_50%)]" />
       </div>
@@ -27,7 +26,7 @@ export function PartnersPage() {
           <OurPartnersSection marqueeLoop={marqueeLoop} />
         </div>
 
-        <PopularPartnersCarousel displayPopular={displayPopular} />
+        <PartnerCards partners={displayMarquee} />
       </div>
     </section>
   );
@@ -46,9 +45,13 @@ function PartnersHeader() {
         Partners
       </div>
 
-      <h1 className="mt-6 font-display text-4xl font-[800] leading-[1.05] tracking-tight text-[#2D1B1B] sm:text-5xl lg:text-[64px]">
+      <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl">
         Partners
       </h1>
+
+      <p className="mx-auto mt-4 max-w-xl text-base text-[#6C5E5B]">
+        Collaborating with industry leaders to drive innovation and growth.
+      </p>
 
       <div className="mt-5 h-1 w-16 rounded-full bg-[#F59E42]" />
     </motion.div>
@@ -86,51 +89,7 @@ function PartnerWithUsCard() {
   );
 }
 
-function OurPartnersSection({ marqueeLoop }: { marqueeLoop: typeof marqueePartners }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className="flex flex-col justify-center"
-    >
-      <h2 className="text-2xl font-[800] tracking-tight text-[#2D1B1B] md:text-[28px]">Our Partners</h2>
-      <p className="mt-2 text-sm text-[#6C5E5B] md:text-[15px]">Explore our network of trusted partners.</p>
-
-      <div className="group/marquee relative mt-6 overflow-hidden rounded-[20px] border border-[#F59E42]/10 bg-white py-5 shadow-[0_12px_40px_-24px_rgba(45,27,27,0.1)]">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white to-transparent" />
-
-        <div className="flex w-max animate-marquee items-center px-4 group-hover/marquee:[animation-play-state:paused]">
-          {marqueeLoop.map((partner, index) => (
-            <div
-              key={`${partner.name}-${index}`}
-              className="flex h-16 shrink-0 items-center border-r border-[#E8E0D8] px-8 last:border-r-0"
-            >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="max-h-11 max-w-[130px] object-contain"
-                draggable={false}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-8 flex items-center gap-4">
-        <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#F59E42]/40" />
-        <p className="shrink-0 text-xs font-medium tracking-wide text-[#6C5E5B] sm:text-sm">
-          Trusted by 50+ partners and growing
-        </p>
-        <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#F59E42]/40" />
-      </div>
-    </motion.div>
-  );
-}
-
-function PopularPartnersCarousel({ displayPopular }: { displayPopular: typeof popularPartners }) {
+function PartnerCards({ partners }: { partners: typeof marqueePartners }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -164,7 +123,7 @@ function PopularPartnersCarousel({ displayPopular }: { displayPopular: typeof po
       transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
       className="mt-20 lg:mt-24"
     >
-      <h2 className="text-2xl font-[800] tracking-tight text-[#2D1B1B] md:text-[28px]">Popular Partners</h2>
+      <h2 className="text-2xl font-[800] tracking-tight text-[#2D1B1B] md:text-[28px]">Partner Network</h2>
       <div className="mt-3 h-0.5 w-10 rounded-full bg-[#F59E42]" />
 
       <div className="relative mt-10 px-0 sm:px-12 md:px-14">
@@ -179,12 +138,12 @@ function PopularPartnersCarousel({ displayPopular }: { displayPopular: typeof po
 
         <div ref={emblaRef} className="overflow-hidden">
           <div className="flex touch-pan-y gap-5">
-            {displayPopular.map((partner) => (
+            {partners.map((partner) => (
               <div
                 key={partner.name}
                 className="min-w-0 shrink-0 grow-0 basis-full sm:basis-[calc(50%-10px)] lg:basis-[calc(33.333%-14px)]"
               >
-                <PopularPartnerCard partner={partner} />
+                <PartnerCard partner={partner} />
               </div>
             ))}
           </div>
@@ -237,7 +196,7 @@ function PopularPartnersCarousel({ displayPopular }: { displayPopular: typeof po
   );
 }
 
-function PopularPartnerCard({ partner }: { partner: (typeof popularPartners)[number] }) {
+function PartnerCard({ partner }: { partner: (typeof marqueePartners)[number] }) {
   const content = (
     <>
       <div className="flex h-28 items-center justify-center rounded-[16px] bg-[#FAFAFA] px-4">
@@ -265,3 +224,49 @@ function PopularPartnerCard({ partner }: { partner: (typeof popularPartners)[num
 
   return <article className={className}>{content}</article>;
 }
+
+function OurPartnersSection({ marqueeLoop }: { marqueeLoop: typeof marqueePartners }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+      className="flex flex-col justify-center"
+    >
+      <h2 className="text-2xl font-[800] tracking-tight text-[#2D1B1B] md:text-[28px]">Our Partners</h2>
+      <p className="mt-2 text-sm text-[#6C5E5B] md:text-[15px]">Explore our network of trusted partners.</p>
+
+      <div className="group/marquee relative mt-6 overflow-hidden rounded-[20px] border border-[#F59E42]/10 bg-white py-5 shadow-[0_12px_40px_-24px_rgba(45,27,27,0.1)]">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white to-transparent" />
+
+        <div className="flex w-max animate-marquee items-center px-4 group-hover/marquee:[animation-play-state:paused]">
+          {marqueeLoop.map((partner, index) => (
+            <div
+              key={`${partner.name}-${index}`}
+              className="flex h-16 shrink-0 items-center border-r border-[#E8E0D8] px-8 last:border-r-0"
+            >
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                className="max-h-11 max-w-[130px] object-contain"
+                draggable={false}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-8 flex items-center gap-4">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#F59E42]/40" />
+        <p className="shrink-0 text-xs font-medium tracking-wide text-[#6C5E5B] sm:text-sm">
+          Trusted by 50+ partners and growing
+        </p>
+        <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#F59E42]/40" />
+      </div>
+    </motion.div>
+  );
+}
+
+

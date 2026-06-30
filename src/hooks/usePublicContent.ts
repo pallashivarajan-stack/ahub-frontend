@@ -31,6 +31,7 @@ export {
   usePublicAhubNetwork,
   usePublicDistinguishedVisitors,
   usePublicPartnersPage,
+  usePublicPartnerItems,
   usePublicImpact,
   usePublicOperationalModel,
   usePublicJoinUs,

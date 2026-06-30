@@ -16,7 +16,7 @@ const stagger: Variants = {
 /* ── Hero ── */
 function HeroSection() {
   return (
-    <section className="relative isolate overflow-hidden bg-[#FFF8F2] pb-12 pt-28 md:pt-36">
+    <section className="relative isolate overflow-hidden bg-[#FFF8F2] pb-12 pt-20 md:pt-24">
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute -left-40 -top-40 h-[400px] w-[400px] rounded-full bg-[#FF6B00]/5 blur-[100px]" />
         <div className="absolute -right-40 -top-40 h-[400px] w-[400px] rounded-full bg-[#FFA64D]/5 blur-[100px]" />
@@ -39,7 +39,7 @@ function HeroSection() {
           className="mt-6 flex items-center justify-center gap-4"
         >
           <span className="hidden h-px w-12 bg-[#FF6B00]/40 sm:block" />
-          <h1 className="text-4xl font-extrabold tracking-tight text-[#0B1736] sm:text-5xl md:text-6xl">
+          <h1 className="text-3xl font-extrabold tracking-tight text-[#0B1736] sm:text-4xl md:text-5xl">
             Vision & <span className="text-[#FF6B00]">Roadmap</span>
           </h1>
           <span className="hidden h-px w-12 bg-[#FF6B00]/40 sm:block" />

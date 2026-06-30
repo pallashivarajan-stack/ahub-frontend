@@ -1,20 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Briefcase, MessageSquare, Users, Loader2 } from "lucide-react";
-import { usePublicPortfolio } from "@/services/usePublicContent";
+import { ArrowUpRight, Briefcase, MessageSquare, Users } from "lucide-react";
+import { portfolio } from "@/data";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
 
 export function PortfolioCompanies() {
   const [active, setActive] = useState(0);
-  const { data: portfolio = [], isLoading: loading } = usePublicPortfolio();
-
-  if (loading) {
-    return (
-      <div className="flex h-[400px] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-[#FF6B00]" />
-      </div>
-    );
-  }
 
   return (
     <section id="achieve" className="relative overflow-hidden bg-[linear-gradient(180deg,#FFF8F3_0%,#FFFFFF_100%)] py-16 md:py-24">
@@ -27,7 +18,7 @@ export function PortfolioCompanies() {
         />
 
         <div className="mt-12 flex h-[420px] gap-3 md:h-[440px]">
-          {(portfolio as any[]).map((p: any, i: number) => {
+          {portfolio.map((p: any, i: number) => {
             const isActive = i === active;
             return (
               <motion.button
@@ -112,24 +103,6 @@ export function PortfolioCompanies() {
                         })}
                       </div>
                     </div>
-
-                    {p.websiteUrl && (
-                      <div className="mt-5 pt-4 border-t border-orange-100/20">
-                        <a
-                          href={p.websiteUrl} 
-                          target="_blank"
-                          rel="noreferrer"
-                          className="group/btn relative inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.15em] text-[#F97316] hover:text-orange-500 transition-colors duration-300 focus:outline-none cursor-pointer"
-                        >
-                          <span>Learn More</span>
-                          <ArrowUpRight
-                            size={14}
-                            className="transition-all duration-300 group-hover/btn:translate-x-[4px] group-hover/btn:-translate-y-[2px]"
-                          />
-                          <span className="absolute bottom-[-2px] left-0 w-0 h-[1.5px] bg-[#F97316] transition-all duration-300 group-hover/btn:w-full" />
-                        </a>
-                      </div>
-                    )}
                   </div>
 
                   <div className="hidden md:flex relative h-full flex-col items-center justify-center">

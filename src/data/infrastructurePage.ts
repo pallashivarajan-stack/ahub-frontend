@@ -10,14 +10,10 @@ import {
   Wifi,
 } from "lucide-react";
 
-import { resolveLegacyAsset } from "@/lib/assets";
-
-const [ahubImg, collaborativeImg, conferenceHallImg, iotLabsImg] = [
-  "/src/assets/infastructure/ahub.jpg",
-  "/src/assets/infastructure/collabrative environment.png",
-  "/src/assets/infastructure/confenrce hall.jpg",
-  "/src/assets/infastructure/iot labs.jpeg",
-].map(resolveLegacyAsset);
+import ahubImg from "@/assets/infastructure/ahub.jpg";
+import collaborativeImg from "@/assets/infastructure/collabrative environment.png";
+import conferenceHallImg from "@/assets/infastructure/confenrce hall.jpg";
+import iotLabsImg from "@/assets/infastructure/iot labs.jpeg";
 
 export type FacilityItem = {
   title: string;
@@ -37,7 +33,39 @@ export const infrastructureImages = {
   conference: conferenceHallImg,
   labs: iotLabsImg,
   campus: ahubImg,
+  galleryCoworking: ahubImg,
+  galleryStartupBays: collaborativeImg,
+  galleryEventHall: conferenceHallImg,
+  gallerySeminarRoom: collaborativeImg,
+  galleryInnovationLabs: iotLabsImg,
+  masonryCampus: ahubImg,
+  masonryIoT: iotLabsImg,
+  masonryCollaborative: collaborativeImg,
+  masonryConference: conferenceHallImg,
+  masonryWorkspace: ahubImg,
+  masonryResearch: iotLabsImg,
 };
+
+export function buildGalleryStrip(images: typeof infrastructureImages): GalleryImage[] {
+  return [
+    { src: images.galleryCoworking, label: "Coworking Space" },
+    { src: images.galleryStartupBays, label: "Startup Bays" },
+    { src: images.galleryEventHall, label: "Event Hall" },
+    { src: images.gallerySeminarRoom, label: "Seminar Room" },
+    { src: images.galleryInnovationLabs, label: "Innovation Labs" },
+  ];
+}
+
+export function buildMasonryGallery(images: typeof infrastructureImages): GalleryImage[] {
+  return [
+    { src: images.masonryCampus, label: "AHUB Campus", tall: true },
+    { src: images.masonryIoT, label: "IoT & Robotics Lab" },
+    { src: images.masonryCollaborative, label: "Collaborative Zones" },
+    { src: images.masonryConference, label: "Conference Hall", tall: true },
+    { src: images.masonryWorkspace, label: "Founder Workspace" },
+    { src: images.masonryResearch, label: "Research Lab", tall: true },
+  ];
+}
 
 export const facilities: FacilityItem[] = [
   { title: "Startup Cubicles", description: "Dedicated bays for focused building.", icon: Building2 },
@@ -50,22 +78,8 @@ export const facilities: FacilityItem[] = [
   { title: "Secure Environment", description: "Controlled access and safety.", icon: ShieldCheck },
 ];
 
-export const galleryStrip: GalleryImage[] = [
-  { src: ahubImg, label: "Coworking Space" },
-  { src: collaborativeImg, label: "Startup Bays" },
-  { src: conferenceHallImg, label: "Event Hall" },
-  { src: collaborativeImg, label: "Seminar Room" },
-  { src: iotLabsImg, label: "Innovation Labs" },
-];
-
-export const masonryGallery: GalleryImage[] = [
-  { src: ahubImg, label: "AHUB Campus", tall: true },
-  { src: iotLabsImg, label: "IoT & Robotics Lab" },
-  { src: collaborativeImg, label: "Collaborative Zones" },
-  { src: conferenceHallImg, label: "Conference Hall", tall: true },
-  { src: ahubImg, label: "Founder Workspace" },
-  { src: iotLabsImg, label: "Research Lab", tall: true },
-];
+export const galleryStrip = buildGalleryStrip(infrastructureImages);
+export const masonryGallery = buildMasonryGallery(infrastructureImages);
 
 export const infrastructureStats = [
   { label: "Startups Supported", value: 120, suffix: "+" },

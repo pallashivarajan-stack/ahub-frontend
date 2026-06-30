@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import {
+  buildGalleryStrip,
+  buildMasonryGallery,
   collaborativeFeatures,
   eventFeatures,
   facilities,
@@ -35,20 +37,24 @@ export function InfrastructurePage() {
     eventFeatures,
   });
 
+  const images = infraData.infrastructureImages;
+  const computedGalleryStrip = useMemo(() => buildGalleryStrip(images), [images]);
+  const computedMasonryGallery = useMemo(() => buildMasonryGallery(images), [images]);
+
   return (
     <div className="relative isolate overflow-hidden bg-[#FDF8F2]">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_90%_5%,rgba(245,158,66,0.1),transparent_55%),radial-gradient(50%_45%_at_5%_20%,rgba(245,158,66,0.07),transparent_50%)]" />
       </div>
 
-      <HeroSection images={infraData.infrastructureImages} />
+      <HeroSection images={images} />
       <FacilitiesSection data={infraData.facilities} />
-      <GalleryStrip data={infraData.galleryStrip} />
-      <CollaborativeSection images={infraData.infrastructureImages} features={infraData.collaborativeFeatures} />
-      <ResearchLabsSection images={infraData.infrastructureImages} pills={infraData.researchPills} />
-      <EventsSection images={infraData.infrastructureImages} features={infraData.eventFeatures} />
+      <GalleryStrip data={computedGalleryStrip} />
+      <CollaborativeSection images={images} features={infraData.collaborativeFeatures} />
+      <ResearchLabsSection images={images} pills={infraData.researchPills} />
+      <EventsSection images={images} features={infraData.eventFeatures} />
       <MetricsSection data={infraData.infrastructureStats} />
-      <MasonryGallery data={infraData.masonryGallery} />
+      <MasonryGallery data={computedMasonryGallery} />
     </div>
   );
 }

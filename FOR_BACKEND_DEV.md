@@ -68,6 +68,8 @@ Implement **33 GET endpoints** at `http://localhost:8000/api/public/*` returning
 |----------|---------|
 | `GET /api/public/operational-model` | `{ description, sectors[], teams[] }` |
 | `GET /api/public/impact` | `{ period, metrics[] }` |
+| `GET /api/public/press` | `[{ title, date, url, description, source, tag }]` |
+| `GET /api/public/press-page` | `{ heading, subheading }` |
 
 ### Media
 

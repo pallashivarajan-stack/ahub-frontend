@@ -32,15 +32,25 @@ export const PUBLIC_CONTENT_ENDPOINTS = {
   ahubNetwork: "/api/public/ahub-network",
   distinguishedVisitors: "/api/public/distinguished-visitors",
   partnersPage: "/api/public/partners-page",
+  partnerItems: "/api/public/partner-items",
   impact: "/api/public/impact",
   operationalModel: "/api/public/operational-model",
   joinUs: "/api/public/join-us",
+  joinUsConfig: "/api/public/join-us/config",
   pitchToUs: "/api/public/pitch-to-us",
   startupRegistration: "/api/public/startup-registration",
+  /** Team page metadata (title, subtitle, description, group photo) */
+  teamPage: "/api/public/team-page",
   /** Full seed dump — optional convenience endpoint for DB import */
   contentSeed: "/api/public/content-seed",
   /** Single file: GET /api/public/media/{category}/{filename} */
   media: "/api/public/media",
+  /** Case studies */
+  caseStudies: "/api/public/case-studies",
+  /** Press / media coverage */
+  press: "/api/public/press",
+  /** Press page metadata */
+  pressPage: "/api/public/press-page",
 } as const;
 
 export type PublicContentKey = keyof typeof PUBLIC_CONTENT_ENDPOINTS;

@@ -35,7 +35,7 @@ const ORANGE_LIGHT = "#FFF0E8";
 /* ── Hero ── */
 function HeroSection() {
   return (
-    <section className="relative isolate overflow-hidden bg-gradient-to-b from-[#FFF8F3] to-white pb-10 pt-28 md:pt-36">
+    <section className="relative isolate overflow-hidden bg-gradient-to-b from-[#FFF8F3] to-white pb-10 pt-20 md:pt-24">
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute -left-32 -top-32 h-[360px] w-[360px] rounded-full bg-[#e75710]/6 blur-[100px]" />
         <div className="absolute -right-32 top-0 h-[300px] w-[300px] rounded-full bg-[#FF9A5C]/6 blur-[80px]" />
@@ -55,7 +55,7 @@ function HeroSection() {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.12 }}
-          className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-6xl"
+          className="mt-5 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl md:text-5xl"
         >
           Operation{" "}
           <span style={{ color: ORANGE }}>Model</span>
@@ -150,7 +150,7 @@ const PHASE_COLUMNS = [
 const PROCESS_STAGES = [
   { Icon: Lightbulb, label: "Ideating" },
   { Icon: Brain, label: "Concepting" },
-  { Icon: Handshake, label: "Committing", highlight: true },
+  { Icon: Handshake, label: "Committing" },
   { Icon: CheckSquare, label: "Validating" },
   { Icon: TrendingUp, label: "Scaling" },
   { Icon: Trophy, label: "Establishing" },
@@ -182,34 +182,43 @@ function JourneyMap() {
       </div>
 
       {/* Journey path / numbered steps */}
-      <div className="relative">
-        {/* SVG wave line */}
-        <svg viewBox="0 0 900 80" className="h-16 w-full" preserveAspectRatio="none">
-          <path
-            d="M 0 60 Q 150 10 300 50 Q 450 90 540 40 Q 650 0 750 35 Q 830 60 900 25"
-            fill="none"
-            stroke={ORANGE}
-            strokeWidth="2.5"
-            strokeDasharray="6 3"
-          />
-        </svg>
+      <div className="flex flex-col">
+        {/* SVG wave line + circle markers */}
+        <div className="relative">
+          <svg viewBox="0 0 900 80" className="h-20 w-full" preserveAspectRatio="none">
+            <path
+              d="M 0 60 Q 150 10 300 50 Q 450 90 540 40 Q 650 0 750 35 Q 830 60 900 25"
+              fill="none"
+              stroke={ORANGE}
+              strokeWidth="2.5"
+              strokeDasharray="6 3"
+            />
+          </svg>
 
-        {/* Step markers */}
-        <div className="absolute inset-0 flex items-center justify-around px-4">
-          {JOURNEY_STEPS.map((step, i) => (
-            <div key={i} className="flex flex-col items-center gap-1">
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-full border-2 font-bold text-sm shadow-md"
-                style={{
-                  borderColor: ORANGE,
-                  backgroundColor: step.isRocket ? ORANGE : "white",
-                  color: step.isRocket ? "white" : ORANGE,
-                }}
-              >
-                {step.isRocket ? <Rocket size={16} /> : step.num}
+          <div className="absolute inset-0 flex items-start justify-around px-4 pt-5">
+            {JOURNEY_STEPS.map((step, i) => (
+              <div key={i} className="flex flex-col items-center">
+                <div
+                  className="flex h-10 w-10 items-center justify-center rounded-full border-2 font-bold text-sm shadow-md"
+                  style={{
+                    borderColor: ORANGE,
+                    backgroundColor: step.isRocket ? ORANGE : "white",
+                    color: step.isRocket ? "white" : ORANGE,
+                  }}
+                >
+                  {step.isRocket ? <Rocket size={16} /> : step.num}
+                </div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Labels row — separated so no overlap with SVG wave */}
+        <div className="flex justify-around px-4 -mt-1">
+          {JOURNEY_STEPS.map((step, i) => (
+            <div key={i} className="flex flex-col items-center w-[80px]">
               {step.label && (
-                <div className="text-center text-[0.6rem] leading-tight text-slate-500 max-w-[80px]">
+                <div className="text-center text-[0.6rem] leading-tight text-slate-500">
                   {step.label}
                 </div>
               )}
@@ -220,23 +229,13 @@ function JourneyMap() {
 
       {/* Process stage pills */}
       <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-        {PROCESS_STAGES.map(({ Icon, label, highlight }) => (
+        {PROCESS_STAGES.map(({ Icon, label }) => (
           <div
             key={label}
-            className={`flex flex-col items-center gap-1.5 rounded-xl px-2 py-3 text-center transition-all ${
-              highlight
-                ? "border-2 border-[#e75710]/40 bg-[#FFF0E8] font-semibold"
-                : "border border-slate-100 bg-slate-50"
-            }`}
+            className="flex flex-col items-center gap-1.5 rounded-xl border border-slate-100 bg-slate-50 px-2 py-3 text-center transition-all hover:border-[#e75710]/30 hover:bg-[#FFF0E8] hover:shadow-sm cursor-pointer"
           >
-            <Icon
-              size={16}
-              style={{ color: highlight ? ORANGE : "#6B7280" }}
-            />
-            <span
-              className="text-[0.65rem] font-medium"
-              style={{ color: highlight ? ORANGE : "#64748b" }}
-            >
+            <Icon size={16} style={{ color: "#6B7280" }} />
+            <span className="text-[0.65rem] font-medium text-slate-500">
               {label}
             </span>
           </div>

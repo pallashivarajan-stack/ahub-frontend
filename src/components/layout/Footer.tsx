@@ -41,7 +41,7 @@ export function Footer() {
             <div className="flex items-center gap-3">
               <span className="grid h-8 w-8 place-items-center rounded-md border border-white/14 bg-white/14 text-sm font-bold text-white">A</span>
               <span className="h-5 w-px bg-white/18" />
-              <span className="font-brand text-2xl font-black tracking-[0.14em] text-white">AHUB</span>
+              <span className="font-brand text-2xl font-black tracking-[0.14em] text-white">āhub</span>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/80">
               An institutional incubation centre building India's next generation of category-defining startups.
@@ -75,9 +75,9 @@ export function Footer() {
             <div className="text-xs uppercase tracking-[0.24em] text-white/62">Contact</div>
             <ul className="mt-5 space-y-3 text-sm text-white/84">
               <li>AHUB Innovation Centre</li>
-              <li>3rd Floor, Research Park</li>
-              <li>Chennai 600 113, India</li>
-              <li className="pt-1">hello@ahub.in</li>
+              <li>AU north campus, madillapalem,</li>
+              <li>visakhapatnam - 530013.</li>
+              <li className="pt-1">techsupport@a-hub.co</li>
               <li>+91 44 4500 2200</li>
             </ul>
           </div>
@@ -100,15 +100,6 @@ export function Footer() {
               </button>
             </form>
             {message && <p className={`mt-3 text-xs ${message.includes('❌') ? 'text-red-400' : 'text-green-400'}`}>{message}</p>}
-          </div>
-        </div>
-
-        <div className="mt-16 flex flex-col items-start justify-between gap-3 border-t border-white/12 pt-6 text-xs text-white/66 md:flex-row md:items-center">
-          <div>© {new Date().getFullYear()} AHUB Innovation Centre. All rights reserved.</div>
-          <div className="flex gap-5">
-            <a href="/privacy" className="transition hover:text-white">Privacy Policy</a>
-            <a href="/terms" className="transition hover:text-white">Terms of Service</a>
-            <a href="https://ahub.in/press" target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Press</a>
           </div>
         </div>
       </div>

@@ -851,7 +851,7 @@ export function Navbar() {
               }}
               className="group hidden lg:inline-flex items-center gap-2 rounded-xl bg-[#c94a0a] px-3.5 py-2.5 text-xs font-medium text-white transition-transform duration-300 hover:-translate-y-0.5 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
             >
-              Join Ecosystem
+              Join Us
               <ArrowRight
                 size={15}
                 className="transition-transform duration-300 group-hover:translate-x-0.5"
@@ -995,7 +995,7 @@ export function Navbar() {
                 }}
                 className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#c94a0a] px-5 py-2.5 text-xs font-medium text-white transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(201,74,10,0.28)] active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
               >
-                Join Ecosystem
+                Join Us
                 <ArrowRight
                   size={15}
                   className="transition-transform duration-300 group-hover:translate-x-0.5"

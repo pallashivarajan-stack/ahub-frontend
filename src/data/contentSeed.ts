@@ -11,8 +11,9 @@ import {
   stats,
   visitors,
 } from "@/data";
-import { teamMembers, groupPhoto } from "@/data/teamPage";
+import { teamMembers, groupPhoto, teamPageData } from "@/data/teamPage";
 import { boardMembers } from "@/data/boardPage";
+import { pressItems, defaultPressPageMeta } from "@/data/pressPage";
 import { marqueePartners, popularPartners } from "@/data/partnersPage";
 import { ecosystemEvents } from "@/data/eventsCalendar";
 import { startupDirectory } from "@/data/startupPortfolio";
@@ -94,11 +95,28 @@ export function buildContentSeed() {
       institutions: enrichImages(institutions, ["img"]),
       mentors: enrichImages(mentors, ["image"]),
       board: enrichImages(board, ["image"]),
-      team: enrichImages(teamMembers, ["image"]),
+      team: teamMembers.map((m) => ({
+        ...m,
+        tagline: m.tagline ?? null,
+        visitLink: m.visitLink ?? null,
+        imageFetchUrl: getFetchUrlForDisplayUrl(m.image) ?? null,
+        imageLegacyPath: m.image,
+      })),
       teamGroupPhoto: {
         displayUrl: groupPhoto,
         fetchUrl: getFetchUrlForDisplayUrl(groupPhoto) ?? null,
         legacyPath: null,
+      },
+      teamPage: {
+        groupPhoto: {
+          displayUrl: teamPageData.groupPhoto,
+          fetchUrl: getFetchUrlForDisplayUrl(teamPageData.groupPhoto) ?? null,
+          legacyPath: null,
+        },
+        title: teamPageData.title,
+        subtitle: teamPageData.subtitle,
+        description: teamPageData.description,
+        memberCountLabel: teamPageData.memberCountLabel,
       },
       boardPage: enrichImages(boardMembers, ["image"]),
       partners: enrichImages([...marqueePartners, ...popularPartners], ["logo"]),
@@ -110,6 +128,8 @@ export function buildContentSeed() {
       ]),
       timelineYears: enrichImages(timelineYears, ["image"]),
       infrastructureImages: enrichInfrastructureImages(),
+      press: pressItems,
+      pressPage: defaultPressPageMeta,
       stats,
       visitors,
     },

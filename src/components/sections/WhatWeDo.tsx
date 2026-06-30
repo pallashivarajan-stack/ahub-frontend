@@ -1,4 +1,4 @@
-import { motion, Variants } from "framer-motion";
+import { motion, Variants, useReducedMotion } from "framer-motion";
 import { usePublicWhatWeDo } from "@/services/usePublicContent";
 import { resolveLegacyAsset } from "@/lib/assets";
 
@@ -63,21 +63,25 @@ const cardVariants: Variants = {
 
 export function WhatWeDo() {
   const { data: whatWeDoCards } = usePublicWhatWeDo(cards);
+  const shouldAnimate = !useReducedMotion();
+  const displayCards = Array.isArray(whatWeDoCards) ? whatWeDoCards : cards;
 
   return (
     <section
       id="what-we-do"
       className="relative overflow-hidden"
       style={{ background: "#FFF9F2" }}
+      aria-label="What We Do - AHUB services overview"
     >
       {/* Background image with enhanced blending */}
       <div
         className="pointer-events-none absolute inset-0 -z-30 bg-cover bg-center bg-no-repeat opacity-[0.25]"
         style={{ backgroundImage: `url("${resolveLegacyAsset("/src/assets/What we do.png")}")` }}
+        aria-hidden="true"
       />
       {/* Seamless gradient mask to sync with adjacent sections */}
-      <div className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-b from-[#FFF9F2] via-transparent to-[#FFF9F2]" />
-      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_center,transparent_0%,#FFF9F2_100%)] opacity-80" />
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-b from-[#FFF9F2] via-transparent to-[#FFF9F2]" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_center,transparent_0%,#FFF9F2_100%)] opacity-80" aria-hidden="true" />
 
       {/* Decorative blobs */}
       <div
@@ -86,6 +90,7 @@ export function WhatWeDo() {
           background:
             "radial-gradient(circle, rgba(245,158,66,0.4) 0%, transparent 70%)",
         }}
+        aria-hidden="true"
       />
       <div
         className="pointer-events-none absolute -bottom-40 -left-32 -z-10 h-[500px] w-[500px] rounded-full opacity-20"
@@ -93,20 +98,25 @@ export function WhatWeDo() {
           background:
             "radial-gradient(circle, rgba(245,158,66,0.3) 0%, transparent 70%)",
         }}
+        aria-hidden="true"
       />
 
       {/* Subtle circular line patterns */}
-      <div className="pointer-events-none absolute right-[10%] top-[15%] -z-10 h-64 w-64 rounded-full border border-[#F59E42]/10 opacity-40" />
-      <div className="pointer-events-none absolute right-[8%] top-[13%] -z-10 h-80 w-80 rounded-full border border-[#F59E42]/5 opacity-30" />
-      <div className="pointer-events-none absolute bottom-[10%] left-[5%] -z-10 h-48 w-48 rounded-full border border-[#F59E42]/8 opacity-30" />
+      <div className="pointer-events-none absolute right-[10%] top-[15%] -z-10 h-64 w-64 rounded-full border border-[#F59E42]/10 opacity-40" aria-hidden="true" />
+      <div className="pointer-events-none absolute right-[8%] top-[13%] -z-10 h-80 w-80 rounded-full border border-[#F59E42]/5 opacity-30" aria-hidden="true" />
+      <div className="pointer-events-none absolute bottom-[10%] left-[5%] -z-10 h-48 w-48 rounded-full border border-[#F59E42]/8 opacity-30" aria-hidden="true" />
 
       <div className="mx-auto max-w-[1400px] px-6 md:px-10" style={{ paddingTop: "60px", paddingBottom: "60px" }}>
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          {...(shouldAnimate
+            ? {
+                initial: { opacity: 0, y: 20 },
+                whileInView: { opacity: 1, y: 0 },
+                viewport: { once: true, margin: "-80px" },
+                transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+              }
+            : {})}
           className="mx-auto text-center"
           style={{ maxWidth: "900px" }}
         >
@@ -188,14 +198,21 @@ export function WhatWeDo() {
 
         {/* Card Grid */}
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
+          {...(shouldAnimate
+            ? {
+                variants: containerVariants,
+                initial: "hidden" as const,
+                whileInView: "show" as const,
+                viewport: { once: true, margin: "-80px" as const },
+              }
+            : {})}
           className="mt-12 grid gap-6 sm:grid-cols-2"
         >
-          {whatWeDoCards.map((card: any) => (
-            <motion.div key={card.number} variants={cardVariants}>
+          {displayCards.map((card) => (
+            <motion.div
+              key={card.number}
+              {...(shouldAnimate ? { variants: cardVariants } : {})}
+            >
               <WhatWeDoCard {...card} />
             </motion.div>
           ))}
