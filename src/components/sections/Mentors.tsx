@@ -17,7 +17,7 @@ export function Mentors() {
       <div className="pointer-events-none absolute right-[10%] top-40 h-56 w-56 rounded-full bg-[#FFF0E1]/60 blur-3xl" />
       <div className="pointer-events-none absolute bottom-20 left-[15%] h-48 w-48 rounded-full bg-[#FF8901]/15 blur-3xl" />
 
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
           <motion.div
@@ -101,34 +101,14 @@ function MentorCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container with Overlay */}
-      <div className="relative h-52 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
+      <div className="relative h-52 overflow-hidden bg-[#FFF7F2]">
         <motion.img
           src={mentor.image}
           alt={mentor.name}
-          className="h-full w-full object-cover"
+          className="mx-auto block h-full w-full object-contain"
           animate={{ scale: isHovered ? 1.05 : 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         />
-
-        {/* Gradient Overlay */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.4 }}
-        />
-
-        {/* Overlay Content */}
-        <motion.div
-          className="absolute inset-0 flex flex-col justify-end p-4"
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <div className="space-y-1">
-            <h3 className="text-base font-bold text-white drop-shadow-lg">{mentor.name}</h3>
-            <p className="text-xs text-white/90 drop-shadow-md">{mentor.title}</p>
-            <p className="text-[11px] text-white/80 drop-shadow-md">{mentor.organization}</p>
-          </div>
-        </motion.div>
       </div>
 
       {/* Content Section */}

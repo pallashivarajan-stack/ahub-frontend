@@ -472,7 +472,7 @@ export function JoinUsPage() {
 
       {/* Two-column form area */}
       <section className="bg-white px-4 py-10">
-        <div className="mx-auto max-w-7xl">
+        <div className="site-container-wide">
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <Loader2 size={24} className="animate-spin text-[#e75710]" />
@@ -517,7 +517,7 @@ function CTABanner() {
       whileInView="visible"
       viewport={{ once: true }}
       variants={fadeUp}
-      className="mx-auto max-w-7xl px-4 pb-16"
+      className="site-container-wide pb-16"
     >
       <div className="flex flex-col items-center justify-between gap-6 rounded-2xl border border-[#e75710]/15 bg-[#FFF6F0] px-8 py-8 sm:flex-row sm:gap-4">
         <div className="flex items-center gap-5">

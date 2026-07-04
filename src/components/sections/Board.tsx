@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { boardMembers } from "@/data/boardPage";
 import { usePublicBoard } from "@/services/usePublicContent";
@@ -122,7 +123,7 @@ export function Board() {
 
   return (
     <section
-      className="relative overflow-hidden py-24 md:py-32"
+      className="relative isolate overflow-hidden pb-24 pt-14 md:pb-32 md:pt-16 lg:pt-20"
       style={{ background: "var(--board-cream)" }}
     >
       {/* ══ Background decorations (exact from template) ══ */}
@@ -195,35 +196,27 @@ export function Board() {
       </div>
 
       {/* ══ Content ══ */}
-      <div className="relative mx-auto max-w-7xl px-4">
+      <div className="site-container-wide">
         {/* Header */}
-        <div className="mx-auto max-w-2xl text-center">
-          <p
-            className="text-xs font-bold uppercase tracking-[0.25em]"
-            style={{ color: "var(--board-primary)" }}
-          >
+        <div className="flex flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#FF8C42]/25 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#FF8C42] shadow-sm backdrop-blur-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#FF8C42]" />
             Our Governance
+          </div>
+
+          <div className="mt-6 flex items-center justify-center gap-4">
+            <span className="hidden h-px w-12 bg-[#FF8C42]/40 sm:block" />
+            <h2 className="text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl">
+              Board
+            </h2>
+            <span className="hidden h-px w-12 bg-[#FF8C42]/40 sm:block" />
+          </div>
+
+          <p className="mx-auto mt-4 max-w-xl text-base text-[#6C5E5B]">
+            Our board provides strategic direction, visionary leadership, and governance to empower innovation and create lasting impact.
           </p>
-          <h2
-            className="mt-4 text-5xl font-bold tracking-tight md:text-6xl"
-            style={{
-              fontFamily: "var(--board-font-serif)",
-              color: "var(--board-foreground)",
-            }}
-          >
-            Board
-          </h2>
-          <div
-            className="mx-auto mt-4 h-[3px] w-16 rounded-full"
-            style={{ background: "var(--board-primary)" }}
-          />
-          <p
-            className="mx-auto mt-6 max-w-xl text-base leading-relaxed"
-            style={{ color: "var(--board-muted-fg)" }}
-          >
-            Our board provides strategic direction, visionary leadership, and
-            governance to empower innovation and create lasting impact.
-          </p>
+
+          <div className="mt-5 h-1 w-16 rounded-full bg-[#FF8C42]" />
         </div>
 
         {/* ══ Carousel ══ */}

@@ -87,7 +87,7 @@ export function StartupPortfolioPage() {
     <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-20 md:pb-32 md:pt-24">
       <BackgroundDecor />
 
-      <div className="relative mx-auto max-w-7xl px-6 md:px-10">
+      <div className="relative site-container-wide">
         <PortfolioHeader />
         <LogoMarqueeShowcase data={portfolioData.logoMarquee} />
         <FilterPanel

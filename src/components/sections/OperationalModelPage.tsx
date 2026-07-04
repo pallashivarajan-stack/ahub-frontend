@@ -267,7 +267,7 @@ const SUPPORT_PILLARS = [
 function FutureValueSection() {
   return (
     <section className="bg-[#FAF7F4] px-4 py-14">
-      <div className="mx-auto max-w-7xl">
+      <div className="site-container-wide">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -337,7 +337,7 @@ function FutureValueSection() {
 function ModelSection() {
   return (
     <section className="bg-white px-4 py-12">
-      <div className="mx-auto max-w-7xl">
+      <div className="site-container-wide">
         <motion.div
           initial="hidden"
           whileInView="visible"

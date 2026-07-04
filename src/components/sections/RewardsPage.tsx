@@ -43,7 +43,7 @@ function Stars({ filled = 4, total = 5 }: { filled?: number; total?: number }) {
         <Star
           key={i}
           size={14}
-          className={i < filled ? "rw-text-gold" : "rw-text-white/20"}
+          className={i < filled ? "rw-text-gold" : "rw-text-dark/20"}
           fill={i < filled ? "#C9A84C" : "none"}
         />
       ))}
@@ -114,10 +114,9 @@ export function RewardsPage() {
     <>
       {/* ── scoped CSS ─────────────────────────────────────────────────── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        .rw-root { font-family: 'Urbanist', sans-serif; }
-        .rw-font-playfair { font-family: 'Playfair Display', serif; }
+        .rw-root { font-family: 'Poppins', sans-serif; }
 
         /* utility aliases */
         .rw-relative { position: relative; }
@@ -143,6 +142,7 @@ export function RewardsPage() {
         .rw-flex-1 { flex: 1; }
         .rw-shrink-0 { flex-shrink: 0; }
         .rw-gap-1  { gap: 4px; }
+        .rw-gap-1\.5  { gap: 6px; }
         .rw-gap-2  { gap: 8px; }
         .rw-gap-3  { gap: 12px; }
         .rw-gap-4  { gap: 16px; }
@@ -205,6 +205,7 @@ export function RewardsPage() {
         /* colours */
         .rw-text-gold        { color: #C9A84C; }
         .rw-text-white       { color: #fff; }
+        .rw-text-dark\/20    { color: rgba(0,0,0,0.20); }
         .rw-text-white\/20   { color: rgba(255,255,255,0.20); }
         .rw-text-white\/60   { color: rgba(255,255,255,0.60); }
         .rw-text-white\/80   { color: rgba(255,255,255,0.80); }
@@ -247,16 +248,16 @@ export function RewardsPage() {
         /* left side */
         .rw-eyebrow {
           font-size: 10px;
-          font-weight: 700;
+          font-weight: 600;
           letter-spacing: 0.22em;
           text-transform: uppercase;
           color: #C9A84C;
           margin-bottom: 14px;
         }
         .rw-h1 {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Poppins', sans-serif;
           font-size: clamp(48px, 6vw, 80px);
-          font-weight: 800;
+          font-weight: 700;
           line-height: 1.05;
           letter-spacing: -0.02em;
           color: #1A1810;
@@ -301,132 +302,201 @@ export function RewardsPage() {
           margin-bottom: 36px;
         }
 
-        /* ─── dark showcase card */
+        /* ─── showcase card ────────────────────────────── */
         .rw-showcase {
-          background: #1C2028;
-          border-radius: 28px;
-          padding: 36px;
-          position: relative;
-          display: flex;
+          max-width: 1200px;
+          margin: 0 auto;
+          min-height: 400px;
+          padding: 40px;
+          display: grid;
+          grid-template-columns: 50% 50%;
+          gap: 40px;
           align-items: center;
-          gap: 32px;
-          box-shadow: 0 32px 64px -12px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.04) inset;
+          background: linear-gradient(145deg, #FFFDF8 0%, #FFF7ED 50%, #FFF2E6 100%);
+          border: 1px solid #F3D6A4;
+          border-radius: 24px;
+          box-shadow: 0 30px 70px rgba(0,0,0,0.12);
+          position: relative;
           overflow: visible;
         }
+        @media (max-width: 1024px) {
+          .rw-showcase { grid-template-columns: 1fr; min-height: auto; padding: 32px; gap: 32px; }
+        }
         @media (max-width: 640px) {
-          .rw-showcase { flex-direction: column; padding: 24px; }
+          .rw-showcase { padding: 20px; gap: 24px; }
         }
 
-        .rw-showcase-text { flex: 1; }
+        .rw-showcase-text {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          height: 100%;
+        }
 
         .rw-showcase-title {
-          font-family: 'Playfair Display', serif;
-          font-size: 28px;
+          font-family: 'Poppins', sans-serif;
+          font-size: 32px;
           font-weight: 700;
-          color: #F5EFE0;
+          color: #2A1F1B;
           line-height: 1.2;
-          margin: 12px 0 10px;
+          margin-top: 16px;
+          margin-bottom: 0;
         }
+        @media (max-width: 1024px) {
+          .rw-showcase-title { font-size: 28px; }
+        }
+        @media (max-width: 640px) {
+          .rw-showcase-title { font-size: 24px; }
+        }
+
         .rw-showcase-divider {
-          width: 40px; height: 2px;
-          background: linear-gradient(90deg, #C9A84C, transparent);
-          margin-bottom: 14px;
+          width: 36px;
+          height: 2px;
+          background: linear-gradient(90deg, #C9A84C, #E8C86B);
+          margin-top: 16px;
           border-radius: 2px;
         }
+
         .rw-showcase-desc {
-          font-size: 13px;
+          font-family: 'Poppins', sans-serif;
+          font-size: 15px;
           line-height: 1.7;
-          color: rgba(255,255,255,0.55);
-          margin-bottom: 24px;
+          color: #6C5E5B;
+          max-width: 480px;
+          margin-top: 16px;
+          margin-bottom: 0;
+        }
+        @media (max-width: 1024px) {
+          .rw-showcase-desc { font-size: 14px; }
+        }
+        @media (max-width: 640px) {
+          .rw-showcase-desc { font-size: 13px; }
         }
 
         .rw-cert-btn {
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           gap: 10px;
-          font-size: 11px;
-          font-weight: 600;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: #C9A84C;
-          border: 1.5px solid rgba(201,168,76,0.45);
+          height: 48px;
+          width: 200px;
           border-radius: 999px;
-          padding: 9px 20px;
+          border: none;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
           cursor: pointer;
-          background: transparent;
-          transition: all 0.25s ease;
+          background: linear-gradient(135deg, #C9A84C 0%, #E8C86B 50%, #D4B254 100%);
+          color: #fff;
+          box-shadow: 0 6px 20px rgba(201,168,76,0.35);
+          transition: all 0.3s ease;
+          margin-top: 28px;
         }
         .rw-cert-btn:hover {
-          background: rgba(201,168,76,0.1);
-          border-color: #C9A84C;
-          color: #E8C86B;
+          transform: translateY(-1px);
+          box-shadow: 0 8px 24px rgba(201,168,76,0.5);
         }
         .rw-cert-btn-icon {
           width: 20px; height: 20px;
           border-radius: 50%;
-          border: 1.5px solid currentColor;
+          background: rgba(255,255,255,0.2);
           display: flex; align-items: center; justify-content: center;
           transition: transform 0.2s;
         }
         .rw-cert-btn:hover .rw-cert-btn-icon { transform: translateX(3px); }
 
-        /* certificate card inside showcase */
-        .rw-cert-card {
-          flex-shrink: 0;
-          width: 300px;
+        /* ─── Right column: certificate frame ──────────── */
+        .rw-showcase-right {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+        }
+
+        .rw-showcase-frame {
           background: #fff;
-          border-radius: 14px;
-          padding: 6px;
-          box-shadow: 0 20px 48px rgba(0,0,0,0.5);
+          border-radius: 20px;
+          padding: 16px;
+          box-shadow: 0 16px 48px rgba(0,0,0,0.08);
+          transform: rotate(1deg);
+          animation: rw-float 6s ease-in-out infinite;
+          width: 100%;
+          max-width: 400px;
+          transition: box-shadow 0.3s ease;
+        }
+        .rw-showcase-frame:hover {
+          box-shadow: 0 24px 64px rgba(0,0,0,0.12);
+        }
+
+        @keyframes rw-float {
+          0%, 100% { transform: rotate(1deg) translateY(0); }
+          50% { transform: rotate(1deg) translateY(-6px); }
+        }
+
+        .rw-cert-card {
+          width: 100%;
+          border-radius: 16px;
+          overflow: hidden;
           cursor: pointer;
           transition: transform 0.3s ease;
         }
-        .rw-cert-card:hover { transform: scale(1.03) translateY(-3px); }
-        .rw-cert-card img { width: 100%; height: auto; border-radius: 10px; display: block; }
-        @media (max-width: 900px) { .rw-cert-card { width: 100%; max-width: 340px; } }
+        .rw-cert-card:hover { transform: scale(1.02); }
+        .rw-cert-card img { width: 100%; height: auto; display: block; }
 
-        /* carousel nav */
+        /* carousel nav — positioned outside card */
         .rw-nav-btn {
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
-          background: rgba(255,255,255,0.06);
-          border: 1px solid rgba(255,255,255,0.1);
-          color: rgba(255,255,255,0.5);
-          width: 34px; height: 34px;
+          background: #fff;
+          border: none;
+          color: #C9A84C;
+          width: 48px; height: 48px;
           border-radius: 50%;
           display: flex; align-items: center; justify-content: center;
           cursor: pointer;
-          transition: all 0.2s;
-          z-index: 20;
+          box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+          transition: all 0.25s ease;
+          z-index: 30;
         }
-        .rw-nav-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
-        .rw-nav-btn-left  { left: -16px; }
-        .rw-nav-btn-right { right: -16px; }
+        .rw-nav-btn:hover {
+          box-shadow: 0 12px 32px rgba(0,0,0,0.16);
+          color: #B8922E;
+          transform: translateY(-50%) scale(1.05);
+        }
+        .rw-nav-btn-left  { left: -24px; }
+        .rw-nav-btn-right { right: -24px; }
+        @media (max-width: 1024px) {
+          .rw-nav-btn { width: 40px; height: 40px; }
+          .rw-nav-btn-left  { left: -20px; }
+          .rw-nav-btn-right { right: -20px; }
+        }
+        @media (max-width: 640px) {
+          .rw-nav-btn { width: 36px; height: 36px; }
+          .rw-nav-btn-left  { left: -18px; }
+          .rw-nav-btn-right { right: -18px; }
+        }
 
-        /* dots */
+        /* dots — below card */
         .rw-dots {
-          display: flex; gap: 6px;
-          position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+          margin-top: 24px;
+          position: relative;
         }
         .rw-dot {
-          height: 5px; border-radius: 999px;
+          height: 6px;
+          border-radius: 999px;
+          border: none;
           transition: all 0.3s;
-          background: rgba(255,255,255,0.25);
+          background: rgba(0,0,0,0.1);
+          cursor: pointer;
         }
-        .rw-dot.active { background: #C9A84C; width: 22px; }
+        .rw-dot.active { background: #C9A84C; width: 24px; }
         .rw-dot.inactive { width: 6px; }
-
-        /* trophy float */
-        .rw-trophy {
-          position: absolute;
-          top: -80px;
-          right: 32px;
-          width: 120px; height: 120px;
-          pointer-events: none;
-          z-index: 30;
-          filter: drop-shadow(0 16px 32px rgba(0,0,0,0.25));
-        }
+        .rw-dot:hover { background: rgba(201,168,76,0.5); }
 
         /* ─── MORE RECOGNITIONS label */
         .rw-section-label {
@@ -496,11 +566,11 @@ export function RewardsPage() {
 
         /* recognition card */
         .rw-rec-card {
-          background: #fff;
+          background: linear-gradient(145deg, #FFF8F2 0%, #FFF0E6 50%, #FFE8D6 100%);
           border-radius: 20px;
           padding: 28px;
-          box-shadow: 0 8px 40px rgba(0,0,0,0.055);
-          border: 1px solid rgba(0,0,0,0.04);
+          box-shadow: 0 8px 40px rgba(245,158,66,0.1);
+          border: 1px solid rgba(245,158,66,0.15);
           display: flex;
           flex-direction: column;
           align-items: flex-start;
@@ -538,7 +608,7 @@ export function RewardsPage() {
         .rw-rec-badge-right { right: -22px; top: 50%; transform: translateY(-50%); }
 
         .rw-rec-title {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Poppins', sans-serif;
           font-size: 20px;
           font-weight: 700;
           color: #1A1810;
@@ -569,6 +639,43 @@ export function RewardsPage() {
         }
         .rw-rec-link:hover { opacity: 0.75; }
 
+        /* smaller variant for IIC 4.0 card */
+        .rw-rec-card-sm {
+          padding: 14px;
+          border-radius: 14px;
+        }
+        .rw-rec-card-sm .rw-rec-img-wrap {
+          padding: 6px;
+          margin-bottom: 12px;
+          border-radius: 10px;
+        }
+        .rw-rec-card-sm .rw-rec-img-wrap img {
+          border-radius: 6px;
+        }
+        .rw-rec-card-sm .rw-rec-title {
+          font-size: 14px;
+          margin-bottom: 4px;
+        }
+        .rw-rec-card-sm .rw-rec-desc {
+          font-size: 11px;
+          line-height: 1.5;
+          margin-bottom: 10px;
+        }
+        .rw-rec-card-sm .rw-rec-link {
+          font-size: 9px;
+          gap: 4px;
+        }
+        .rw-rec-card-sm .rw-rec-badge {
+          width: 28px;
+          height: 28px;
+        }
+        .rw-rec-card-sm .rw-rec-badge-right {
+          right: -14px;
+        }
+        .rw-rec-card-sm .rw-rec-badge svg {
+          transform: scale(0.6);
+        }
+
         /* center column */
         .rw-center-col {
           display: flex;
@@ -593,7 +700,7 @@ export function RewardsPage() {
         }
 
         .rw-banner {
-          background: #111827;
+          background: linear-gradient(145deg, #FFF8F2 0%, #FFF0E6 50%, #FFE8D6 100%);
           border-radius: 20px;
           padding: 40px 48px;
           display: grid;
@@ -602,7 +709,7 @@ export function RewardsPage() {
           align-items: center;
           position: relative;
           overflow: hidden;
-          border: 1px solid rgba(255,255,255,0.05);
+          border: 1px solid rgba(245,158,66,0.15);
         }
         @media (max-width: 900px) {
           .rw-banner { grid-template-columns: 1fr; padding: 32px 24px; }
@@ -613,7 +720,7 @@ export function RewardsPage() {
         .rw-corner-art {
           position: absolute;
           pointer-events: none;
-          opacity: 0.18;
+          opacity: 0.3;
         }
         .rw-corner-art.rw-tl { top: 0; left: 0; }
         .rw-corner-art.rw-br { bottom: 0; right: 0; transform: rotate(180deg); }
@@ -622,7 +729,7 @@ export function RewardsPage() {
         .rw-banner-glow {
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse 40% 60% at 80% 50%, rgba(201,168,76,0.08) 0%, transparent 70%);
+          background: radial-gradient(ellipse 40% 60% at 80% 50%, rgba(245,158,66,0.1) 0%, transparent 70%);
           pointer-events: none;
         }
 
@@ -636,16 +743,17 @@ export function RewardsPage() {
         .rw-banner-icon { width: 60px; height: 60px; flex-shrink: 0; color: #C9A84C; }
 
         .rw-banner-title {
-          font-family: 'Playfair Display', serif;
+          font-family: 'Poppins', sans-serif;
           font-size: 22px;
           font-weight: 700;
-          color: #F5EFE0;
+          color: #2D1B1B;
           line-height: 1.35;
           margin-bottom: 6px;
         }
         .rw-banner-sub {
           font-size: 12px;
-          color: rgba(255,255,255,0.45);
+          font-weight: 600;
+          color: #706760;
           line-height: 1.65;
           max-width: 280px;
         }
@@ -653,7 +761,7 @@ export function RewardsPage() {
         .rw-banner-divider-el {
           width: 1px;
           height: 70px;
-          background: rgba(255,255,255,0.1);
+          background: rgba(245,158,66,0.2);
           justify-self: center;
         }
 
@@ -673,10 +781,10 @@ export function RewardsPage() {
           display: flex;
           align-items: center;
           gap: 6px;
-          font-family: 'Playfair Display', serif;
+          font-family: 'Poppins', sans-serif;
           font-size: 26px;
           font-weight: 700;
-          color: #F5EFE0;
+          color: #2D1B1B;
           line-height: 1;
           margin-bottom: 6px;
         }
@@ -685,7 +793,7 @@ export function RewardsPage() {
           font-weight: 600;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.40);
+          color: #8B7D77;
           line-height: 1.5;
         }
 
@@ -755,107 +863,107 @@ export function RewardsPage() {
         {/* ════════════════════════════════════════════════
             HERO
         ════════════════════════════════════════════════ */}
-        <section className="rw-hero">
+        <section className="relative isolate overflow-visible bg-[#FDF8F2] pb-24 pt-14 md:pb-32 md:pt-16 lg:pt-20">
+          <div className="pointer-events-none absolute inset-0 -z-10">
+            <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_85%_8%,rgba(245,158,66,0.12),transparent_55%),radial-gradient(50%_45%_at_10%_15%,rgba(245,158,66,0.08),transparent_50%)]" />
+          </div>
 
-          {/* ── LEFT ────────────────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className="rw-eyebrow">Our Achievements</p>
+          <div className="site-container-wide">
 
-            <h1 className="rw-h1">
-              Rewards &amp;<br />
-              <span className="rw-orange">Recognition</span>
-            </h1>
+            {/* ── Centered heading ──────────────────────── */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col items-center text-center"
+            >
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E42]/25 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#F59E42] shadow-sm backdrop-blur-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#F59E42]" />
+                Our Achievements
+              </div>
 
-            {/* decorative divider */}
-            <div className="rw-divider">
-              <div className="rw-divider-line" />
-              <div className="rw-divider-diamond" />
-              <div className="rw-divider-diamond-sm" />
-              <div className="rw-divider-diamond" />
-              <div className="rw-divider-line" />
-            </div>
+              <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl">
+                Rewards &amp; <span className="text-[#F59E42]">Recognition</span>
+              </h1>
 
-            <p className="rw-hero-desc">
-              Celebrating our commitment to excellence, innovation, and impact.
-              Recognitions that inspire us to aim higher every day.
-            </p>
-          </motion.div>
+              <p className="mx-auto mt-4 max-w-xl text-base text-[#6C5E5B]">
+                Celebrating our commitment to excellence, innovation, and impact. Recognitions that inspire us to aim higher every day.
+              </p>
 
-          {/* ── RIGHT (dark showcase card) ───────────────── */}
-          <motion.div
-            initial={{ opacity: 0, x: 32 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-            style={{ position: "relative" }}
-          >
-            {/* floating trophy */}
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3113/3113054.png"
-              alt="trophy"
-              className="rw-trophy"
-              style={{
-                filter:
-                  "sepia(1) hue-rotate(5deg) saturate(2.5) brightness(1.05) drop-shadow(0 12px 28px rgba(0,0,0,0.22))",
-              }}
-            />
+              <div className="mt-5 h-1 w-16 rounded-full bg-[#F59E42]" />
+            </motion.div>
 
-            <div className="rw-showcase">
-              {/* left nav */}
+          </div>
+
+          {/* ── Showcase card below (full-bleed) ────────── */}
+          <div className="mx-auto max-w-[1480px] px-6 md:px-10">
+            <motion.div
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+              className="relative mt-14 lg:mt-16"
+            >
+              {/* nav buttons — outside card */}
               <button className="rw-nav-btn rw-nav-btn-left" onClick={prev} aria-label="Previous">
-                <ChevronLeft size={16} />
+                <ChevronLeft size={18} />
               </button>
-              {/* right nav */}
               <button className="rw-nav-btn rw-nav-btn-right" onClick={next} aria-label="Next">
-                <ChevronRight size={16} />
+                <ChevronRight size={18} />
               </button>
 
-              {/* text side */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={current.id + "-text"}
-                  className="rw-showcase-text"
-                  initial={{ opacity: 0, x: -16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 16 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Stars filled={4} />
-                  <h2 className="rw-showcase-title">{current.label}</h2>
-                  <div className="rw-showcase-divider" />
-                  <p className="rw-showcase-desc">{current.desc}</p>
-                  <button
-                    className="rw-cert-btn"
-                    onClick={() => setLightbox(current.img)}
+              <div className="rw-showcase">
+
+                {/* ── LEFT COLUMN: text ──────────────────── */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={current.id + "-text"}
+                    className="rw-showcase-text"
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 16 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    View Certificate
-                    <span className="rw-cert-btn-icon">
-                      <ArrowRight size={10} />
-                    </span>
-                  </button>
-                </motion.div>
-              </AnimatePresence>
+                    <Stars filled={4} />
+                    <h2 className="rw-showcase-title">{current.label}</h2>
+                    <div className="rw-showcase-divider" />
+                    <p className="rw-showcase-desc">{current.desc}</p>
+                    <button
+                      className="rw-cert-btn"
+                      onClick={() => setLightbox(current.img)}
+                    >
+                      View Certificate
+                      <span className="rw-cert-btn-icon">
+                        <ArrowRight size={11} />
+                      </span>
+                    </button>
+                  </motion.div>
+                </AnimatePresence>
 
-              {/* certificate image */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={current.id + "-img"}
-                  className="rw-cert-card"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
-                  onClick={() => setLightbox(current.img)}
-                  title="Click to enlarge"
-                >
-                  <img src={current.img} alt={current.alt} />
-                </motion.div>
-              </AnimatePresence>
+                {/* ── RIGHT COLUMN: certificate frame ────── */}
+                <div className="rw-showcase-right">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={current.id + "-frame"}
+                      className="rw-showcase-frame"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div
+                        className="rw-cert-card"
+                        onClick={() => setLightbox(current.img)}
+                        title="Click to enlarge"
+                      >
+                        <img src={current.img} alt={current.alt} />
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
 
-              {/* dots */}
+              </div>
+
+              {/* dots — below card */}
               <div className="rw-dots">
                 {displaySlides.map((s, i) => (
                   <button
@@ -867,8 +975,9 @@ export function RewardsPage() {
                   />
                 ))}
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+
+          </div>
         </section>
 
         {/* ════════════════════════════════════════════════
@@ -951,7 +1060,7 @@ export function RewardsPage() {
 
             {/* ── RIGHT CARD: IIC 4.0 ───────────────────── */}
             <motion.div
-              className="rw-rec-card"
+              className="rw-rec-card rw-rec-card-sm"
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

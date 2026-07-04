@@ -540,7 +540,7 @@ function SectionPage() {
         title="This page is not available"
         description="The requested internal route does not exist. Use the navigation menu to reach a supported section."
       >
-        <div className="mx-auto max-w-7xl px-6 pb-16 md:px-10">
+        <div className="site-container-wide pb-16">
           <div className="rounded-[28px] border border-[rgba(91,14,45,0.08)] bg-white p-8 text-slate-600 shadow-[0_16px_40px_-28px_rgba(91,14,45,0.18)]">
             Route key <span className="font-semibold text-slate-900">{key}</span> was not found.
           </div>
@@ -552,7 +552,7 @@ function SectionPage() {
   if (key === "startups/latest-events") {
     return (
       <InternalPageShell eyebrow={page.eyebrow} title={page.title} description={page.summary}>
-        <div className="mx-auto max-w-7xl space-y-8 px-6 md:px-10">
+        <div className="site-container-wide space-y-8">
           <div className="rounded-[28px] border border-[rgba(91,14,45,0.08)] bg-white p-6 shadow-[0_16px_40px_-28px_rgba(91,14,45,0.18)] md:p-8">
             <div className="text-[0.62rem] uppercase tracking-[0.24em] text-primary">Startups / Latest Events</div>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl">
@@ -573,7 +573,7 @@ function SectionPage() {
 
   return (
     <InternalPageShell eyebrow={page.eyebrow} title={page.title} description={page.summary}>
-      <div className="mx-auto max-w-7xl space-y-8 px-6 md:px-10">
+      <div className="site-container-wide space-y-8">
         {page.kind === "profiles" && <ProfilePage page={page} />}
         {page.kind === "logos" && <LogoPage page={page} />}
         {page.kind === "timeline" && <TimelinePage page={page} />}

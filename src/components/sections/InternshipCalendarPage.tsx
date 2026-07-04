@@ -62,7 +62,7 @@ export function InternshipCalendarPage() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#FDF8F2] pb-16 pt-28 md:pb-24 md:pt-32 lg:pt-36">
       <BackgroundDecor />
-      <div className="relative mx-auto max-w-7xl px-6 md:px-10">
+      <div className="relative site-container-wide">
         <HeroSection badges={displayData.heroBadges} />
         <DashboardGrid
           selected={selected}

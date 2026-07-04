@@ -22,7 +22,7 @@ function HeroSection() {
         <div className="absolute -right-40 -top-40 h-[400px] w-[400px] rounded-full bg-[#FFA64D]/5 blur-[100px]" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 text-center">
+      <div className="relative site-container-wide text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -62,7 +62,7 @@ function HeroSection() {
 function VisionCards({ data }: { data: any }) {
   return (
     <section className="bg-[#FFF8F2] px-4 pb-16">
-      <div className="mx-auto max-w-7xl">
+      <div className="site-container-wide">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -121,7 +121,7 @@ function VisionCards({ data }: { data: any }) {
 function RoadmapSection({ data }: { data: any }) {
   return (
     <section className="bg-[#FAF7F4] px-4 py-16">
-      <div className="mx-auto max-w-7xl">
+      <div className="site-container-wide">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -165,7 +165,7 @@ function RoadmapSection({ data }: { data: any }) {
 function TimelineSection({ data }: { data: any }) {
   return (
     <section className="bg-[#FAF7F4] px-4 pb-16">
-      <div className="mx-auto max-w-7xl">
+      <div className="site-container-wide">
         <motion.div
           initial="hidden"
           whileInView="visible"

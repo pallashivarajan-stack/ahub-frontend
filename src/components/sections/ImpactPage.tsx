@@ -185,7 +185,7 @@ export function ImpactPage() {
         <div className="pointer-events-none absolute -left-40 top-0 h-96 w-96 rounded-full bg-[#008080]/10 blur-[100px]" />
         <div className="pointer-events-none absolute -right-40 top-20 h-96 w-96 rounded-full bg-[#e75710]/5 blur-[120px]" />
 
-        <div className="relative mx-auto max-w-7xl px-6 text-center md:px-10">
+        <div className="relative site-container-wide text-center">
           <motion.div
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -213,7 +213,7 @@ export function ImpactPage() {
       </section>
 
       {/* Metrics Container Block */}
-      <div className="relative mx-auto -mt-16 max-w-7xl px-4 sm:px-6 lg:px-8 z-10">
+      <div className="relative -mt-16 site-container-wide z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}

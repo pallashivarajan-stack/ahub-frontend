@@ -124,7 +124,7 @@ export function CaseStudiesPage() {
       </section>
 
       {/* ── Featured Showcase ── */}
-      <section className="mx-auto max-w-[1400px] px-6 pt-8 pb-24 md:pt-10 md:pb-32">
+      <section className="site-container-wide pt-8 pb-24 md:pt-10 md:pb-32">
         <motion.div
           variants={staggerContainer}
           initial="hidden"

@@ -29,11 +29,11 @@ export function MeshNetwork() {
     <section id="mesh-network" className="relative overflow-hidden border-y border-[color:color-mix(in_oklch,var(--primary)_10%,transparent)] bg-[linear-gradient(180deg,#FFF7F2_0%,#FFFFFF_100%)] py-16 md:py-24">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(70%_45%_at_50%_0%,rgba(255,191,128,0.18),transparent_58%),radial-gradient(36%_24%_at_10%_18%,rgba(255,233,214,0.38),transparent_60%)]" />
       
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <SectionHeading eyebrow="Connected" title="Mesh Network" subtitle="A thriving ecosystem of partners, institutions, and industry leaders." align="center" />
       </div>
 
-      <div className="mt-14 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
+      <div className="marquee-container mt-14 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
         <div className="flex w-max animate-marquee items-center gap-14 px-6">
           {loop1.map((logo, i) => (
             <div
@@ -46,7 +46,7 @@ export function MeshNetwork() {
         </div>
       </div>
 
-      <div className="mt-8 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
+      <div className="marquee-container mt-8 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
         <div className="flex w-max animate-marquee-slow items-center gap-14 px-6" style={{ animationDirection: "reverse" }}>
           {loop2.map((logo, i) => (
             <div

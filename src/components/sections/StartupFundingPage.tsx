@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Banknote, Calendar, Search, TrendingUp } from "lucide-react";
+import { ArrowRight, Banknote, Calendar, Gem, Orbit, Radar, Rocket, Search, Shield, Sparkles, TrendingUp } from "lucide-react";
 import {
   featuredFundingStartups,
   filterFundingStartups,
@@ -48,7 +48,7 @@ export function StartupFundingPage() {
     <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-14 md:pb-32 md:pt-16 lg:pt-20">
       <BackgroundDecor />
 
-      <div className="relative mx-auto max-w-7xl px-6 md:px-10">
+      <div className="relative site-container-wide">
         <FundingHeader highlights={displayData.fundingHighlights} />
         <FeaturedGrid highlights={displayData.fundingHighlights} featured={displayData.featuredFundingStartups} />
         <FilterSection
@@ -104,6 +104,15 @@ function FundingHeader({ highlights }: { highlights: typeof fundingHighlights })
   );
 }
 
+const cardVisuals: Record<string, { icon: React.ComponentType<{ className?: string }>; gradient: string; bg: string; iconColor: string; glow: string }> = {
+  seed: { icon: Gem, gradient: "from-emerald-400/25 via-emerald-500/10 to-emerald-600/5", bg: "bg-emerald-50", iconColor: "text-emerald-600", glow: "shadow-emerald-500/20" },
+  angel: { icon: Orbit, gradient: "from-amber-400/25 via-amber-500/10 to-amber-600/5", bg: "bg-amber-50", iconColor: "text-amber-600", glow: "shadow-amber-500/20" },
+  grants: { icon: Shield, gradient: "from-blue-400/25 via-blue-500/10 to-blue-600/5", bg: "bg-blue-50", iconColor: "text-blue-600", glow: "shadow-blue-500/20" },
+  demo: { icon: Sparkles, gradient: "from-violet-400/25 via-violet-500/10 to-violet-600/5", bg: "bg-violet-50", iconColor: "text-violet-600", glow: "shadow-violet-500/20" },
+  matching: { icon: Radar, gradient: "from-cyan-400/25 via-cyan-500/10 to-cyan-600/5", bg: "bg-cyan-50", iconColor: "text-cyan-600", glow: "shadow-cyan-500/20" },
+  followon: { icon: Rocket, gradient: "from-rose-400/25 via-rose-500/10 to-rose-600/5", bg: "bg-rose-50", iconColor: "text-rose-600", glow: "shadow-rose-500/20" },
+};
+
 function FeaturedGrid({ highlights, featured }: { highlights: typeof fundingHighlights; featured: typeof featuredFundingStartups }) {
   return (
     <motion.div {...fadeUp} className="mt-14 lg:mt-16">
@@ -115,27 +124,33 @@ function FeaturedGrid({ highlights, featured }: { highlights: typeof fundingHigh
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {highlights.map((item, index) => (
-          <motion.article
-            key={item.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.5, delay: index * 0.06 }}
-            className="group flex flex-col overflow-hidden rounded-[28px] bg-white shadow-[0_12px_40px_-24px_rgba(45,27,27,0.1)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-20px_rgba(245,158,66,0.18)]"
-          >
-            <div className="flex h-44 items-center justify-center bg-[#FFF4E8] p-6">
-              <img src={item.image} alt="" className="max-h-24 max-w-[160px] object-contain opacity-90 transition-transform duration-500 group-hover:scale-105" />
-            </div>
-            <div className="flex flex-1 flex-col p-6">
-              <span className="inline-flex w-fit rounded-full bg-[#FFF4E8] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#F59E42]">
-                {item.tag}
-              </span>
-              <h3 className="mt-3 text-lg font-[800] text-[#2D1B1B]">{item.title}</h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-[#6C5E5B]">{item.body}</p>
-            </div>
-          </motion.article>
-        ))}
+        {highlights.map((item, index) => {
+          const visual = cardVisuals[item.id] ?? cardVisuals.seed;
+          const Icon = visual.icon;
+          return (
+            <motion.article
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: index * 0.06 }}
+              className="group flex flex-col overflow-hidden rounded-[28px] bg-white shadow-[0_12px_40px_-24px_rgba(45,27,27,0.1)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-20px_rgba(245,158,66,0.18)]"
+            >
+              <div className={`relative flex h-44 items-center justify-center overflow-hidden bg-gradient-to-br ${visual.gradient} ${visual.bg} p-6`}>
+                <div className={`flex h-20 w-20 items-center justify-center rounded-2xl bg-white/80 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.03] backdrop-blur-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/95 group-hover:shadow-xl ${visual.glow}`}>
+                  <Icon className={`h-10 w-10 ${visual.iconColor} transition-all duration-500 group-hover:scale-110`} />
+                </div>
+              </div>
+              <div className="flex flex-1 flex-col p-6">
+                <span className="inline-flex w-fit rounded-full bg-[#FFF4E8] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#F59E42]">
+                  {item.tag}
+                </span>
+                <h3 className="mt-3 text-lg font-[800] text-[#2D1B1B]">{item.title}</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-[#6C5E5B]">{item.body}</p>
+              </div>
+            </motion.article>
+          );
+        })}
       </div>
 
       <div className="mt-10 rounded-[28px] border border-[#F59E42]/10 bg-white/80 p-6 shadow-sm md:p-8">

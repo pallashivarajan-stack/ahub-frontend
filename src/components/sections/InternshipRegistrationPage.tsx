@@ -161,7 +161,7 @@ export function InternshipRegistrationPage() {
         <div className="absolute bottom-40 left-1/4 h-[350px] w-[350px] rounded-full bg-[#FFF4E8]/60 blur-[100px]" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative site-container-wide">
         
         {/* PAGE HEADER */}
         <div className="relative flex flex-col items-center text-center">

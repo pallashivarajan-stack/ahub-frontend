@@ -35,8 +35,8 @@ export function Footer() {
   return (
     <footer id="about" className="relative overflow-hidden bg-[linear-gradient(180deg,rgba(10,10,10,0.99)_0%,rgba(6,6,6,0.98)_46%,rgba(0,0,0,1)_100%)] text-[#f6f6f6]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_0%,rgba(255,255,255,0.07),transparent_65%),radial-gradient(45%_35%_at_92%_12%,rgba(255,255,255,0.06),transparent_52%)]" />
-      <div className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-24">
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_0.9fr_0.9fr_1.05fr] lg:gap-14">
+      <div className="site-container-wide py-20 md:py-24">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.9fr_0.9fr_1.05fr] lg:gap-12">
           <div>
             <div className="flex items-center gap-3">
               <span className="grid h-8 w-8 place-items-center rounded-md border border-white/14 bg-white/14 text-sm font-bold text-white">A</span>

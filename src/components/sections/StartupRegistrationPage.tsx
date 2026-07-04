@@ -232,7 +232,7 @@ export function StartupRegistrationPage() {
 
       {/* ── Form + Sidebar ────────────────────────────────── */}
       <section className="bg-white px-6 pb-20 pt-4">
-        <div className="mx-auto max-w-7xl">
+        <div className="site-container-wide">
           <motion.div
             initial="hidden"
             whileInView="visible"

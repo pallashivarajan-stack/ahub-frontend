@@ -19,7 +19,7 @@ export function InvestorsPage() {
         <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_85%_8%,rgba(245,158,66,0.12),transparent_55%),radial-gradient(50%_45%_at_10%_15%,rgba(245,158,66,0.08),transparent_50%)]" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <InvestorsHeader />
 
         <div className="mt-14 grid gap-8 lg:mt-16 lg:grid-cols-[48%_52%] lg:gap-8">

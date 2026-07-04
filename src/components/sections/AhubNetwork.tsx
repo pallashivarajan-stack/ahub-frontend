@@ -97,7 +97,7 @@ export function AhubNetwork() {
     <section id="ahub-network" className="relative overflow-hidden bg-[linear-gradient(135deg,#FFF8F0_0%,#FFE8D6_100%)] py-16 md:py-24" aria-label="AHUB Network - Statistics">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_20%,rgba(255,140,50,0.08),transparent_60%)]" aria-hidden="true" />
       
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <div className="text-center mb-10">
           <motion.div
             {...(shouldAnimate ? {

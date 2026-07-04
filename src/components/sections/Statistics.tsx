@@ -12,7 +12,7 @@ export function Statistics() {
   return (
     <section className="relative overflow-hidden py-20 md:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80%_60%_at_50%_0%,rgba(90,30,44,0.08),transparent_52%),linear-gradient(180deg,color-mix(in_oklch,var(--background)_94%,white),color-mix(in_oklch,var(--background)_88%,white))]" />
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <SectionHeading eyebrow="Numbers" title="An ecosystem measured by outcomes." align="center" />
 
         <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-4">

@@ -9,7 +9,7 @@ export function InstitutionsClubs() {
   return (
     <section id="aspire" className="relative overflow-hidden py-16 md:py-24">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80%_60%_at_50%_0%,rgba(90,30,44,0.07),transparent_52%),linear-gradient(180deg,color-mix(in_oklch,var(--background)_94%,white),color-mix(in_oklch,var(--background)_88%,white))]" />
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <SectionHeading eyebrow="Network" title="Institutions and clubs" subtitle="Campuses, student founder communities, and innovation chapters across the country." />
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">

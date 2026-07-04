@@ -15,16 +15,14 @@ import {
   Building2,
   CalendarDays,
   ChevronDown,
-  Globe2,
   Layers3,
   Rocket,
   ShieldCheck,
   Sparkles,
-  Star,
   Users,
   Zap,
 } from "lucide-react";
-import { events, portfolio } from "@/data";
+
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { resolveLegacyAsset } from "@/lib/assets";
 import { cn } from "@/lib/utils";
@@ -85,96 +83,6 @@ function NavLabel({ label }: { label: string }) {
     </span>
   );
 }
-
-const _PANEL_PARTICLES = [
-  { className: "left-[8%] top-[16%] h-1.5 w-1.5", delay: 0 },
-  { className: "right-[12%] top-[12%] h-1 w-1", delay: 0.5 },
-  { className: "left-[18%] bottom-[16%] h-1 w-1", delay: 0.8 },
-  { className: "right-[20%] bottom-[18%] h-1.5 w-1.5", delay: 0.2 },
-];
-
-const _ecosystemCards = [
-  {
-    icon: Sparkles,
-    title: "Incubation Programs",
-    desc: "Cohort design, founder diagnostics, and weekly execution reviews built like a product team.",
-  },
-  {
-    icon: Layers3,
-    title: "Innovation Labs",
-    desc: "Cross-functional labs for AI, climate, deep tech, and enterprise software with real delivery cycles.",
-  },
-  {
-    icon: Users,
-    title: "Mentorship Network",
-    desc: "Operators, founders, and investors connected through a curated graph, not a generic directory.",
-  },
-  {
-    icon: BadgeDollarSign,
-    title: "Funding Opportunities",
-    desc: "Investor access, syndicate intros, and structured capital pathways from pre-seed to Series A.",
-  },
-];
-
-const _programCards = [
-  {
-    icon: Rocket,
-    title: "Aspire",
-    desc: "Early-stage validation for ambitious builders.",
-    tag: "Entry",
-  },
-  {
-    icon: Users,
-    title: "Associate",
-    desc: "A deeper operating layer for committed teams.",
-    tag: "Network",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Achieve",
-    desc: "High-conviction support for traction and scale.",
-    tag: "Growth",
-  },
-  {
-    icon: Zap,
-    title: "Accelerator",
-    desc: "Short bursts of intensity with measurable milestones.",
-    tag: "Sprint",
-  },
-  {
-    icon: Star,
-    title: "Startup Bootcamp",
-    desc: "Hands-on venture readiness for first-time founders.",
-    tag: "Launch",
-  },
-  {
-    icon: Globe2,
-    title: "Founder Fellowship",
-    desc: "A premium track for exceptional builders with network leverage.",
-    tag: "Elite",
-  },
-];
-
-const _startupCards = portfolio.slice(0, 4);
-const _eventCards = events.slice(0, 4);
-
-const _networkCards = [
-  {
-    icon: Building2,
-    title: "Institutional Nodes",
-    desc: "Research parks, university cells, and regional launchpads.",
-  },
-  {
-    icon: Users,
-    title: "Partner Graph",
-    desc: "Capital, operators, and enterprise allies connected into one ecosystem.",
-  },
-  {
-    icon: Globe2,
-    title: "Distribution Reach",
-    desc: "A layered network for pilots, procurement, and founder visibility.",
-  },
-];
 
 type MenuLink = { label: string; href: string; description: string; image: string };
 
@@ -768,103 +676,105 @@ export function Navbar() {
         <nav
           aria-label="Primary navigation"
           className={cn(
-            "pointer-events-auto relative mx-auto flex h-[64px] w-full items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-5 md:px-6 lg:px-6 transition-[box-shadow] duration-400",
+            "pointer-events-auto relative w-full border-b border-slate-200 bg-white transition-[box-shadow] duration-400",
             scrolled ? "shadow-sm" : "",
           )}
         >
-          {/* Logo section - left aligned */}
-          <div className="flex shrink-0 items-center gap-3 pr-0 lg:pr-1">
-            <Link
-              to="/"
-              className="group flex items-center gap-3 transition-opacity hover:opacity-70 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
-            >
-              <img
-                src={ahubLogo}
-                alt="AUIC"
-                className="h-11 w-auto select-none object-contain"
-                draggable={false}
-              />
-              <div className="flex flex-col leading-tight">
-                <span className="text-[0.95rem] font-semibold text-slate-950 tracking-tight">
-                  AUIC
-                </span>
-                <span className="text-[0.68rem] text-slate-700 font-medium uppercase tracking-[0.22em]">
-                  Incubation Hub
-                </span>
+          <div className="mx-auto flex h-[64px] w-full max-w-7xl items-center justify-between px-4 md:px-8">
+            {/* Logo section - left aligned */}
+            <div className="flex shrink-0 items-center gap-3 pr-0 lg:pr-1">
+              <Link
+                to="/"
+                className="group flex items-center gap-3 transition-opacity hover:opacity-70 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
+              >
+                <img
+                  src={ahubLogo}
+                  alt="AUIC"
+                  className="h-11 w-auto select-none object-contain"
+                  draggable={false}
+                />
+                <div className="flex flex-col leading-tight">
+                  <span className="text-[0.95rem] font-semibold text-slate-950 tracking-tight">
+                    AUIC
+                  </span>
+                  <span className="text-[0.68rem] text-slate-700 font-medium uppercase tracking-[0.22em]">
+                    Incubation Hub
+                  </span>
+                </div>
+              </Link>
+            </div>
+
+            {/* Center navigation links - hidden on mobile */}
+            <div className="hidden flex-1 items-center justify-center lg:flex">
+              <ul className="flex items-center justify-center gap-1 xl:gap-1.5">
+                {NAV_ITEMS.map((item) => {
+                  const isPanelOpen = activePanel === item.panel;
+                  const hasPanel = !!item.panel;
+                  return (
+                    <li key={item.label}>
+                      <button
+                        type="button"
+                        className="group flex items-center gap-1 rounded-lg px-3 py-2 text-[0.78rem] font-semibold tracking-[0.06em] text-slate-700 transition-colors duration-300 hover:text-[#e75710] focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
+                        onMouseEnter={() => item.panel && setActivePanel(item.panel)}
+                        onFocus={() => item.panel && setActivePanel(item.panel)}
+                        onClick={() => {
+                          if (hasPanel) {
+                            setActivePanel((current) =>
+                              current === item.panel ? null : (item.panel ?? null),
+                            );
+                            return;
+                          }
+                          if (item.href === "#home") {
+                            navigate({ to: "/" });
+                          } else {
+                            scrollToSection(item.href.slice(1));
+                          }
+                          closeMenus();
+                        }}
+                      >
+                        <NavLabel label={item.label} />
+                        <ChevronDown
+                          size={13}
+                          strokeWidth={2.5}
+                          className={cn(
+                            "-mr-0.5 transition-all duration-300",
+                            isPanelOpen
+                              ? "rotate-180 text-[#e75710]"
+                              : "text-slate-400 group-hover:rotate-180 group-hover:text-[#e75710]",
+                          )}
+                        />
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            {/* CTA Button - right aligned */}
+            <div className="flex shrink-0 items-center gap-2 pl-0 lg:pl-1">
+              <a
+                href="#announcement"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection("announcement");
+                }}
+                className="group hidden lg:inline-flex items-center gap-2 rounded-xl bg-[#c94a0a] px-3.5 py-2.5 text-xs font-medium text-white transition-transform duration-300 hover:-translate-y-0.5 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
+              >
+                Join Us
+                <ArrowRight
+                  size={15}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5"
+                />
+              </a>
+
+              {/* Mobile menu toggle */}
+              <div className="flex lg:hidden">
+                <MobileMenuToggle
+                  ref={toggleRef}
+                  open={mobileOpen}
+                  onClick={() => setMobileOpen((value) => !value)}
+                />
               </div>
-            </Link>
-          </div>
-
-          {/* Center navigation links - hidden on mobile */}
-          <div className="hidden flex-1 items-center justify-center lg:flex">
-            <ul className="flex items-center justify-center gap-1 xl:gap-1.5">
-              {NAV_ITEMS.map((item) => {
-                const isPanelOpen = activePanel === item.panel;
-                const hasPanel = !!item.panel;
-                return (
-                  <li key={item.label}>
-                    <button
-                      type="button"
-                      className="group flex items-center gap-1 rounded-lg px-3 py-2 text-[0.78rem] font-semibold tracking-[0.06em] text-slate-700 transition-colors duration-300 hover:text-[#e75710] focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
-                      onMouseEnter={() => item.panel && setActivePanel(item.panel)}
-                      onFocus={() => item.panel && setActivePanel(item.panel)}
-                      onClick={() => {
-                        if (hasPanel) {
-                          setActivePanel((current) =>
-                            current === item.panel ? null : (item.panel ?? null),
-                          );
-                          return;
-                        }
-                        if (item.href === "#home") {
-                          navigate({ to: "/" });
-                        } else {
-                          scrollToSection(item.href.slice(1));
-                        }
-                        closeMenus();
-                      }}
-                    >
-                      <NavLabel label={item.label} />
-                      <ChevronDown
-                        size={13}
-                        strokeWidth={2.5}
-                        className={cn(
-                          "-mr-0.5 transition-all duration-300",
-                          isPanelOpen
-                            ? "rotate-180 text-[#e75710]"
-                            : "text-slate-400 group-hover:rotate-180 group-hover:text-[#e75710]",
-                        )}
-                      />
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-
-          {/* CTA Button - right aligned */}
-          <div className="flex shrink-0 items-center gap-2 pl-0 lg:pl-1">
-            <a
-              href="#announcement"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection("announcement");
-              }}
-              className="group hidden lg:inline-flex items-center gap-2 rounded-xl bg-[#c94a0a] px-3.5 py-2.5 text-xs font-medium text-white transition-transform duration-300 hover:-translate-y-0.5 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
-            >
-              Join Us
-              <ArrowRight
-                size={15}
-                className="transition-transform duration-300 group-hover:translate-x-0.5"
-              />
-            </a>
-
-            {/* Mobile menu toggle */}
-            <div className="flex lg:hidden">
-              <MobileMenuToggle
-                ref={toggleRef}
-                open={mobileOpen}
-                onClick={() => setMobileOpen((value) => !value)}
-              />
             </div>
           </div>
         </nav>

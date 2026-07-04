@@ -69,7 +69,7 @@ function HeroSection({ images }: { images: any }) {
 
   return (
     <section className="pb-16 pt-28 md:pb-20 md:pt-32 lg:pt-36">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 md:px-10 lg:grid-cols-2 lg:gap-14">
+      <div className="site-container-wide grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
         <motion.div {...fadeUp}>
           <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E42]/25 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#F59E42] shadow-sm backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-[#F59E42]" />
@@ -131,7 +131,7 @@ function HeroSection({ images }: { images: any }) {
 function FacilitiesSection({ data }: { data: any }) {
   return (
     <section id="facilities" className="py-16 md:py-20">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <motion.div {...fadeUp} className="text-center">
           <h2 className="text-2xl font-[800] tracking-tight text-[#2D1B1B] md:text-3xl">Infrastructure Facilities</h2>
           <div className="mx-auto mt-3 h-0.5 w-10 rounded-full bg-[#F59E42]" />
@@ -180,7 +180,7 @@ function GalleryStrip({ data }: { data: any }) {
 
   return (
     <section className="py-8 md:py-12">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <motion.div {...fadeUp} className="mb-8">
           <h2 className="text-xl font-[800] text-[#2D1B1B] md:text-2xl">Inside AHUB</h2>
           <p className="mt-2 text-sm text-[#6C5E5B]">Spaces where founders build, collaborate, and showcase.</p>
@@ -229,7 +229,7 @@ function GalleryStrip({ data }: { data: any }) {
 function CollaborativeSection({ images, features }: { images: any; features: any }) {
   return (
     <section className="py-16 md:py-20">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 md:px-10 lg:grid-cols-2 lg:gap-14">
+      <div className="site-container-wide grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
         <motion.div {...fadeUp} className="order-2 lg:order-1">
           <div className="overflow-hidden rounded-[32px] shadow-[0_20px_60px_-30px_rgba(45,27,27,0.15)]">
             <img
@@ -271,7 +271,7 @@ function CollaborativeSection({ images, features }: { images: any; features: any
 function ResearchLabsSection({ images, pills }: { images: any; pills: any }) {
   return (
     <section className="py-16 md:py-20">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 md:px-10 lg:grid-cols-2 lg:gap-14">
+      <div className="site-container-wide grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
         <motion.div {...fadeUp}>
           <div className="rounded-[28px] border border-white/80 bg-white/70 p-8 shadow-[0_20px_60px_-30px_rgba(45,27,27,0.12)] backdrop-blur-md md:p-10">
             <h2 className="text-2xl font-[800] text-[#F59E42] md:text-3xl">Advanced Research Facilities</h2>
@@ -313,7 +313,7 @@ function ResearchLabsSection({ images, pills }: { images: any; pills: any }) {
 function EventsSection({ images, features }: { images: any; features: any }) {
   return (
     <section className="py-16 md:py-20">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <div className="overflow-hidden rounded-[32px] bg-white shadow-[0_24px_60px_-30px_rgba(45,27,27,0.12)]">
           <div className="grid lg:grid-cols-[60%_40%]">
             <motion.div
@@ -360,7 +360,7 @@ function EventsSection({ images, features }: { images: any; features: any }) {
 function MetricsSection({ data }: { data: any }) {
   return (
     <section className="py-16 md:py-20">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <motion.div {...fadeUp} className="mb-10 text-center">
           <h2 className="text-2xl font-[800] text-[#2D1B1B] md:text-3xl">Infrastructure at Scale</h2>
           <div className="mx-auto mt-3 h-0.5 w-10 rounded-full bg-[#F59E42]" />
@@ -407,7 +407,7 @@ function MetricCard({
 function MasonryGallery({ data }: { data: any }) {
   return (
     <section className="pb-24 pt-8 md:pb-32">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <motion.div {...fadeUp} className="mb-10">
           <h2 className="text-2xl font-[800] text-[#2D1B1B] md:text-3xl">Facility Gallery</h2>
           <div className="mt-3 h-0.5 w-10 rounded-full bg-[#F59E42]" />

@@ -106,7 +106,7 @@ export function WhatWeDo() {
       <div className="pointer-events-none absolute right-[8%] top-[13%] -z-10 h-80 w-80 rounded-full border border-[#F59E42]/5 opacity-30" aria-hidden="true" />
       <div className="pointer-events-none absolute bottom-[10%] left-[5%] -z-10 h-48 w-48 rounded-full border border-[#F59E42]/8 opacity-30" aria-hidden="true" />
 
-      <div className="mx-auto max-w-[1400px] px-6 md:px-10" style={{ paddingTop: "60px", paddingBottom: "60px" }}>
+      <div className="site-container-wide" style={{ paddingTop: "clamp(40px, 5vw, 60px)", paddingBottom: "clamp(40px, 5vw, 60px)" }}>
         {/* Section Header */}
         <motion.div
           {...(shouldAnimate
@@ -230,23 +230,14 @@ function WhatWeDoCard({
 }: WhatWeDoCard) {
   return (
     <div
-      className="group relative flex items-center gap-6 overflow-hidden transition-all duration-300 hover:-translate-y-1"
-      style={{
-        background: "rgba(255,255,255,0.75)",
-        backdropFilter: "blur(10px)",
-        border: "1px solid rgba(255,255,255,0.8)",
-        borderRadius: "28px",
-        padding: "24px",
-        minHeight: "220px",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
-      }}
+      className="group relative flex flex-col items-start gap-4 overflow-hidden border border-white/80 bg-white/75 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.06)] backdrop-blur-[10px] transition-all duration-300 hover:-translate-y-1 xs:flex-row xs:items-center xs:gap-6 rounded-[28px] min-h-0 xs:min-h-[220px]"
     >
       {/* Icon Container */}
       <div
         className="shrink-0 flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-105"
         style={{
-          width: "clamp(90px, 11vw, 120px)",
-          height: "clamp(90px, 11vw, 120px)",
+          width: "clamp(80px, 10vw, 120px)",
+          height: "clamp(80px, 10vw, 120px)",
           borderRadius: "22px",
           background: "linear-gradient(135deg, #FFA44F, #F97316)",
           boxShadow: "0 10px 20px rgba(249,115,22,0.25)",
@@ -264,45 +255,26 @@ function WhatWeDoCard({
       <div className="flex flex-col justify-center min-w-0 flex-1">
         {/* Number */}
         <div
-          className="font-display font-bold"
-          style={{
-            fontSize: "clamp(22px, 2.8vw, 28px)",
-            color: "#F59E42",
-          }}
+          className="font-display font-bold text-lg sm:text-[clamp(22px,2.8vw,28px)] text-[#F59E42] leading-none"
         >
           {number}
         </div>
 
         {/* Title */}
         <h3
-          className="font-display font-bold tracking-tight mt-0.5"
-          style={{
-            fontSize: "clamp(16px, 2vw, 20px)",
-            color: "#0E2245",
-          }}
+          className="font-display font-bold tracking-tight mt-1 text-sm sm:text-[clamp(16px,2vw,20px)] text-[#0E2245]"
         >
           {title}
         </h3>
 
         {/* Accent divider */}
         <div
-          className="mt-2"
-          style={{
-            width: "40px",
-            height: "2px",
-            borderRadius: "2px",
-            background: "#F59E42",
-          }}
+          className="mt-2 h-0.5 w-10 rounded-full bg-[#F59E42]"
         />
 
         {/* Description */}
         <p
-          className="mt-2 leading-relaxed"
-          style={{
-            fontSize: "clamp(13px, 1.3vw, 15px)",
-            color: "#4B5563",
-            lineHeight: 1.6,
-          }}
+          className="mt-2 text-xs sm:text-[clamp(13px,1.3vw,15px)] leading-relaxed text-[#4B5563]"
         >
           {description}
         </p>

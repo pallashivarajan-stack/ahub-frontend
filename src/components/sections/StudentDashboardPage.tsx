@@ -61,7 +61,7 @@ export function StudentDashboardPage() {
         <div className="absolute bottom-40 left-[20%] h-[350px] w-[350px] rounded-full bg-[#FFF1E0] blur-[100px]" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10">
+      <div className="relative site-container-wide space-y-10">
         
         {/* HERO SECTION */}
         <motion.section

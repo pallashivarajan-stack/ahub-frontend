@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { usePublicHero } from "@/services/usePublicContent";
 import { resolveLegacyAsset } from "@/lib/assets";
 import { cn } from "@/lib/utils";
+import { useResponsive } from "@/hooks/useResponsive";
 
 const fallbackHeroData = {
   poster: resolveLegacyAsset("/src/assets/hero-poster.jpg"),
@@ -13,8 +14,8 @@ const fallbackHeroData = {
 
 export function Hero() {
   const [videoFailed, setVideoFailed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
+  const { isMobile } = useResponsive();
   const prefersReduced =
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -26,15 +27,6 @@ export function Hero() {
     poster = fallbackHeroData.poster,
     video = fallbackHeroData.video,
   } = heroData ?? fallbackHeroData;
-
-  // Detect mobile to prevent loading heavy video
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-    const checkMobile = (e: MediaQueryListEvent | MediaQueryList) => setIsMobile(e.matches);
-    checkMobile(mq);
-    mq.addEventListener("change", checkMobile);
-    return () => mq.removeEventListener("change", checkMobile);
-  }, []);
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
@@ -101,7 +93,7 @@ export function Hero() {
 
       {/* LAYER 3: Horizontal Gradient Panel - Left side text safety zone */}
       <div
-        className="pointer-events-none absolute left-0 top-0 h-full w-[70%] max-w-[1200px] z-20 bg-gradient-to-r from-black/65 via-black/45 to-transparent"
+        className="pointer-events-none absolute left-0 top-0 h-full w-full z-20 bg-gradient-to-r from-black/80 via-black/40 to-transparent"
         aria-hidden="true"
       />
 
@@ -125,10 +117,10 @@ export function Hero() {
         aria-hidden="true"
       />
       {/* CONTENT LAYER - Above all overlays */}
-      <div className="relative z-30 mx-auto flex min-h-[calc(100vh-1.5rem)] max-w-7xl items-center px-6 max-sm:py-16 py-24 md:px-10 md:py-28 lg:py-32">
+      <div className="site-container-wide relative z-30 flex w-full min-h-[calc(100vh-1.5rem)] items-center py-24 max-sm:py-16 md:py-28 lg:py-32">
         <div className="max-w-xl text-white">
           {/* Main Heading */}
-          <h1 className="text-balance font-display max-xs:text-2xl text-3xl font-semibold leading-[1.15] sm:leading-[1.05] tracking-tight sm:text-4xl xl:text-[3.5rem] drop-shadow-[0_12px_32px_rgba(0,0,0,0.6)]">
+          <h1 className="text-balance font-display text-3xl font-semibold leading-[1.15] sm:leading-[1.05] tracking-tight sm:text-4xl xl:text-[3.5rem] drop-shadow-[0_12px_32px_rgba(0,0,0,0.6)] max-xs:text-2xl">
             <span className="animate-fadeIn">
               {heading}
             </span>

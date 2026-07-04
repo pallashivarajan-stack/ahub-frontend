@@ -7,6 +7,7 @@ import {
   Rocket,
   TrendingUp,
   Users,
+  Building2,
   type LucideIcon,
 } from "lucide-react";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
@@ -115,7 +116,7 @@ export function IncubatorsShowcase() {
 
   return (
     <section className="py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading
             eyebrow="What's Next"
@@ -125,11 +126,11 @@ export function IncubatorsShowcase() {
         </div>
       </div>
 
-      <div className="mx-auto mt-6 max-w-6xl px-4 md:px-8">
+      <div className="mx-auto mt-6 px-4 md:px-8" style={{ maxWidth: "min(100% - 1rem, 1152px)", paddingInline: "clamp(1rem, 3vw, 2rem)" }}>
         <div className="mx-auto rounded-[2rem] bg-white p-5 shadow-2xl">
           <div
             className="grid gap-5 rounded-[1.5rem] p-5 md:grid-cols-2"
-            style={{ background: "var(--gradient-brand)" }}
+            style={{ background: "linear-gradient(135deg, #F59E42 0%, #F97316 50%, #EA580C 100%)" }}
           >
             <AnimatePresence mode="wait">
               <motion.img
@@ -139,7 +140,7 @@ export function IncubatorsShowcase() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="h-64 w-full rounded-[1.25rem] object-cover"
+                className="aspect-[4/3] w-full rounded-[1.25rem] object-cover sm:aspect-auto sm:h-64"
               />
             </AnimatePresence>
 
@@ -149,35 +150,56 @@ export function IncubatorsShowcase() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="text-white"
+                className="text-white flex flex-col justify-center"
               >
-                <h3 className="text-3xl font-bold">{c.name}</h3>
-                <p className="mt-1 font-semibold">{c.tagline}</p>
-                <p className="mt-3 text-sm">{c.short}</p>
-                <p className="mt-2 text-sm text-white/90">{c.long}</p>
+                {/* Header with building icon on the left */}
+                <div className="flex items-center gap-4.5">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white shadow-md border border-white/10">
+                    <Building2 className="h-9 w-9 text-[#F97316]" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-2xl md:text-3xl font-extrabold leading-tight tracking-tight text-white">{c.name}</h3>
+                    <p className="mt-0.5 text-sm md:text-base font-semibold text-white/90">{c.tagline}</p>
+                  </div>
+                </div>
+                {/* Orange accent line */}
+                <div className="h-1.5 w-14 bg-orange-600 rounded-full mt-4 mb-2" />
+
+                <p className="mt-4 text-[13.5px] md:text-sm leading-relaxed text-white/95">{c.short}</p>
+                <p className="mt-2.5 text-[13px] md:text-[13.5px] leading-relaxed text-white/80">{c.long}</p>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="mt-4 grid gap-4 md:grid-cols-[1.4fr_1fr]">
-            <div className="rounded-[1.5rem] p-5" style={{ background: "var(--gradient-brand)" }}>
-              <p className="text-sm font-medium text-neutral-900">{c.blurb}</p>
-              <div className="mt-4 grid grid-cols-3 gap-3">
+          <div className="mt-4 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+            <div
+              className="rounded-[1.5rem] p-5 flex flex-col justify-between"
+              style={{ background: "var(--gradient-brand)" }}
+            >
+              <p className="text-sm font-medium text-neutral-900">
+                {c.blurb}
+              </p>
+              <div className="mt-4 grid grid-cols-3 gap-2.5">
                 {c.stats.map(({ value, label, Icon }: StatItem) => (
                   <div
                     key={`${c.name}-${label}`}
-                    className="rounded-2xl bg-white p-3"
+                    className="rounded-2xl bg-white p-2.5 transition-all duration-300 hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
                     style={{ boxShadow: "var(--shadow-card)" }}
                   >
-                    <Icon className="h-4 w-4" style={{ color: "#FF9800" }} />
-                    <div className="mt-2 font-bold">{value}</div>
-                    <div className="text-xs text-neutral-500">{label}</div>
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-50">
+                      <Icon className="h-4 w-4 text-[#F97316]" />
+                    </div>
+                    <div className="mt-2 text-base font-black text-neutral-900 leading-none">{value}</div>
+                    <div className="text-[10px] font-semibold text-neutral-500 mt-1 leading-none">{label}</div>
+                    <div className="h-0.5 w-5 bg-orange-500 rounded-full mt-2.5" />
                   </div>
                 ))}
               </div>
-              <button className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2 text-sm font-semibold">
-                Visit <ArrowUpRight className="h-4 w-4" />
-              </button>
+              <div>
+                <button className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2 text-sm font-bold text-neutral-900 transition-all duration-200 hover:scale-105 active:scale-95">
+                  Visit {c.name} <ArrowUpRight className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
             <div ref={constraintsRef} className="relative flex items-center justify-center px-8">
@@ -211,12 +233,12 @@ export function IncubatorsShowcase() {
                   exit={{ opacity: 0 }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ cursor: "grabbing" }}
-                  className="cursor-grab overflow-hidden rounded-[1.25rem] shadow-2xl"
+                  className="cursor-grab overflow-hidden rounded-[1.25rem] shadow-2xl w-full max-w-[min(280px,80vw)] aspect-[3/2]"
                 >
                   <img
                     src={c.card}
                     alt={c.name}
-                    className="h-48 w-72 object-cover"
+                    className="h-full w-full object-cover"
                     draggable={false}
                   />
                 </motion.div>

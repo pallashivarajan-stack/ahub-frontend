@@ -126,7 +126,7 @@ export function StartupsEventsPage() {
         <div className="absolute left-[30%] bottom-20 h-80 w-80 rounded-full bg-[#FF8C42]/5 blur-[90px]" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative site-container-wide">
         
         {/* HERO SECTION */}
         <section className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16 py-8">

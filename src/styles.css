@@ -197,6 +197,144 @@
     mask-composite: exclude;
     pointer-events: none;
   }
+
+  /* ============================================
+     RESPONSIVE CONTAINER SYSTEM
+     ============================================ */
+  .site-container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 3vw, 2.5rem);
+  }
+  @media (min-width: 640px) {
+    .site-container {
+      padding-inline: clamp(1.25rem, 3.5vw, 2.5rem);
+    }
+  }
+  @media (min-width: 768px) {
+    .site-container {
+      max-width: 100%;
+    }
+  }
+  @media (min-width: 1024px) {
+    .site-container {
+      max-width: min(100% - 3rem, 960px);
+    }
+  }
+  @media (min-width: 1280px) {
+    .site-container {
+      max-width: min(100% - 4rem, 1200px);
+    }
+  }
+  @media (min-width: 1440px) {
+    .site-container {
+      max-width: min(100% - 5rem, 1360px);
+    }
+  }
+  @media (min-width: 1600px) {
+    .site-container {
+      max-width: min(100% - 6rem, 1520px);
+    }
+  }
+
+  /* Legacy container helper (max-w-7xl replacement) */
+  .site-container-wide {
+    max-width: min(100% - 2rem, 1440px);
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 3vw, 2.5rem);
+  }
+  @media (min-width: 768px) {
+    .site-container-wide {
+      max-width: min(100% - 3rem, 1440px);
+    }
+  }
+
+  /* ============================================
+     FLUID TYPOGRAPHY UTILITIES
+     ============================================ */
+  .fluid-hero-title {
+    font-size: clamp(2rem, 4vw + 1rem, 3.75rem);
+  }
+  .fluid-title-sm {
+    font-size: clamp(1.25rem, 1.8vw + 0.6rem, 2rem);
+  }
+  .fluid-title-small {
+    font-size: clamp(1.35rem, 2vw + 0.8rem, 2.25rem);
+  }
+  .fluid-title-default {
+    font-size: clamp(1.85rem, 3.2vw + 0.95rem, 3.5rem);
+  }
+  .fluid-title-large {
+    font-size: clamp(2.35rem, 4.5vw + 1.15rem, 4.5rem);
+  }
+  .fluid-subtitle {
+    font-size: clamp(0.9rem, 0.4vw + 0.8rem, 1.125rem);
+  }
+  .fluid-body {
+    font-size: clamp(0.875rem, 0.3vw + 0.8rem, 1rem);
+  }
+  .fluid-body-lg {
+    font-size: clamp(0.9375rem, 0.4vw + 0.85rem, 1.125rem);
+  }
+
+  /* ============================================
+     RESPONSIVE SPACING UTILITIES
+     ============================================ */
+  .section-padding {
+    padding-top: clamp(2.5rem, 5vw, 6rem);
+    padding-bottom: clamp(2.5rem, 5vw, 6rem);
+  }
+  .section-padding-sm {
+    padding-top: clamp(2rem, 4vw, 4rem);
+    padding-bottom: clamp(2rem, 4vw, 4rem);
+  }
+  .section-padding-lg {
+    padding-top: clamp(3rem, 6vw, 8rem);
+    padding-bottom: clamp(3rem, 6vw, 8rem);
+  }
+
+  /* ============================================
+     RESPONSIVE GRID HELPERS
+     ============================================ */
+  .grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  .grid-auto-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  /* ============================================
+     RESPONSIVE MARQUEE
+     ============================================ */
+  .marquee-container {
+    max-width: min(100% - 2rem, 1200px);
+    margin-inline: auto;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .marquee-container {
+      max-width: min(100% - 4rem, 1200px);
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE IMAGE/VALUES
+     ============================================ */
+  .responsive-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .responsive-img-contain {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 }
 
 @keyframes marquee {

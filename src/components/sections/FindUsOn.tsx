@@ -56,12 +56,12 @@ export function FindUsOn() {
       <div className="pointer-events-none absolute left-[8%] top-14 h-44 w-44 rounded-full bg-[#FFB76B]/18 blur-3xl" />
       <div className="pointer-events-none absolute right-[8%] top-24 h-56 w-56 rounded-full bg-[#FFF0E1]/70 blur-3xl" />
 
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <div className="max-w-3xl">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#5b0e2d]/12 bg-white/82 px-3 py-1 text-[0.65rem] uppercase tracking-[0.24em] text-[#5b0e2d] shadow-[0_10px_30px_-20px_rgba(91,14,45,0.3)] backdrop-blur-md">
             <Search size={12} /> Find Us On
           </div>
-          <h2 className="font-display text-4xl font-extrabold tracking-[-0.02em] sm:text-5xl lg:text-[72px] lg:leading-[1.05]">
+          <h2 className="font-display text-2xl font-extrabold tracking-[-0.02em] sm:text-3xl lg:text-5xl">
             <span style={{ color: '#F59E42' }}>Find</span>{' '}
             <span style={{ color: '#2D1B1B' }}>Us On</span>
           </h2>

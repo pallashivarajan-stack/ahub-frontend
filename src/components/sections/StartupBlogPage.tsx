@@ -23,12 +23,12 @@ export function StartupBlogPage() {
   const { data: blogData } = usePublicStartupBlog(blogFallback);
   const displayBlog = blogData ?? blogFallback;
   return (
-    <section className="relative isolate overflow-hidden bg-[#FFF7ED] pb-24 pt-28 md:pb-32 md:pt-32 lg:pt-36">
+    <section className="relative isolate overflow-hidden bg-[#FFF7ED] pb-24 pt-14 md:pb-32 md:pt-16 lg:pt-20">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_90%_5%,rgba(249,115,22,0.08),transparent_55%),radial-gradient(50%_45%_at_5%_20%,rgba(249,115,22,0.06),transparent_50%)]" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="site-container-wide">
         <BlogHero images={displayBlog.blogImages} />
         <BlogCardsGrid posts={displayBlog.featuredPosts} widePosts={displayBlog.wideFeaturedPosts} />
         <StartupJourneyTimeline timeline={displayBlog.journeyTimeline} />
@@ -50,9 +50,26 @@ function BlogHero({ images }: { images: typeof blogImages }) {
           <BookOpen className="h-3.5 w-3.5" />
           Insights
         </div>
-        <h1 className="mt-5 font-display text-4xl font-[800] tracking-tight text-[#1C1917] sm:text-5xl lg:text-[56px]">
-          Startup Blog
-        </h1>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="mt-6 flex items-center justify-center gap-4"
+        >
+          <span className="hidden h-px w-12 bg-[#F97316]/40 sm:block" />
+          <h1 className="text-3xl font-extrabold tracking-tight text-[#1C1917] sm:text-4xl md:text-5xl">
+            Startup Blog
+          </h1>
+          <span className="hidden h-px w-12 bg-[#F97316]/40 sm:block" />
+        </motion.div>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mx-auto mt-4 max-w-xl text-base text-[#6B7280]"
+        >
+          Stories, Strategies & Ecosystem Insights
+        </motion.p>
       </motion.div>
 
       <motion.div

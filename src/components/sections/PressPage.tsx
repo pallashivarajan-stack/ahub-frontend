@@ -280,43 +280,37 @@ export function PressPage() {
     <div className="min-h-screen bg-white">
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="border-b border-[#E5E7EB] bg-[#0C0C0C] pt-20 pb-8 md:pt-24 md:pb-10">
-        {/* Very subtle dot texture */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: "radial-gradient(#F97316 1px, transparent 1px)", backgroundSize: "40px 40px" }}
-        />
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.06 }}
-            className="text-4xl font-bold tracking-tight text-[#F97316] md:text-5xl"
-          >
-            {meta.heading}
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.12 }}
-            className="mx-auto mt-4 max-w-md text-[14px] leading-relaxed text-white/40"
-          >
-            {meta.subheading}
-          </motion.p>
-
-          {/* Simple orange rule */}
+      <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-14 md:pb-32 md:pt-16 lg:pt-20">
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_85%_8%,rgba(245,158,66,0.12),transparent_55%),radial-gradient(50%_45%_at_10%_15%,rgba(245,158,66,0.08),transparent_50%)]" />
+        </div>
+        <div className="site-container-wide">
           <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.35, delay: 0.2 }}
-            className="mx-auto mt-5 h-px w-8 origin-center bg-[#F97316]/60"
-          />
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col items-center text-center"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E42]/25 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#F59E42] shadow-sm backdrop-blur-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#F59E42]" />
+              Press
+            </div>
+
+            <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl">
+              {meta.heading}
+            </h1>
+
+            <p className="mx-auto mt-4 max-w-xl text-base text-[#6C5E5B]">
+              {meta.subheading}
+            </p>
+
+            <div className="mt-5 h-1 w-16 rounded-full bg-[#F59E42]" />
+          </motion.div>
         </div>
       </section>
 
       {/* ── Body ─────────────────────────────────────────────────────────── */}
-      <div className="mx-auto max-w-[1400px] px-6 pb-24 md:px-10">
+      <div className="site-container-wide pb-24">
 
         {/* Toolbar */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-7">
