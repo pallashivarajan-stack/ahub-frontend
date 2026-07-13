@@ -113,6 +113,7 @@
     border-color: var(--color-border);
   }
   html {
+    font-size: 90%;
     scroll-behavior: auto; /* lenis controls */
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -204,11 +205,11 @@
   .site-container {
     width: 100%;
     margin-inline: auto;
-    padding-inline: clamp(1rem, 3vw, 2.5rem);
+    padding-inline: clamp(0.9rem, 2.7vw, 2.25rem);
   }
   @media (min-width: 640px) {
     .site-container {
-      padding-inline: clamp(1.25rem, 3.5vw, 2.5rem);
+      padding-inline: clamp(1.1rem, 3.15vw, 2.25rem);
     }
   }
   @media (min-width: 768px) {
@@ -218,35 +219,35 @@
   }
   @media (min-width: 1024px) {
     .site-container {
-      max-width: min(100% - 3rem, 960px);
+      max-width: min(100% - 2.7rem, 864px);
     }
   }
   @media (min-width: 1280px) {
     .site-container {
-      max-width: min(100% - 4rem, 1200px);
+      max-width: min(100% - 3.6rem, 1080px);
     }
   }
   @media (min-width: 1440px) {
     .site-container {
-      max-width: min(100% - 5rem, 1360px);
+      max-width: min(100% - 4.5rem, 1224px);
     }
   }
   @media (min-width: 1600px) {
     .site-container {
-      max-width: min(100% - 6rem, 1520px);
+      max-width: min(100% - 5.4rem, 1368px);
     }
   }
 
   /* Legacy container helper (max-w-7xl replacement) */
   .site-container-wide {
-    max-width: min(100% - 2rem, 1440px);
+    max-width: min(100% - 1.8rem, 1296px);
     width: 100%;
     margin-inline: auto;
-    padding-inline: clamp(1rem, 3vw, 2.5rem);
+    padding-inline: clamp(0.9rem, 2.7vw, 2.25rem);
   }
   @media (min-width: 768px) {
     .site-container-wide {
-      max-width: min(100% - 3rem, 1440px);
+      max-width: min(100% - 2.7rem, 1296px);
     }
   }
 
@@ -254,44 +255,44 @@
      FLUID TYPOGRAPHY UTILITIES
      ============================================ */
   .fluid-hero-title {
-    font-size: clamp(2rem, 4vw + 1rem, 3.75rem);
+    font-size: clamp(1.8rem, 3.6vw + 0.9rem, 3.375rem);
   }
   .fluid-title-sm {
-    font-size: clamp(1.25rem, 1.8vw + 0.6rem, 2rem);
+    font-size: clamp(1.125rem, 1.62vw + 0.54rem, 1.8rem);
   }
   .fluid-title-small {
-    font-size: clamp(1.35rem, 2vw + 0.8rem, 2.25rem);
+    font-size: clamp(1.215rem, 1.8vw + 0.72rem, 2.025rem);
   }
   .fluid-title-default {
-    font-size: clamp(1.85rem, 3.2vw + 0.95rem, 3.5rem);
+    font-size: clamp(1.665rem, 2.88vw + 0.855rem, 3.15rem);
   }
   .fluid-title-large {
-    font-size: clamp(2.35rem, 4.5vw + 1.15rem, 4.5rem);
+    font-size: clamp(2.115rem, 4.05vw + 1.035rem, 4.05rem);
   }
   .fluid-subtitle {
-    font-size: clamp(0.9rem, 0.4vw + 0.8rem, 1.125rem);
+    font-size: clamp(0.81rem, 0.36vw + 0.72rem, 1.0125rem);
   }
   .fluid-body {
-    font-size: clamp(0.875rem, 0.3vw + 0.8rem, 1rem);
+    font-size: clamp(0.7875rem, 0.27vw + 0.72rem, 0.9rem);
   }
   .fluid-body-lg {
-    font-size: clamp(0.9375rem, 0.4vw + 0.85rem, 1.125rem);
+    font-size: clamp(0.84375rem, 0.36vw + 0.765rem, 1.0125rem);
   }
 
   /* ============================================
      RESPONSIVE SPACING UTILITIES
      ============================================ */
   .section-padding {
-    padding-top: clamp(2.5rem, 5vw, 6rem);
-    padding-bottom: clamp(2.5rem, 5vw, 6rem);
+    padding-top: clamp(2.25rem, 4.5vw, 5.4rem);
+    padding-bottom: clamp(2.25rem, 4.5vw, 5.4rem);
   }
   .section-padding-sm {
-    padding-top: clamp(2rem, 4vw, 4rem);
-    padding-bottom: clamp(2rem, 4vw, 4rem);
+    padding-top: clamp(1.8rem, 3.6vw, 3.6rem);
+    padding-bottom: clamp(1.8rem, 3.6vw, 3.6rem);
   }
   .section-padding-lg {
-    padding-top: clamp(3rem, 6vw, 8rem);
-    padding-bottom: clamp(3rem, 6vw, 8rem);
+    padding-top: clamp(2.7rem, 5.4vw, 7.2rem);
+    padding-bottom: clamp(2.7rem, 5.4vw, 7.2rem);
   }
 
   /* ============================================
@@ -299,26 +300,26 @@
      ============================================ */
   .grid-auto-fit {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: clamp(1rem, 2vw, 1.5rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 252px), 1fr));
+    gap: clamp(0.9rem, 1.8vw, 1.35rem);
   }
   .grid-auto-fill {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-    gap: clamp(1rem, 2vw, 1.5rem);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 252px), 1fr));
+    gap: clamp(0.9rem, 1.8vw, 1.35rem);
   }
 
   /* ============================================
      RESPONSIVE MARQUEE
      ============================================ */
   .marquee-container {
-    max-width: min(100% - 2rem, 1200px);
+    max-width: min(100% - 1.8rem, 1080px);
     margin-inline: auto;
     overflow: hidden;
   }
   @media (min-width: 768px) {
     .marquee-container {
-      max-width: min(100% - 4rem, 1200px);
+      max-width: min(100% - 3.6rem, 1080px);
     }
   }
 

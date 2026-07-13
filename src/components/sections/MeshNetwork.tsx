@@ -26,8 +26,7 @@ export function MeshNetwork() {
   const loop2 = [...row2, ...row2];
 
   return (
-    <section id="mesh-network" className="relative overflow-hidden border-y border-[color:color-mix(in_oklch,var(--primary)_10%,transparent)] bg-[linear-gradient(180deg,#FFF7F2_0%,#FFFFFF_100%)] py-16 md:py-24">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(70%_45%_at_50%_0%,rgba(255,191,128,0.18),transparent_58%),radial-gradient(36%_24%_at_10%_18%,rgba(255,233,214,0.38),transparent_60%)]" />
+    <section id="mesh-network" className="relative overflow-hidden py-16 md:py-24">
       
       <div className="site-container-wide">
         <SectionHeading eyebrow="Connected" title="Mesh Network" subtitle="A thriving ecosystem of partners, institutions, and industry leaders." align="center" />
@@ -38,9 +37,9 @@ export function MeshNetwork() {
           {loop1.map((logo, i) => (
             <div
               key={i}
-              className="grid h-16 min-w-[160px] place-items-center transition-all duration-500"
+              className="grid h-20 min-w-[180px] place-items-center transition-all duration-500"
             >
-              <img src={logo} alt="Partner Logo" className="max-h-12 max-w-[140px] object-contain" />
+              <img src={logo} alt="Partner Logo" className="max-h-16 max-w-[160px] object-contain" />
             </div>
           ))}
         </div>
@@ -51,9 +50,9 @@ export function MeshNetwork() {
           {loop2.map((logo, i) => (
             <div
               key={i}
-              className="grid h-16 min-w-[160px] place-items-center transition-all duration-500"
+              className="grid h-20 min-w-[180px] place-items-center transition-all duration-500"
             >
-              <img src={logo} alt="Partner Logo" className="max-h-12 max-w-[140px] object-contain" />
+              <img src={logo} alt="Partner Logo" className="max-h-16 max-w-[160px] object-contain" />
             </div>
           ))}
         </div>

@@ -115,7 +115,7 @@ export function IncubatorsShowcase() {
   const prev = () => setI((x) => (x - 1 + incubatorsData.length) % incubatorsData.length);
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-10 md:py-14">
       <div className="site-container-wide">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading
@@ -126,7 +126,7 @@ export function IncubatorsShowcase() {
         </div>
       </div>
 
-      <div className="mx-auto mt-6 px-4 md:px-8" style={{ maxWidth: "min(100% - 1rem, 1152px)", paddingInline: "clamp(1rem, 3vw, 2rem)" }}>
+      <div className="mx-auto mt-6 px-4 md:px-8" style={{ maxWidth: "min(100% - 0.9rem, 1037px)", paddingInline: "clamp(0.9rem, 2.7vw, 1.8rem)" }}>
         <div className="mx-auto rounded-[2rem] bg-white p-5 shadow-2xl">
           <div
             className="grid gap-5 rounded-[1.5rem] p-5 md:grid-cols-2"
@@ -233,7 +233,7 @@ export function IncubatorsShowcase() {
                   exit={{ opacity: 0 }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ cursor: "grabbing" }}
-                  className="cursor-grab overflow-hidden rounded-[1.25rem] shadow-2xl w-full max-w-[min(280px,80vw)] aspect-[3/2]"
+                  className="cursor-grab overflow-hidden rounded-[1.25rem] shadow-2xl w-full max-w-[min(252px,80vw)] aspect-[3/2]"
                 >
                   <img
                     src={c.card}

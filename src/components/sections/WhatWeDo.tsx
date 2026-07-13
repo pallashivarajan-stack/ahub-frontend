@@ -1,284 +1,309 @@
-import { motion, Variants, useReducedMotion } from "framer-motion";
-import { usePublicWhatWeDo } from "@/services/usePublicContent";
+import React, { useRef, useState, type MouseEvent } from "react";
 import { resolveLegacyAsset } from "@/lib/assets";
+import { usePublicWhatWeDo } from "@/services/usePublicContent";
 
-type WhatWeDoCard = {
-  number: string;
+type Item = {
+  n: string;
+  kicker: string;
   title: string;
-  description: string;
+  desc: string;
   icon: string;
 };
 
-const cards: WhatWeDoCard[] = [
+const defaultItems: Item[] = [
   {
-    number: "01",
-    title: "IDEATION & VALIDATION",
-    description:
-      "Helping ideas take shape through market research, mentorship, and validation.",
-    icon: resolveLegacyAsset("/src/assets/what-we-do/ideation.png"),
+    n: "01",
+    kicker: "Discovery",
+    title: "Ideation & Validation",
+    desc: "Helping ideas take shape through market research, mentorship, and validation.",
+    icon: resolveLegacyAsset("/src/assets/what we do/01.png"),
   },
   {
-    number: "02",
-    title: "MENTORSHIP & GROWTH",
-    description:
-      "Connecting startups with industry experts and providing guidance to grow and scale.",
-    icon: resolveLegacyAsset("/src/assets/what-we-do/mentorship.png"),
+    n: "02",
+    kicker: "Expertise",
+    title: "Mentorship & Growth",
+    desc: "Connecting startups with industry experts and providing guidance to grow and scale.",
+    icon: resolveLegacyAsset("/src/assets/what we do/02.png"),
   },
   {
-    number: "03",
-    title: "RESOURCES & SUPPORT",
-    description:
-      "Providing access to essential resources, workspaces, and hands-on support at every stage.",
-    icon: resolveLegacyAsset("/src/assets/what-we-do/resources.png"),
+    n: "03",
+    kicker: "Infrastructure",
+    title: "Resources & Support",
+    desc: "Providing access to essential resources, workspaces, and hands-on support at every stage.",
+    icon: resolveLegacyAsset("/src/assets/what we do/03.png"),
   },
   {
-    number: "04",
-    title: "FUNDING & PARTNERSHIPS",
-    description:
-      "Facilitating funding opportunities and strategic partnerships to accelerate startup success.",
-    icon: resolveLegacyAsset("/src/assets/what-we-do/funding.png"),
+    n: "04",
+    kicker: "Capital",
+    title: "Funding & Partnerships",
+    desc: "Facilitating funding opportunities and strategic partnerships to accelerate startup success.",
+    icon: resolveLegacyAsset("/src/assets/what we do/04.png"),
   },
 ];
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.14,
-      delayChildren: 0.1,
-    },
-  },
-};
+const EASE = "cubic-bezier(.22,1,.36,1)";
 
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 30, filter: "blur(6px)" },
-  show: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
+function Card({ item }: { item: Item }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState(false);
+  const [p, setP] = useState({ x: 50, y: 50 });
+
+  const n = item.n;
+  const title = item.title;
+  const desc = item.desc;
+  const icon = item.icon;
+  const kicker = item.kicker;
+
+  const onMove = (e: MouseEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    setP({
+      x: ((e.clientX - r.left) / r.width) * 100,
+      y: ((e.clientY - r.top) / r.height) * 100,
+    });
+  };
+
+  const textItem = (i: number): React.CSSProperties => ({
+    opacity: hovered ? 1 : 0.999,
+    transform: "translateY(0)",
+    transition: `color 600ms ${EASE} ${i * 50}ms`,
+  });
+
+  return (
+    <div
+      ref={ref}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onMouseMove={onMove}
+      className="group relative cursor-pointer overflow-hidden rounded-[22px] p-8 sm:p-10 flex h-full flex-col justify-between"
+      style={{
+        backgroundColor: "#ffffff",
+        border: `1px solid ${hovered ? "transparent" : "rgba(15,23,42,0.06)"}`,
+        boxShadow: hovered
+          ? "0 24px 60px rgba(255,122,0,0.25)"
+          : "0 1px 2px rgba(15,23,42,0.03), 0 8px 24px rgba(15,23,42,0.04)",
+        transform: hovered ? "translate3d(0,-6px,0)" : "translate3d(0,0,0)",
+        transition: `transform 600ms ${EASE}, box-shadow 600ms ${EASE}, border-color 600ms ${EASE}`,
+        willChange: "transform",
+      }}
+    >
+      {/* Sweep layer: orange gradient wiping L->R + radial glow at cursor */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(600px circle at ${p.x}% ${p.y}%, rgba(255,180,110,0.35), transparent 55%),
+            linear-gradient(105deg, #FF6A00 0%, #FF7A00 45%, #FF8A1F 100%)
+          `,
+          opacity: hovered ? 1 : 0,
+          clipPath: hovered
+            ? "inset(0 0% 0 0 round 22px)"
+            : "inset(0 100% 0 0 round 22px)",
+          transition: `clip-path 700ms ${EASE}, opacity 400ms ease`,
+          willChange: "clip-path, opacity",
+        }}
+      />
+
+      {/* Light reflection sweep */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden rounded-[22px]"
+        style={{ opacity: hovered ? 1 : 0, transition: "opacity 300ms ease" }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            width: "40%",
+            transform: hovered
+              ? "translateX(320%) skewX(-18deg)"
+              : "translateX(-120%) skewX(-18deg)",
+            background:
+              "linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent)",
+            transition: `transform 1100ms ${EASE} 120ms`,
+          }}
+        />
+      </div>
+
+      {/* Subtle noise */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-[22px] mix-blend-overlay"
+        style={{
+          opacity: hovered ? 0.18 : 0,
+          transition: "opacity 500ms ease",
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+        }}
+      />
+
+      {/* Background number */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-8 top-4 select-none font-display text-[6.5rem] font-bold leading-none tracking-tight"
+        style={{
+          color: hovered ? "rgba(255,255,255,0.18)" : "rgba(15,23,42,0.03)",
+          transform: hovered ? "translate3d(0,-4px,0)" : "translate3d(0,0,0)",
+          transition: `color 600ms ${EASE}, transform 600ms ${EASE}`,
+        }}
+      >
+        {n}
+      </div>
+
+      <div className="relative flex flex-col items-start gap-6 sm:flex-row sm:gap-8 w-full h-full">
+        {/* Logo: larger size, orange by default, white on hover */}
+        <div
+          className="relative shrink-0"
+          style={{
+            width: 104,
+            height: 104,
+            transform: hovered
+              ? "translate3d(0,-3px,0) scale(1.08)"
+              : "translate3d(0,0,0) scale(1)",
+            transition: `transform 600ms ${EASE}`,
+            filter: hovered
+              ? "brightness(0) invert(1) drop-shadow(0 6px 14px rgba(255,255,255,0.35))"
+              : "none",
+            willChange: "transform, filter",
+          }}
+        >
+          <img
+            src={icon}
+            alt=""
+            width={104}
+            height={104}
+            className="h-full w-full object-contain"
+            draggable={false}
+          />
+        </div>
+
+        {/* Text */}
+        <div className="min-w-0 flex-1 pt-1">
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold tracking-[0.14em]">
+            <span
+              style={{
+                color: hovered ? "#ffffff" : "#FF7A00",
+                transition: `color 500ms ${EASE}`,
+              }}
+            >
+              {n}
+            </span>
+            <span
+              style={{
+                color: hovered
+                  ? "rgba(255,255,255,0.6)"
+                  : "rgba(255,122,0,0.5)",
+                transition: `color 500ms ${EASE}`,
+              }}
+            >
+              —
+            </span>
+            <span
+              className="uppercase"
+              style={{
+                color: hovered ? "#ffffff" : "rgba(255,122,0,0.75)",
+                transition: `color 500ms ${EASE} 50ms`,
+              }}
+            >
+              {kicker}
+            </span>
+          </div>
+
+          <h3
+            className="font-display text-xl font-bold tracking-tight sm:text-[1.375rem]"
+            style={{
+              color: hovered ? "#ffffff" : "#0F172A",
+              transition: `color 550ms ${EASE} 100ms`,
+            }}
+          >
+            {title}
+          </h3>
+
+          <div
+            className="mt-3 h-[2px] rounded-full"
+            style={{
+              width: hovered ? 72 : 40,
+              backgroundColor: hovered ? "#ffffff" : "#FF7A00",
+              transition: `width 500ms ${EASE}, background-color 500ms ${EASE} 100ms`,
+            }}
+          />
+
+          <p
+            className="mt-4 max-w-md text-[0.9rem] leading-relaxed"
+            style={{
+              color: hovered ? "rgba(255,255,255,0.9)" : "rgba(15,23,42,0.6)",
+              transition: `color 600ms ${EASE} 150ms`,
+            }}
+          >
+            {desc}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function WhatWeDo() {
-  const { data: whatWeDoCards } = usePublicWhatWeDo(cards);
-  const shouldAnimate = !useReducedMotion();
-  const displayCards = Array.isArray(whatWeDoCards) ? whatWeDoCards : cards;
+  const { data: rawCards } = usePublicWhatWeDo(defaultItems as any);
+
+  const logoSymbols = [
+    resolveLegacyAsset("/src/assets/what we do/01.png"),
+    resolveLegacyAsset("/src/assets/what we do/02.png"),
+    resolveLegacyAsset("/src/assets/what we do/03.png"),
+    resolveLegacyAsset("/src/assets/what we do/04.png"),
+  ];
+
+  const displayItems: Item[] = (Array.isArray(rawCards) ? rawCards : defaultItems).map(
+    (c: any, i: number) => ({
+      n: c.n ?? c.number ?? String(i + 1).padStart(2, "0"),
+      kicker: c.kicker ?? ["Discovery", "Expertise", "Infrastructure", "Capital"][i] ?? "",
+      title: c.title ?? "",
+      desc: c.desc ?? c.description ?? "",
+      icon: logoSymbols[i] ?? c.icon ?? "",
+    }),
+  );
 
   return (
     <section
       id="what-we-do"
-      className="relative overflow-hidden"
-      style={{ background: "#FFF9F2" }}
+      className="relative w-full pt-8 pb-24 sm:pt-12 sm:pb-32"
       aria-label="What We Do - AHUB services overview"
+      style={{
+        background:
+          "linear-gradient(180deg, #FFF7EE 0%, #FFF2E2 60%, #FFEBD3 100%)",
+      }}
     >
-      {/* Background image with enhanced blending */}
-      <div
-        className="pointer-events-none absolute inset-0 -z-30 bg-cover bg-center bg-no-repeat opacity-[0.25]"
-        style={{ backgroundImage: `url("${resolveLegacyAsset("/src/assets/What we do.png")}")` }}
-        aria-hidden="true"
-      />
-      {/* Seamless gradient mask to sync with adjacent sections */}
-      <div className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-b from-[#FFF9F2] via-transparent to-[#FFF9F2]" aria-hidden="true" />
-      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_center,transparent_0%,#FFF9F2_100%)] opacity-80" aria-hidden="true" />
-
-      {/* Decorative blobs */}
-      <div
-        className="pointer-events-none absolute -right-32 -top-32 -z-10 h-[500px] w-[500px] rounded-full opacity-20"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(245,158,66,0.4) 0%, transparent 70%)",
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute -bottom-40 -left-32 -z-10 h-[500px] w-[500px] rounded-full opacity-20"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(245,158,66,0.3) 0%, transparent 70%)",
-        }}
-        aria-hidden="true"
-      />
-
-      {/* Subtle circular line patterns */}
-      <div className="pointer-events-none absolute right-[10%] top-[15%] -z-10 h-64 w-64 rounded-full border border-[#F59E42]/10 opacity-40" aria-hidden="true" />
-      <div className="pointer-events-none absolute right-[8%] top-[13%] -z-10 h-80 w-80 rounded-full border border-[#F59E42]/5 opacity-30" aria-hidden="true" />
-      <div className="pointer-events-none absolute bottom-[10%] left-[5%] -z-10 h-48 w-48 rounded-full border border-[#F59E42]/8 opacity-30" aria-hidden="true" />
-
-      <div className="site-container-wide" style={{ paddingTop: "clamp(40px, 5vw, 60px)", paddingBottom: "clamp(40px, 5vw, 60px)" }}>
-        {/* Section Header */}
-        <motion.div
-          {...(shouldAnimate
-            ? {
-                initial: { opacity: 0, y: 20 },
-                whileInView: { opacity: 1, y: 0 },
-                viewport: { once: true, margin: "-80px" },
-                transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-              }
-            : {})}
-          className="mx-auto text-center"
-          style={{ maxWidth: "900px" }}
-        >
-          {/* Eyebrow */}
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div
-              className="h-px flex-1"
-              style={{
-                maxWidth: "80px",
-                background:
-                  "linear-gradient(90deg, transparent, #F59E42)",
-              }}
-            />
-            <span
-              className="text-[10px] font-semibold uppercase tracking-[0.3em]"
-              style={{ color: "#F59E42" }}
-            >
-              WHAT WE DO
-            </span>
-            <div
-              className="h-px flex-1"
-              style={{
-                maxWidth: "80px",
-                background:
-                  "linear-gradient(90deg, #F59E42, transparent)",
-              }}
-            />
+      <div className="mx-auto max-w-[1240px] px-6">
+        {/* Section header */}
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="mb-2 flex items-center justify-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#FF7A00]">
+            <span className="h-px w-8 bg-[#FF7A00]/40" />
+            What We Do
+            <span className="h-px w-8 bg-[#FF7A00]/40" />
           </div>
-
-          {/* Main Heading */}
-          <h2
-            className="font-display leading-[1.1]"
-            style={{
-              fontSize: "clamp(36px, 4.5vw, 54px)",
-              fontWeight: 700,
-            }}
-          >
-            <span style={{ color: "#0E2245" }}>We </span>
-            <span
-              style={{
-                background: "linear-gradient(135deg, #F59E42, #FF7A00)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Empower
-            </span>
-            <span style={{ color: "#0E2245" }}> Startups.</span>
+          {/* Main heading decreased in size slightly: text-3xl md:text-4xl lg:text-[3rem] */}
+          <h2 className="font-display text-3xl md:text-4xl lg:text-[3rem] font-bold tracking-tight text-[#0F172A] leading-[1.05]">
+            We <span className="text-[#FF7A00]">Empower</span> Startups.
             <br />
-            <span style={{ color: "#0E2245" }}>We </span>
-            <span
-              style={{
-                background: "linear-gradient(135deg, #F59E42, #FF7A00)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Build
-            </span>
-            <span style={{ color: "#0E2245" }}> Futures.</span>
+            We <span className="text-[#FF7A00]">Build</span> Futures.
           </h2>
-
-          {/* Orange accent line */}
-          <div className="mx-auto mt-4" style={{ width: "50px", height: "3px", borderRadius: "3px", background: "linear-gradient(90deg, #F59E42, #FF7A00)" }} />
-
-          {/* Description */}
-          <p
-            className="mx-auto mt-4 leading-relaxed"
-            style={{
-              fontSize: "clamp(15px, 1.8vw, 18px)",
-              color: "#6B7280",
-              maxWidth: "600px",
-            }}
-          >
-            AHUB Incubation Council is dedicated to nurturing ideas,
-            empowering founders, and building impactful ventures.
+          <div className="mx-auto mt-6 h-[3px] w-16 rounded-full bg-[#FF7A00]" />
+          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-[#0F172A]/60">
+            AHUB Incubation Council is dedicated to nurturing ideas, empowering
+            founders, and building impactful ventures.
           </p>
-        </motion.div>
-
-        {/* Card Grid */}
-        <motion.div
-          {...(shouldAnimate
-            ? {
-                variants: containerVariants,
-                initial: "hidden" as const,
-                whileInView: "show" as const,
-                viewport: { once: true, margin: "-80px" as const },
-              }
-            : {})}
-          className="mt-12 grid gap-6 sm:grid-cols-2"
-        >
-          {displayCards.map((card) => (
-            <motion.div
-              key={card.number}
-              {...(shouldAnimate ? { variants: cardVariants } : {})}
-            >
-              <WhatWeDoCard {...card} />
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function WhatWeDoCard({
-  number,
-  title,
-  description,
-  icon,
-}: WhatWeDoCard) {
-  return (
-    <div
-      className="group relative flex flex-col items-start gap-4 overflow-hidden border border-white/80 bg-white/75 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.06)] backdrop-blur-[10px] transition-all duration-300 hover:-translate-y-1 xs:flex-row xs:items-center xs:gap-6 rounded-[28px] min-h-0 xs:min-h-[220px]"
-    >
-      {/* Icon Container */}
-      <div
-        className="shrink-0 flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-105"
-        style={{
-          width: "clamp(80px, 10vw, 120px)",
-          height: "clamp(80px, 10vw, 120px)",
-          borderRadius: "22px",
-          background: "linear-gradient(135deg, #FFA44F, #F97316)",
-          boxShadow: "0 10px 20px rgba(249,115,22,0.25)",
-        }}
-      >
-        <img
-          src={icon}
-          alt={title}
-          className="h-3/4 w-3/4 object-contain"
-          draggable={false}
-        />
-      </div>
-
-      {/* Content */}
-      <div className="flex flex-col justify-center min-w-0 flex-1">
-        {/* Number */}
-        <div
-          className="font-display font-bold text-lg sm:text-[clamp(22px,2.8vw,28px)] text-[#F59E42] leading-none"
-        >
-          {number}
         </div>
 
-        {/* Title */}
-        <h3
-          className="font-display font-bold tracking-tight mt-1 text-sm sm:text-[clamp(16px,2vw,20px)] text-[#0E2245]"
-        >
-          {title}
-        </h3>
-
-        {/* Accent divider */}
-        <div
-          className="mt-2 h-0.5 w-10 rounded-full bg-[#F59E42]"
-        />
-
-        {/* Description */}
-        <p
-          className="mt-2 text-xs sm:text-[clamp(13px,1.3vw,15px)] leading-relaxed text-[#4B5563]"
-        >
-          {description}
-        </p>
+        {/* Card grid - 2x2 layout, tighter gaps, perfectly aligned */}
+        <div className="mt-16 grid gap-6 sm:mt-20 md:grid-cols-2">
+          {displayItems.map((it) => (
+            <Card key={it.n} item={it} />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

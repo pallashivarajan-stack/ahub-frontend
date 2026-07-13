@@ -94,8 +94,8 @@ export function AhubNetwork() {
   const shouldAnimate = !useReducedMotion();
   const displayCards = Array.isArray(networkCards) ? networkCards : cards;
   return (
-    <section id="ahub-network" className="relative overflow-hidden bg-[linear-gradient(135deg,#FFF8F0_0%,#FFE8D6_100%)] py-16 md:py-24" aria-label="AHUB Network - Statistics">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_20%,rgba(255,140,50,0.08),transparent_60%)]" aria-hidden="true" />
+    <section id="ahub-network" className="relative overflow-hidden py-10 md:py-14" aria-label="AHUB Network - Statistics">
+      
       
       <div className="site-container-wide">
         <div className="text-center mb-10">
@@ -181,9 +181,9 @@ function StatCard({ label, value, suffix, description, category, icons, tone, sh
       <motion.article
         ref={ref as React.RefObject<HTMLElement>}
         {...(shouldAnimate ? { whileHover: { y: -7 } } : {})}
-        className="group relative h-full overflow-hidden rounded-[28px] border border-[#FF6B00]/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(255,248,242,0.92))] p-6 shadow-[0_20px_50px_-34px_rgba(15,23,42,0.24)] transition-all duration-500 md:p-7"
+        className="group relative h-full overflow-hidden rounded-[25px] border border-[#FF6B00]/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(255,248,242,0.92))] p-6 shadow-[0_20px_50px_-34px_rgba(15,23,42,0.24)] transition-all duration-500 md:p-7"
       >
-        <div className="pointer-events-none absolute inset-0 rounded-[28px] bg-[radial-gradient(circle_at_16%_15%,rgba(255,107,0,0.14),transparent_48%),radial-gradient(circle_at_84%_84%,rgba(255,199,150,0.22),transparent_52%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="pointer-events-none absolute inset-0 rounded-[25px] bg-[radial-gradient(circle_at_16%_15%,rgba(255,107,0,0.14),transparent_48%),radial-gradient(circle_at_84%_84%,rgba(255,199,150,0.22),transparent_52%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
         <div className="relative h-20 overflow-hidden rounded-2xl border border-[#FF6B00]/10 p-4">
           <div className={`absolute inset-0 bg-gradient-to-br ${tone}`} />

@@ -367,7 +367,7 @@ const MobileMenuToggle = forwardRef<HTMLButtonElement, { open: boolean; onClick:
       aria-label={open ? "Close menu" : "Open menu"}
       aria-expanded={open}
       aria-controls="mobile-menu-panel"
-      className="grid min-h-[44px] min-w-[44px] place-items-center rounded-lg border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.08)] text-white transition hover:border-[rgba(255,255,255,0.25)] hover:bg-[rgba(255,255,255,0.12)] focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
+      className="grid min-h-[40px] min-w-[40px] place-items-center rounded-lg border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.08)] text-white transition hover:border-[rgba(255,255,255,0.25)] hover:bg-[rgba(255,255,255,0.12)] focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
       onClick={onClick}
     >
       <span className="relative flex h-4 w-4 items-center justify-center">
@@ -418,8 +418,8 @@ function MegaMenuPanel({
           className={cn(
             "pointer-events-auto absolute left-1/2 top-full -translate-x-1/2 overflow-hidden rounded-xl border border-slate-200 bg-white backdrop-blur-xl p-4 text-slate-900 shadow-[0_20px_60px_rgba(0,0,0,0.1)]",
             panel.compact
-              ? "w-[min(680px,calc(100vw-2rem))] max-h-[calc(100vh-140px)]"
-              : "w-[min(1020px,calc(100vw-2rem))] max-h-[calc(100vh-140px)]",
+              ? "w-[min(612px,calc(100vw-2rem))] max-h-[calc(100vh-126px)]"
+              : "w-[min(918px,calc(100vw-2rem))] max-h-[calc(100vh-126px)]",
           )}
         >
           <div className="relative flex items-center justify-between gap-4 border-b border-slate-200 px-2 pb-4">
@@ -430,7 +430,7 @@ function MegaMenuPanel({
             </div>
           </div>
 
-          <div className="relative overflow-y-auto max-h-[calc(100vh-200px)] px-2 pb-2 pt-3">
+          <div className="relative overflow-y-auto max-h-[calc(100vh-180px)] px-2 pb-2 pt-3">
             <div
               className={cn(
                 "grid gap-3",
@@ -467,7 +467,7 @@ function MegaMenuPanel({
                     data-reveal
                     className="group overflow-hidden rounded-lg border border-slate-200 bg-white text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50"
                   >
-                    <div className="relative h-[88px] overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100/50 flex items-center justify-center gap-2 px-3">
+                    <div className="relative h-[79px] overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100/50 flex items-center justify-center gap-2 px-3">
                       <Icon size={22} className="text-[#ff8901]" strokeWidth={1.5} />
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5" />
                     </div>
@@ -669,7 +669,7 @@ export function Navbar() {
     >
       <div ref={navRef} className="relative w-full" onMouseLeave={() => setActivePanel(null)}>
         {/* Subtle overlay behind navbar */}
-        <div className="pointer-events-auto absolute inset-x-0 top-0 h-[60px] bg-gradient-to-b from-white/20 to-transparent" />
+        <div className="pointer-events-auto absolute inset-x-0 top-0 h-[54px] bg-gradient-to-b from-white/20 to-transparent" />
         {/* Left black overlay for contrast (desktop) */}
         <div className="hidden lg:block pointer-events-none absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-r from-black/80 to-transparent z-0" />
 
@@ -680,9 +680,9 @@ export function Navbar() {
             scrolled ? "shadow-sm" : "",
           )}
         >
-          <div className="mx-auto flex h-[64px] w-full max-w-7xl items-center justify-between px-4 md:px-8">
+          <div className="flex h-[58px] w-full items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10">
             {/* Logo section - left aligned */}
-            <div className="flex shrink-0 items-center gap-3 pr-0 lg:pr-1">
+            <div className="flex shrink-0 items-center gap-3">
               <Link
                 to="/"
                 className="group flex items-center gap-3 transition-opacity hover:opacity-70 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
@@ -751,7 +751,7 @@ export function Navbar() {
             </div>
 
             {/* CTA Button - right aligned */}
-            <div className="flex shrink-0 items-center gap-2 pl-0 lg:pl-1">
+            <div className="flex shrink-0 items-center gap-2">
               <a
                 href="#announcement"
                 onClick={(e) => {
@@ -801,7 +801,7 @@ export function Navbar() {
               role="dialog"
               aria-modal="true"
               aria-label="Main navigation menu"
-              className="absolute inset-x-4 top-24 rounded-2xl border border-[rgba(255,255,255,0.12)] bg-black/80 backdrop-blur-xl p-6 shadow-2xl max-h-[calc(100vh-120px)] overflow-y-auto"
+              className="absolute inset-x-4 top-24 rounded-2xl border border-[rgba(255,255,255,0.12)] bg-black/80 backdrop-blur-xl p-6 shadow-2xl max-h-[calc(100vh-108px)] overflow-y-auto"
             >
               {/* Header */}
               <div className="flex items-center justify-between gap-3 pb-6 border-b border-[rgba(255,255,255,0.1)]">

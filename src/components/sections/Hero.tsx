@@ -44,7 +44,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative isolate min-h-[calc(100vh-1.5rem)] overflow-hidden text-foreground bg-black"
+      className="relative isolate h-[100svh] w-full overflow-hidden text-foreground bg-black"
       aria-label="Hero section - Welcome to AHUB Premium Innovation Hub"
     >
       {/* VIDEO BACKGROUND LAYER - Desktop Only */}
@@ -75,35 +75,9 @@ export function Hero() {
         <div className="absolute inset-0 h-full w-full bg-gradient-to-br from-[#1a0a0a] via-[#2d1215] to-[#1a0a0a] z-0" />
       )}
 
-      {/* LAYER 1: Base Dark Overlay - Creates base contrast */}
+      {/* Single dark overlay */}
       <div
-        className="pointer-events-none absolute inset-0 z-10 bg-black/15"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 30% 50%, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.18) 100%)",
-        }}
-        aria-hidden="true"
-      />
-
-      {/* LAYER 2: Vertical Gradient Overlay - Enhances text readability */}
-      <div
-        className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-b from-black/55 via-black/45 to-black/60"
-        aria-hidden="true"
-      />
-
-      {/* LAYER 3: Horizontal Gradient Panel - Left side text safety zone */}
-      <div
-        className="pointer-events-none absolute left-0 top-0 h-full w-full z-20 bg-gradient-to-r from-black/80 via-black/40 to-transparent"
-        aria-hidden="true"
-      />
-
-      {/* LAYER 4: Vignette Effect - Premium polish and focus */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[15]"
-        style={{
-          backgroundImage:
-            "radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.15) 100%)",
-        }}
+        className="pointer-events-none absolute inset-0 z-10 bg-black/40"
         aria-hidden="true"
       />
 
@@ -117,7 +91,7 @@ export function Hero() {
         aria-hidden="true"
       />
       {/* CONTENT LAYER - Above all overlays */}
-      <div className="site-container-wide relative z-30 flex w-full min-h-[calc(100vh-1.5rem)] items-center py-24 max-sm:py-16 md:py-28 lg:py-32">
+      <div className="relative z-30 flex h-full w-full items-center pl-4 sm:pl-6 md:pl-10 lg:pl-14 pr-6 sm:pr-10 md:pr-16 lg:pr-24 py-24 max-sm:py-16">
         <div className="max-w-xl text-white">
           {/* Main Heading */}
           <h1 className="text-balance font-display text-3xl font-semibold leading-[1.15] sm:leading-[1.05] tracking-tight sm:text-4xl xl:text-[3.5rem] drop-shadow-[0_12px_32px_rgba(0,0,0,0.6)] max-xs:text-2xl">
@@ -137,7 +111,7 @@ export function Hero() {
               href="#what-we-do"
               onClick={handleExplore}
               className={cn(
-                "group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-br from-[#5B0E2D] to-[#7A163B] px-4 py-3 sm:px-7 min-h-[48px] text-xs sm:text-sm font-semibold text-white shadow-[0_20px_48px_-12px_rgba(91,14,45,0.7)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_24px_56px_-8px_rgba(91,14,45,0.85)] focus:outline-none focus:ring-2 focus:ring-white/80 focus:ring-offset-2 focus:ring-offset-black active:scale-95 backdrop-blur-sm border border-white/10",
+                "group inline-flex items-center justify-center gap-2 rounded-full bg-[#c94a0a] px-4 py-3 sm:px-7 min-h-[43px] text-xs sm:text-sm font-semibold text-white transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:bg-[#b8420a] focus:outline-none focus:ring-2 focus:ring-white/80 focus:ring-offset-2 focus:ring-offset-black active:scale-95 border border-white/10",
                 isScrolling && "pointer-events-none opacity-60",
               )}
               aria-label="Explore the AHUB ecosystem and incubation programs"

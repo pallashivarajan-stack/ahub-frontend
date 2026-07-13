@@ -26,20 +26,28 @@ export function Partners() {
   const loop2 = [...row2, ...row2];
 
   return (
-    <section id="associate" className="relative overflow-hidden border-y border-[color:color-mix(in_oklch,var(--primary)_10%,transparent)] bg-[linear-gradient(180deg,#FFF7F2_0%,#FFFFFF_100%)] py-16 md:py-24">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(70%_45%_at_50%_0%,rgba(255,191,128,0.18),transparent_58%),radial-gradient(36%_24%_at_10%_18%,rgba(255,233,214,0.38),transparent_60%)]" />
-      <div className="site-container-wide">
-        <SectionHeading eyebrow="Associated With" title="Backed by builders, funds and institutions." align="center" />
-      </div>
+    <section id="associate" className="relative overflow-hidden py-16 md:py-24">
+      <div className="site-container-wide text-center">
+          <div className="mb-3 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#F59E42]">
+            <span className="h-px w-8 bg-[#F59E42]" />
+            Associated With
+            <span className="h-px w-8 bg-[#F59E42]" />
+          </div>
+          <h2 className="font-display text-3xl md:text-4xl lg:text-[3rem] font-bold leading-[1.15] tracking-tight text-[#1B1B1B]">
+            Backed by builders,
+            <br />
+            funds and <span className="text-[#F59E42]">institutions.</span>
+          </h2>
+        </div>
 
       <div className="marquee-container mt-14 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
         <div className="flex w-max animate-marquee items-center gap-14 px-6">
           {loop1.map((logo, i) => (
             <div
               key={i}
-              className="grid h-16 min-w-[160px] place-items-center transition-all duration-500"
+              className="grid h-20 min-w-[180px] place-items-center transition-all duration-500"
             >
-              <img src={logo} alt="Partner Logo" className="max-h-12 max-w-[140px] object-contain" />
+              <img src={logo} alt="Partner Logo" className="max-h-16 max-w-[160px] object-contain" />
             </div>
           ))}
         </div>
@@ -50,9 +58,9 @@ export function Partners() {
           {loop2.map((logo, i) => (
             <div
               key={i}
-              className="grid h-16 min-w-[160px] place-items-center transition-all duration-500"
+              className="grid h-20 min-w-[180px] place-items-center transition-all duration-500"
             >
-              <img src={logo} alt="Partner Logo" className="max-h-12 max-w-[140px] object-contain" />
+              <img src={logo} alt="Partner Logo" className="max-h-16 max-w-[160px] object-contain" />
             </div>
           ))}
         </div>

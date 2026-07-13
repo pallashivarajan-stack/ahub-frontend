@@ -11,7 +11,7 @@ export function SectionHeading({
   subtitleColor,
 }: {
   eyebrow?: string;
-  title: string;
+  title: React.ReactNode;
   subtitle?: string;
   align?: "left" | "center";
   light?: boolean;
@@ -41,9 +41,9 @@ export function SectionHeading({
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
         className={cn(
-          "text-balance font-display font-medium leading-[1.05] tracking-tight",
+          "text-balance font-display font-semibold leading-[1.05] tracking-tight",
           titleSize === "small" && "text-2xl md:text-3xl lg:text-4xl",
-          titleSize === "default" && "text-4xl md:text-5xl lg:text-[3.5rem]",
+          titleSize === "default" && "text-3xl md:text-4xl lg:text-[3rem]",
           titleSize === "large" && "text-5xl md:text-6xl lg:text-7xl",
           light ? "text-white" : "text-foreground",
         )}

@@ -1,4 +1,3 @@
-import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
 import { usePublicDistinguishedVisitors } from "@/services/usePublicContent";
 import { resolveLegacyAsset } from "@/lib/assets";
 
@@ -62,28 +61,27 @@ export function DistinguishedVisitors() {
     <section
       data-animate
       id="distinguished-visitors"
-      className="relative isolate overflow-hidden bg-white py-16 text-foreground md:py-24"
-      style={{
-        backgroundImage:
-          "linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(255,244,234,0.78)_22%,rgba(255,229,204,0.58)_62%,rgba(255,255,255,0.95)_100%)",
-      }}
+      className="relative isolate overflow-hidden py-10 text-foreground md:py-14"
     >
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat opacity-90"
-        style={{ backgroundImage: `url(${resolveLegacyAsset("/src/assets/orange  visitors background.png")})` }}
-      />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80%_55%_at_50%_0%,rgba(255,255,255,0.38),transparent_58%),linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.12))]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),transparent)]" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,transparent,rgba(255,246,238,0.96))]" />
-      <div className="pointer-events-none absolute -bottom-14 left-1/2 h-36 w-[68%] -translate-x-1/2 rounded-full bg-[rgba(255,214,180,0.38)] blur-3xl" />
-
       <div className="site-container-wide text-center">
-        <SectionHeading
-          eyebrow="OUR DISTINGUISHED VISITORS"
-          title="Visionaries Driving Innovation"
-          subtitle="Leaders from policy, capital, and craft who have walked the floor, met the founders, and shared their counsel."
-          align="center"
-        />
+        {/* Eyebrow */}
+        <div className="mb-4 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#F59E42]">
+          <span className="h-px w-8 bg-[#F59E42]" />
+          OUR DISTINGUISHED VISITORS
+          <span className="h-px w-8 bg-[#F59E42]" />
+        </div>
+
+        {/* Title — two lines */}
+        <h2 className="font-display text-3xl md:text-4xl lg:text-[3rem] font-bold leading-[1.1] tracking-tight">
+          <span className="text-foreground">Visionaries</span>
+          <br />
+          <span className="text-[#F59E42]">Driving</span>{" "}
+          <span className="text-foreground">Innovation</span>
+        </h2>
+
+        <p className="mx-auto mt-4 max-w-2xl text-sm md:text-base text-muted-foreground">
+          Leaders from policy, capital, and craft who have walked the floor, met the founders, and shared their counsel.
+        </p>
       </div>
 
       {/* Constrained Marquee Container with custom border styling and hover pause */}
@@ -95,16 +93,16 @@ export function DistinguishedVisitors() {
           {loop.map((v, i) => (
             <article
               key={i}
-              className="group/card flex w-[clamp(220px,35vw,290px)] shrink-0 flex-col overflow-hidden rounded-[24px] border border-[color:color-mix(in_oklch,var(--primary)_8%,transparent)] bg-[color:color-mix(in_oklch,var(--card)_96%,white)] shadow-[0_18px_48px_-30px_rgba(90,30,44,0.28)] transition-all duration-500 hover:-translate-y-[6px] hover:shadow-[0_28px_60px_-24px_rgba(90,30,44,0.36)] flex-shrink-0"
+              className="group/card flex w-[clamp(240px,38vw,320px)] shrink-0 flex-col overflow-hidden rounded-[24px] border border-[color:color-mix(in_oklch,var(--primary)_8%,transparent)] bg-[color:color-mix(in_oklch,var(--card)_96%,white)] shadow-[0_18px_48px_-30px_rgba(90,30,44,0.28)] transition-all duration-500 hover:-translate-y-[6px] hover:shadow-[0_28px_60px_-24px_rgba(90,30,44,0.36)] flex-shrink-0"
               style={{ willChange: "transform" }}
             >
-              <div className="flex items-start gap-3.5 p-4">
+              <div className="flex items-start gap-4 p-5">
                 <img
                   src={v.image}
                   alt={v.name}
                   loading="lazy"
                   draggable={false}
-                  className="h-16 w-16 shrink-0 rounded-[16px] object-cover ring-2 ring-orange-100/50"
+                  className="h-28 w-28 shrink-0 rounded-full object-cover ring-2 ring-orange-200"
                 />
 
                 <div className="min-w-0 flex-1 pt-0.5">
@@ -112,11 +110,11 @@ export function DistinguishedVisitors() {
                     Visitor
                   </div>
 
-                  <h3 className="mt-2.5 text-[0.95rem] font-bold leading-tight text-foreground truncate">
+                  <h3 className="mt-2.5 text-[1.05rem] font-bold leading-tight text-foreground truncate">
                     {v.name}
                   </h3>
-                  <p className="mt-0.5 text-[0.75rem] leading-snug text-muted-foreground truncate">{v.role}</p>
-                  <p className="text-[0.75rem] leading-snug text-muted-foreground/90 truncate">{v.org}</p>
+                  <p className="mt-0.5 text-[0.8rem] leading-snug text-muted-foreground truncate">{v.role}</p>
+                  <p className="text-[0.8rem] leading-snug text-muted-foreground/90 truncate">{v.org}</p>
                 </div>
               </div>
             </article>

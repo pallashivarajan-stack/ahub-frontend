@@ -55,9 +55,8 @@ export function StartupsTicker() {
   return (
     <section
       id="startups-in-ahub"
-      className="relative overflow-hidden bg-[linear-gradient(135deg,#FFF8F0_0%,#FFE8D6_100%)] py-16 md:py-24"
+      className="relative overflow-hidden py-10 md:py-14"
     >
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_20%,rgba(255,140,50,0.08),transparent_60%)]" />
 
       <div className="site-container-wide">
         {/* Header Content */}
@@ -69,17 +68,14 @@ export function StartupsTicker() {
           </div>
 
           {/* Main Heading — reduced size */}
-          <h2 className="font-display text-4xl font-[800] leading-[1.05] tracking-tight md:text-5xl lg:text-[3.5rem]">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-[3rem] font-bold leading-[1.05] tracking-tight">
             <span className="text-[#F59E42]">Successful</span>{" "}
             <span className="text-[#2D1B1B]">
               startups moving<br />through the ecosystem
             </span>
           </h2>
 
-          {/* Description */}
-          <p className="mx-auto mt-4 max-w-[700px] text-sm leading-relaxed text-[#6C5E5B] md:text-base">
-            A neat marquee of portfolio companies showing the momentum, depth, and investor-grade quality inside AHUB.
-          </p>
+
         </div>
 
         {/* Marquee Section — no background, no arrows, clean like portfolio page */}
@@ -88,17 +84,17 @@ export function StartupsTicker() {
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#FFF8F0] to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#FFE8D6] to-transparent" />
 
-          <div className="group/marquee overflow-hidden">
+          <div className="group/marquee overflow-hidden py-4">
             <div className="flex w-max animate-marquee items-center group-hover/marquee:[animation-play-state:paused]">
               {marqueeLogos.map((logo, idx) => (
                 <div
                   key={idx}
-                  className="flex h-[100px] w-[160px] shrink-0 items-center justify-center px-5"
+                  className="mx-5 flex h-[110px] w-[190px] shrink-0 items-center justify-center rounded-2xl bg-white px-6 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100 transition-transform duration-300 hover:scale-105"
                 >
                   <img
                     src={logo}
                     alt="Startup Logo"
-                    className="max-h-[80px] max-w-[130px] object-contain mix-blend-multiply"
+                    className="max-h-[64px] max-w-[130px] object-contain"
                     draggable={false}
                   />
                 </div>

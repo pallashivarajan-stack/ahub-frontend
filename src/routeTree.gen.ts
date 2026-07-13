@@ -35,6 +35,7 @@ import { Route as AdminMentorsRouteImport } from './routes/admin/mentors'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminInfrastructureRouteImport } from './routes/admin/infrastructure'
 import { Route as AdminBoardRouteImport } from './routes/admin/board'
+import { Route as AchieveReportsRouteImport } from './routes/achieve/reports'
 import { Route as AchieveImpactRouteImport } from './routes/achieve/impact'
 import { Route as AboutVisionRoadmapRouteImport } from './routes/about/vision-roadmap'
 import { Route as AboutTeamRouteImport } from './routes/about/team'
@@ -179,6 +180,11 @@ const AdminBoardRoute = AdminBoardRouteImport.update({
   path: '/admin/board',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AchieveReportsRoute = AchieveReportsRouteImport.update({
+  id: '/achieve/reports',
+  path: '/achieve/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AchieveImpactRoute = AchieveImpactRouteImport.update({
   id: '/achieve/impact',
   path: '/achieve/impact',
@@ -232,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/about/team': typeof AboutTeamRoute
   '/about/vision-roadmap': typeof AboutVisionRoadmapRoute
   '/achieve/impact': typeof AchieveImpactRoute
+  '/achieve/reports': typeof AchieveReportsRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/infrastructure': typeof AdminInfrastructureRoute
   '/admin/login': typeof AdminLoginRoute
@@ -268,6 +275,7 @@ export interface FileRoutesByTo {
   '/about/team': typeof AboutTeamRoute
   '/about/vision-roadmap': typeof AboutVisionRoadmapRoute
   '/achieve/impact': typeof AchieveImpactRoute
+  '/achieve/reports': typeof AchieveReportsRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/infrastructure': typeof AdminInfrastructureRoute
   '/admin/login': typeof AdminLoginRoute
@@ -305,6 +313,7 @@ export interface FileRoutesById {
   '/about/team': typeof AboutTeamRoute
   '/about/vision-roadmap': typeof AboutVisionRoadmapRoute
   '/achieve/impact': typeof AchieveImpactRoute
+  '/achieve/reports': typeof AchieveReportsRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/infrastructure': typeof AdminInfrastructureRoute
   '/admin/login': typeof AdminLoginRoute
@@ -343,6 +352,7 @@ export interface FileRouteTypes {
     | '/about/team'
     | '/about/vision-roadmap'
     | '/achieve/impact'
+    | '/achieve/reports'
     | '/admin/board'
     | '/admin/infrastructure'
     | '/admin/login'
@@ -379,6 +389,7 @@ export interface FileRouteTypes {
     | '/about/team'
     | '/about/vision-roadmap'
     | '/achieve/impact'
+    | '/achieve/reports'
     | '/admin/board'
     | '/admin/infrastructure'
     | '/admin/login'
@@ -415,6 +426,7 @@ export interface FileRouteTypes {
     | '/about/team'
     | '/about/vision-roadmap'
     | '/achieve/impact'
+    | '/achieve/reports'
     | '/admin/board'
     | '/admin/infrastructure'
     | '/admin/login'
@@ -452,6 +464,7 @@ export interface RootRouteChildren {
   AboutTeamRoute: typeof AboutTeamRoute
   AboutVisionRoadmapRoute: typeof AboutVisionRoadmapRoute
   AchieveImpactRoute: typeof AchieveImpactRoute
+  AchieveReportsRoute: typeof AchieveReportsRoute
   AdminBoardRoute: typeof AdminBoardRoute
   AdminInfrastructureRoute: typeof AdminInfrastructureRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -661,6 +674,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBoardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/achieve/reports': {
+      id: '/achieve/reports'
+      path: '/achieve/reports'
+      fullPath: '/achieve/reports'
+      preLoaderRoute: typeof AchieveReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/achieve/impact': {
       id: '/achieve/impact'
       path: '/achieve/impact'
@@ -732,6 +752,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutTeamRoute: AboutTeamRoute,
   AboutVisionRoadmapRoute: AboutVisionRoadmapRoute,
   AchieveImpactRoute: AchieveImpactRoute,
+  AchieveReportsRoute: AchieveReportsRoute,
   AdminBoardRoute: AdminBoardRoute,
   AdminInfrastructureRoute: AdminInfrastructureRoute,
   AdminLoginRoute: AdminLoginRoute,

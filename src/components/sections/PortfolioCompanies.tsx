@@ -1,8 +1,84 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Briefcase, ExternalLink, MessageSquare, Users, Bot, TrendingUp } from "lucide-react";
+import {
+  ArrowUpRight,
+  Briefcase,
+  ExternalLink,
+  MessageSquare,
+  Users,
+  Bot,
+  TrendingUp,
+  GraduationCap,
+  Video,
+  BookOpen,
+  Leaf,
+  Building,
+  Compass,
+  Sparkles,
+  Cpu
+} from "lucide-react";
 import { portfolio } from "@/data";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
+
+const ICON_MAP: Record<string, any> = {
+  Video,
+  GraduationCap,
+  Bot,
+  BookOpen,
+  Users,
+  Cpu,
+  Leaf,
+  Building,
+  Compass,
+  Sparkles,
+  TrendingUp,
+};
+
+const startupStats: Record<
+  string,
+  {
+    icon: string;
+    label: string;
+    value: string;
+  }[]
+> = {
+  "Interview Buddy": [
+    { icon: "Video", label: "Mock Interviews", value: "100+" },
+    { icon: "GraduationCap", label: "Students Placed", value: "250+" },
+    { icon: "Bot", label: "AI Sessions", value: "500+" },
+  ],
+  Edumoon: [
+    { icon: "BookOpen", label: "Skills Courses", value: "80+" },
+    { icon: "Users", label: "Student Members", value: "5K+" },
+    { icon: "Cpu", label: "Workshops", value: "50+" },
+  ],
+  GreenJams: [
+    { icon: "Leaf", label: "Carbon Saved", value: "120T+" },
+    { icon: "Building", label: "Agrocrete Blocks", value: "50K+" },
+    { icon: "Compass", label: "CO2 Reduced", value: "85%" },
+  ],
+  "Pick A Book": [
+    { icon: "BookOpen", label: "Reading Clubs", value: "40+" },
+    { icon: "Users", label: "Club Members", value: "10K+" },
+    { icon: "Sparkles", label: "Book Reviews", value: "200+" },
+  ],
+  Tessrac: [
+    { icon: "TrendingUp", label: "Data Ingested", value: "10TB+" },
+    { icon: "Users", label: "Enterprise Clients", value: "20+" },
+    { icon: "Cpu", label: "Cloud Server Nodes", value: "120+" },
+  ],
+};
+
+const getStatsForStartup = (startup: string, achievements: string[]) => {
+  if (startupStats[startup]) {
+    return startupStats[startup];
+  }
+  return [
+    { icon: "Sparkles", label: achievements[0] || "Projects Supported", value: "100+" },
+    { icon: "TrendingUp", label: achievements[1] || "Growth Achieved", value: "250+" },
+    { icon: "Users", label: achievements[2] || "Active Members", value: "500+" },
+  ];
+};
 
 // Custom styling details for mock/placement/growth themed items
 const ACHIEVEMENT_THEMES = [
@@ -58,17 +134,20 @@ export function PortfolioCompanies() {
   const [active, setActive] = useState(0);
 
   return (
-    <section id="achieve" className="relative overflow-hidden bg-[linear-gradient(135deg,#FFF8F0_0%,#FFE8D6_100%)] py-16 md:py-24">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_20%,rgba(255,140,50,0.08),transparent_60%)]" />
+    <section id="achieve" className="relative overflow-hidden py-10 md:py-14">
       <div className="site-container-wide">
         <SectionHeading
           eyebrow="Portfolio"
-          title="Our remarkable portfolio companies"
+          title={
+            <>
+              Our remarkable <span className="text-[#FF7A00]">portfolio</span> <span className="text-[#2D1B1B]/40 font-normal">companies</span>
+            </>
+          }
           subtitle="The passionate, goal-driven entrepreneurs writing the next chapter of Indian innovation."
         />
 
         {/* Desktop View — Accordion */}
-        <div className="hidden md:flex mt-20 h-[420px] gap-3 md:h-[440px]">
+        <div className="hidden md:flex mt-20 h-[450px] gap-3 md:h-[480px]">
           {portfolio.map((p: any, i: number) => {
             const isActive = i === active;
             return (
@@ -83,26 +162,25 @@ export function PortfolioCompanies() {
                   opacity: isActive ? 1 : 0.75,
                 }}
                 transition={{ type: "spring", stiffness: 180, damping: 24 }}
-                className="maroon-gradient-border group relative basis-0 overflow-hidden rounded-[30px] border border-orange-100/50 bg-[#FDFBF7] text-left shadow-[0_20px_60px_-30px_rgba(90,30,44,0.14)] focus:outline-none will-change-transform"
+                className="maroon-gradient-border group relative basis-0 overflow-hidden rounded-[27px] border border-orange-100/50 bg-[#FDFBF7] text-left shadow-[0_20px_60px_-30px_rgba(90,30,44,0.14)] focus:outline-none will-change-transform"
               >
                 {isActive && (
                   <div className="absolute inset-0 opacity-5 bg-gradient-to-br from-orange-500/20 to-transparent" />
                 )}
 
                 {/* ── Collapsed state ── */}
-                <div className={`absolute inset-0 flex items-end justify-center pb-12 transition-all duration-500 ${
-                  isActive ? "opacity-0 scale-95" : "opacity-100 scale-100"
-                }`}>
+                <div className={`absolute inset-0 flex items-end justify-center pb-12 transition-all duration-500 ${isActive ? "opacity-0 scale-95" : "opacity-100 scale-100"
+                  }`}>
                   {p.logo ? (
                     <img
                       src={p.logo}
                       alt={p.startup}
-                      className="w-[150px] h-[52px] max-w-none flex-shrink-0 object-contain -rotate-90 transition-all duration-500 group-hover:scale-108"
+                      className="w-[135px] h-[47px] max-w-none flex-shrink-0 object-contain -rotate-90 transition-all duration-500 group-hover:scale-108"
                       draggable={false}
                     />
                   ) : (
                     <div
-                      className="flex items-center justify-center w-[68px] h-[145px] rounded-2xl text-white text-2xl font-bold shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-500 group-hover:scale-105 group-hover:shadow-[0_8px_28px_rgba(249,115,22,0.12)]"
+                      className="flex items-center justify-center w-[61px] h-[131px] rounded-2xl text-white text-2xl font-bold shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-500 group-hover:scale-105 group-hover:shadow-[0_8px_28px_rgba(249,115,22,0.12)]"
                       style={{ background: "linear-gradient(135deg, #F97316, #FB923C)" }}
                     >
                       <span className="-rotate-90 block tracking-wider select-none">{p.startup.charAt(0)}</span>
@@ -112,133 +190,181 @@ export function PortfolioCompanies() {
 
                 {/* ── Expanded state ── */}
                 <div
-                  className={`absolute inset-0 z-10 flex h-full flex-col md:flex-row items-stretch p-6 md:p-7 gap-10 transition-opacity duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                    isActive ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
-                  }`}
+                  className={`absolute inset-0 z-10 flex h-full flex-col md:flex-row items-stretch p-8 md:p-10 gap-8 md:gap-12 transition-opacity duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${isActive ? "opacity-100 delay-100" : "pointer-events-none opacity-0"
+                    }`}
                 >
-                  {/* Left content — primary focus, takes 65% of expanded width */}
-                  <div className="flex flex-col justify-between flex-1 min-w-0 md:max-w-[65%]">
-                    <div className="space-y-3 md:space-y-4">
+                  {/* Left Column (approx 55%) */}
+                  <div className="flex flex-col justify-start gap-4 flex-1 min-w-0 md:max-w-[55%] h-full relative">
+                    <div className="space-y-4">
+                      {/* Startup Category Badge */}
                       <div className="flex items-center gap-3">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F97316] bg-orange-50/80 px-3 py-1 rounded-full border border-orange-100/30">
-                          {p.category || p.industry}
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF7A00] bg-[#FFF8F1] px-3.5 py-1.5 rounded-full border border-[#FF7A00]/20">
+                          • {p.category || p.industry}
                         </span>
                       </div>
 
-                      <div className="space-y-2">
-                        {p.logo ? (
-                          <div className="flex h-16 md:h-22 items-center justify-start flex-shrink-0">
+                      {/* Clean Logo Ribbon Section — adapts to logo size dynamically */}
+                      <div className="absolute left-[-32px] md:left-[-40px] top-[48px] bg-[#FF7A00] p-[3px] pr-[4px] shadow-[0_4px_12px_rgba(255,122,0,0.12)] z-20"
+                           style={{
+                             clipPath: "polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%)",
+                           }}>
+                        <div className="bg-white h-[60px] flex items-center pl-9 md:pl-11 pr-9"
+                             style={{
+                               clipPath: "polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%)",
+                             }}>
+                          {p.logo ? (
                             <img
                               src={p.logo}
                               alt={`${p.startup} logo`}
-                              className="h-10 md:h-14 w-auto max-w-[140px] object-contain text-left flex-shrink-0 mr-4"
+                              className="h-[46px] w-auto max-w-[200px] object-contain flex-shrink-0"
                               draggable={false}
                             />
-                          </div>
-                        ) : (
-                          <h3 className="font-display text-3xl font-black tracking-tight text-[#2B1B18] leading-[1.05] md:text-4xl">
-                            {p.startup}
-                          </h3>
-                        )}
-                        <div className="h-0.5 w-12 bg-gradient-to-r from-[#F97316] to-[#FB923C] rounded-full" />
+                          ) : (
+                            <span className="font-display font-black text-lg text-[#0F172A] whitespace-nowrap pr-2">{p.startup}</span>
+                          )}
+                        </div>
                       </div>
 
-                      <p className="text-[14.5px] md:text-[15px] leading-relaxed text-[#5A4D4A] max-w-md mt-8 md:mt-10 line-clamp-3">
+                      {/* Heading */}
+                      <div className="pt-[86px] space-y-2">
+                        <h3 className="font-display text-[1.2rem] font-bold tracking-tight text-[#0F172A] leading-[1.2] sm:text-[1.32rem]">
+                          Your Partner in <br />
+                          <span className="text-[#0F172A]">{p.startup}</span> <span className="text-[#FF7A00]">Success</span>
+                        </h3>
+                        <div className="h-0.5 w-16 bg-[#FF7A00]" />
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-slate-500 max-w-md text-[12px] leading-relaxed mt-2 line-clamp-3">
                         {p.desc}
                       </p>
 
-                      {/* Micro Tagline/Achievement Pills */}
-                      <div className="flex flex-wrap items-center gap-1.5 mt-3">
-                        {p.achievements.slice(0, 2).map((achievement: string, idx: number) => {
-                          const displayTxt = achievement === "Empowering Careers" ? "Career Growth" : achievement;
-                          const theme = ACHIEVEMENT_THEMES[idx % ACHIEVEMENT_THEMES.length];
-                          const subtitle = theme.subtitles[achievement] || "Accelerate Progress";
-                          const Icon = theme.icon;
-
+                      {/* Dynamic 3-Column Statistics Section */}
+                      <div className="flex items-center gap-6 mt-4 border-t border-slate-100 pt-4">
+                        {getStatsForStartup(p.startup, p.achievements).map((stat, index, arr) => {
+                          const IconComponent = ICON_MAP[stat.icon] || Sparkles;
                           return (
-                            <div
-                              key={achievement}
-                              className={`flex items-center gap-2 rounded-lg border pl-1.5 pr-2.5 py-1 shadow-[0_1px_4px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.01] ${theme.bgLight} ${theme.borderCol}`}
-                              style={{ borderLeftWidth: "2.5px", borderLeftColor: theme.hexCol }}
-                            >
-                              <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md ${theme.iconBg}`}>
-                                <Icon size={11} className={theme.iconColor} />
-                              </div>
-                              <div className="min-w-0">
-                                <h4 className="text-[9px] font-black text-[#1C1412] leading-tight whitespace-nowrap">
-                                  {displayTxt}
-                                </h4>
-                                <p className="text-[7.5px] font-bold text-[#6C5E5B]/60 leading-none mt-0.5 whitespace-nowrap">
-                                  {subtitle}
+                            <Fragment key={stat.label}>
+                              <div className="flex flex-col items-center text-center flex-1 min-w-0">
+                                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-50 text-[#FF7A00] mb-1.5">
+                                  <IconComponent size={14} />
+                                </div>
+                                <p className="text-[8px] font-semibold text-slate-400 uppercase tracking-wider truncate w-full">
+                                  {stat.label}
+                                </p>
+                                <p className="text-base font-bold text-slate-800 mt-0.5">
+                                  {stat.value}
                                 </p>
                               </div>
-                            </div>
+                              {index < arr.length - 1 && (
+                                <div className="h-8 w-px bg-slate-200/60" />
+                              )}
+                            </Fragment>
                           );
                         })}
                       </div>
+                      {/* Visit Button (moved up to sit right below the statistics grid) */}
+                      {p.website && (
+                        <div className="pt-2">
+                          <a
+                            href={p.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F97316] to-[#EA580C] px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white shadow-[0_4px_12px_rgba(249,115,22,0.15)] transition-all duration-300 hover:shadow-[0_6px_16px_rgba(249,115,22,0.25)] hover:scale-[1.02] active:scale-[0.98]"
+                          >
+                            Visit <ArrowUpRight size={13} />
+                          </a>
+                        </div>
+                      )}
                     </div>
-
-                    {/* Visit button */}
-                    {p.website && (
-                      <a
-                        href={p.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="mt-3 inline-flex items-center gap-2 self-start rounded-full bg-gradient-to-r from-[#F97316] to-[#FB923C] px-5 py-2 text-[12px] font-bold text-white shadow-[0_4px_14px_rgba(249,115,22,0.3)] transition-all duration-300 hover:shadow-[0_6px_20px_rgba(249,115,22,0.4)] hover:scale-[1.03] active:scale-[0.98]"
-                      >
-                        <ExternalLink size={13} />
-                        Visit
-                      </a>
-                    )}
                   </div>
 
-                  {/* Right side — Founder portrait */}
-                  <div className="hidden md:flex flex-col items-center justify-center" style={{ width: "28%", flexShrink: 0 }}>
+
+                  {/* Right Column — Light orange semicircle attached to right edge + 3:4 passport portrait (no border) */}
+                  <div className="hidden md:flex flex-col items-center justify-center relative flex-1 min-w-0 md:max-w-[45%] h-full">
+
+                    {/* 180° semicircle light orange/peach color attached to the right border, spanning full height */}
+                    <div
+                      className="absolute right-[-40px] top-0 bottom-0 w-[280px] pointer-events-none -z-10"
+                      style={{
+                        background: "linear-gradient(135deg, #FFEBD6 0%, #FFF3E6 100%)",
+                        borderTopLeftRadius: "240px",
+                        borderBottomLeftRadius: "240px",
+                        opacity: 0.95,
+                      }}
+                    />
+
+                    {/* Soft radial glow extending beyond the semicircle, spanning full height */}
+                    <div
+                      className="absolute right-[-40px] top-0 bottom-0 w-[360px] pointer-events-none -z-20 opacity-30"
+                      style={{
+                        background: "radial-gradient(ellipse at 100% 50%, #FFE5C9 0%, rgba(255,229,201,0.1) 70%, transparent 100%)",
+                      }}
+                    />
+
+                    {/* Decorative dot grids */}
+                    {/* Top-right dot grid */}
+                    <div
+                      className="absolute top-10 right-10 w-[70px] h-[60px] opacity-25 pointer-events-none z-10"
+                      style={{
+                        backgroundImage: "radial-gradient(circle, #FF7A00 1.5px, transparent 1.5px)",
+                        backgroundSize: "9px 9px",
+                      }}
+                    />
+                    {/* Bottom-left dot grid near portrait */}
+                    <div
+                      className="absolute left-10 bottom-12 w-[50px] h-[50px] opacity-20 pointer-events-none z-10"
+                      style={{
+                        backgroundImage: "radial-gradient(circle, #FF7A00 1.5px, transparent 1.5px)",
+                        backgroundSize: "8px 8px",
+                      }}
+                    />
+
+                    {/* Passport Portrait Container with overlapping floating card */}
                     <motion.div
-                      className="relative"
-                      style={{ width: "175px" }}
-                      initial={{ opacity: 0, scale: 0.96, y: 8 }}
-                      animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.96, y: isActive ? 0 : 8 }}
+                      className="relative z-10"
+                      style={{ width: "180px", height: "240px" }}
+                      initial={{ opacity: 0, scale: 0.95, y: 8 }}
+                      animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.95, y: isActive ? 0 : 8 }}
                       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: isActive ? 0.08 : 0 }}
                     >
+                      {/* Portrait frame — 3:4 passport size with rounded corners, no white border */}
                       <div
-                        className="w-full overflow-hidden rounded-[28px] shadow-[0_16px_48px_-8px_rgba(90,30,44,0.18),0_0_0_1px_rgba(255,191,128,0.2)]"
-                        style={{ aspectRatio: "4/5" }}
+                        className="w-full h-full overflow-hidden rounded-[32px] shadow-[0_12px_32px_rgba(0,0,0,0.1)] bg-gradient-to-b from-[#FFF5EB] to-[#FFE4CC]"
                       >
                         {p.founderImage ? (
                           <img
                             src={p.founderImage}
                             alt={p.founder}
-                            className="h-full w-full object-cover object-[center_top] transition-transform duration-500 group-hover:scale-[1.04] will-change-transform"
+                            className="h-full w-full object-cover object-[center_top] transition-transform duration-500 group-hover:scale-[1.03] will-change-transform"
                             draggable={false}
                           />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-gradient-to-b from-[#FFF5EB] to-[#FFE4CC]">
+                          <div className="flex h-full w-full items-center justify-center">
                             <span className="text-4xl font-black text-[#F97316]/30 select-none font-display">
                               {p.founder.charAt(0)}
                             </span>
                           </div>
                         )}
-                        <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-black/28 to-transparent pointer-events-none" />
                       </div>
 
+                      {/* Floating Founder Card overlapping the bottom of the portrait by ~25-30% */}
                       <motion.div
                         className="absolute left-1/2 -translate-x-1/2 z-20"
-                        style={{ bottom: "-48px", width: "88%" }}
-                        initial={{ y: 10, opacity: 0 }}
-                        animate={{ y: isActive ? 0 : 10, opacity: isActive ? 1 : 0 }}
+                        style={{ bottom: "-24px", width: "94%" }}
+                        initial={{ y: 8, opacity: 0 }}
+                        animate={{ y: isActive ? 0 : 8, opacity: isActive ? 1 : 0 }}
                         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: isActive ? 0.16 : 0 }}
                       >
-                        <div className="rounded-2xl bg-white/94 backdrop-blur-xl border border-white/80 px-3.5 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.12)] text-center">
-                          <div className="mx-auto mb-1.5 h-[2px] w-5 rounded-full bg-gradient-to-r from-[#F97316] to-[#FBBF24]" />
-                          <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#F97316] leading-none">
+                        <div className="rounded-2xl bg-white border border-slate-100/80 px-3 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.06)] text-center">
+                          <p className="text-[8px] font-extrabold uppercase tracking-[0.18em] text-[#FF7A00] leading-none mb-1">
                             Founded by
                           </p>
-                          <h4 className="mt-1.5 text-[13.5px] font-extrabold text-[#1C1412] tracking-tight leading-tight font-display">
+                          <h4 className="text-[12px] font-bold text-[#0F172A] tracking-tight leading-tight font-display uppercase truncate">
                             {p.founder}
                           </h4>
-                          <p className="mt-1 text-[9.5px] font-semibold text-[#6C5E5B]/85 leading-none">
+                          <p className="mt-1 text-[8.5px] font-semibold text-slate-400 leading-none uppercase tracking-wide truncate">
                             {p.founderTitle}
                           </p>
                         </div>
@@ -257,11 +383,11 @@ export function PortfolioCompanies() {
           {portfolio.map((p: any, idx: number) => (
             <div
               key={p.startup}
-              className="maroon-gradient-border group relative overflow-hidden rounded-[24px] border border-orange-100/50 bg-[#FDFBF7] p-5 shadow-[0_16px_40px_-24px_rgba(90,30,44,0.14)] flex flex-col gap-4"
+              className="maroon-gradient-border group relative overflow-hidden rounded-[22px] border border-orange-100/50 bg-[#FDFBF7] p-5 shadow-[0_16px_40px_-24px_rgba(90,30,44,0.14)] flex flex-col gap-4"
             >
               {/* Category and Visit Button */}
               <div className="flex items-center justify-between gap-3">
-                <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#F97316] bg-orange-50/80 px-2.5 py-1 rounded-full border border-orange-100/30">
+                <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#F97316] bg-orange-50/80 px-2.5 py-1 rounded-full border border-orange-100/30">
                   {p.category || p.industry}
                 </span>
                 {p.website && (
@@ -269,7 +395,7 @@ export function PortfolioCompanies() {
                     href={p.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-bold text-[#F97316] hover:text-[#FB923C] transition-colors"
+                    className="inline-flex items-center gap-1 text-[10px] font-bold text-[#F97316] hover:text-[#FB923C] transition-colors"
                   >
                     Visit <ExternalLink size={12} />
                   </a>
@@ -296,7 +422,7 @@ export function PortfolioCompanies() {
               </div>
 
               {/* Description */}
-              <p className="text-[13px] leading-relaxed text-[#5A4D4A]">
+              <p className="text-[12px] leading-relaxed text-[#5A4D4A]">
                 {p.desc}
               </p>
 
@@ -318,10 +444,10 @@ export function PortfolioCompanies() {
                         <Icon size={11} className={theme.iconColor} />
                       </div>
                       <div className="min-w-0">
-                        <h4 className="text-[9px] font-black text-[#1C1412] leading-tight whitespace-nowrap">
+                        <h4 className="text-[8px] font-black text-[#1C1412] leading-tight whitespace-nowrap">
                           {displayTxt}
                         </h4>
-                        <p className="text-[7.5px] font-bold text-[#6C5E5B]/60 leading-none mt-0.5 whitespace-nowrap">
+                        <p className="text-[7px] font-bold text-[#6C5E5B]/60 leading-none mt-0.5 whitespace-nowrap">
                           {subtitle}
                         </p>
                       </div>
@@ -347,9 +473,9 @@ export function PortfolioCompanies() {
                   </div>
                 )}
                 <div>
-                  <p className="text-[8px] font-bold uppercase tracking-[0.15em] text-[#F97316] leading-none">Founded by</p>
-                  <h4 className="text-[12.5px] font-bold text-[#1C1412] tracking-tight mt-0.5 leading-none font-display">{p.founder}</h4>
-                  <p className="text-[9px] font-medium text-[#6C5E5B]/75 leading-none mt-1">{p.founderTitle}</p>
+                  <p className="text-[7px] font-bold uppercase tracking-[0.15em] text-[#F97316] leading-none">Founded by</p>
+                  <h4 className="text-[11px] font-bold text-[#1C1412] tracking-tight mt-0.5 leading-none font-display">{p.founder}</h4>
+                  <p className="text-[8px] font-medium text-[#6C5E5B]/75 leading-none mt-1">{p.founderTitle}</p>
                 </div>
               </div>
             </div>

@@ -50,18 +50,14 @@ export function FindUsOn() {
   const { data: platformsData } = usePublicSocialLinks(platforms);
 
   return (
-    <section id="social" className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#FFF8F3_0%,#FFFFFF_100%)] py-16 text-foreground md:py-24">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(120%_80%_at_20%_0%,rgba(255,191,128,0.2),transparent_55%),radial-gradient(80%_50%_at_80%_20%,rgba(255,236,218,0.6),transparent_60%),linear-gradient(180deg,rgba(255,255,255,0.94),rgba(255,247,242,1))]" />
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-60 [background-image:linear-gradient(rgba(255,255,255,0.65)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.65)_1px,transparent_1px)] [background-size:72px_72px]" />
-      <div className="pointer-events-none absolute left-[8%] top-14 h-44 w-44 rounded-full bg-[#FFB76B]/18 blur-3xl" />
-      <div className="pointer-events-none absolute right-[8%] top-24 h-56 w-56 rounded-full bg-[#FFF0E1]/70 blur-3xl" />
+    <section id="social" className="relative isolate overflow-hidden py-10 text-foreground md:py-14">
 
       <div className="site-container-wide">
         <div className="max-w-3xl">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#5b0e2d]/12 bg-white/82 px-3 py-1 text-[0.65rem] uppercase tracking-[0.24em] text-[#5b0e2d] shadow-[0_10px_30px_-20px_rgba(91,14,45,0.3)] backdrop-blur-md">
             <Search size={12} /> Find Us On
           </div>
-          <h2 className="font-display text-2xl font-extrabold tracking-[-0.02em] sm:text-3xl lg:text-5xl">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-[3rem] font-bold tracking-tight">
             <span style={{ color: '#F59E42' }}>Find</span>{' '}
             <span style={{ color: '#2D1B1B' }}>Us On</span>
           </h2>
@@ -164,9 +160,9 @@ function SocialCard({
 
       <div className="relative opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 mt-4 mb-2">
         <div className="text-xs font-bold text-[#5b0e2d]/80 uppercase tracking-wider mb-1">Latest Community Buzz</div>
-        <div className="bg-[#FFF8F3] rounded-[12px] p-[14px] mt-4 relative border border-[#5b0e2d]/5 shadow-sm">
+        <div className="bg-[#FFF8F3] rounded-[11px] p-[13px] mt-4 relative border border-[#5b0e2d]/5 shadow-sm">
           <MessageSquareQuote size={16} className="text-[#5b0e2d]/40 mb-2" />
-          <p className="text-[14px] italic text-[#5b0e2d]/80 leading-relaxed line-clamp-3">
+          <p className="text-[13px] italic text-[#5b0e2d]/80 leading-relaxed line-clamp-3">
             "{platform.testimonial.quote}"
           </p>
           <div className="mt-2 text-xs font-semibold text-[#5b0e2d]/60">

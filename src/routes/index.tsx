@@ -9,9 +9,11 @@ import { PortfolioCompanies } from "@/components/sections/PortfolioCompanies";
 import { StartupsTicker } from "@/components/sections/StartupsTicker";
 import { IncubatorsShowcase } from "@/components/sections/IncubatorsShowcase";
 import { LatestEvents } from "@/components/sections/LatestEvents";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { MeshNetwork } from "@/components/sections/MeshNetwork";
 import { Partners } from "@/components/sections/Partners";
 import { FindUsOn } from "@/components/sections/FindUsOn";
+import { ContactUs } from "@/components/sections/ContactUs";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -54,10 +56,8 @@ function Index() {
       </header>
       <main
         id="main-content"
-        className="relative overflow-x-clip bg-[linear-gradient(135deg,#FFE5CC_0%,#FFF0E1_30%,#FFF7F2_65%,#FFFFFF_100%)]"
+        className="relative overflow-x-clip bg-[linear-gradient(135deg,#FFE5CC_0%,#FFF0E1_30%,#FFF7F2_60%,#FFF0E1_80%,#FFE8D6_100%)]"
       >
-        <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(60%_45%_at_50%_0%,rgba(255,198,137,0.28),transparent_58%),radial-gradient(38%_26%_at_14%_14%,rgba(255,226,196,0.34),transparent_62%),radial-gradient(30%_22%_at_86%_18%,rgba(255,244,233,0.68),transparent_58%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.34))]" />
-        <div className="pointer-events-none fixed inset-0 -z-10 opacity-[0.18] [background-image:linear-gradient(rgba(255,255,255,0.85)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.85)_1px,transparent_1px)] [background-size:96px_96px]" />
         <Hero />
         <WhatWeDo />
         <AhubNetwork />
@@ -65,10 +65,12 @@ function Index() {
         <StartupsTicker />
         <IncubatorsShowcase />
         <LatestEvents />
+        <Testimonials />
         <MeshNetwork />
         <Partners />
         <DistinguishedVisitors />
         <FindUsOn />
+        <ContactUs />
       </main>
       <Footer />
       <script

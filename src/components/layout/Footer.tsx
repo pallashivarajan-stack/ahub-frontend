@@ -85,7 +85,7 @@ export function Footer() {
           <div>
             <div className="text-xs uppercase tracking-[0.24em] text-white/62">Newsletter</div>
             <p className="mt-5 text-sm leading-relaxed text-white/78">A short, monthly note from the floor. No noise.</p>
-            <form onSubmit={handleSubscribe} className="mt-5 flex overflow-hidden rounded-[18px] border border-white/14 bg-white/12 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.7)] backdrop-blur-md">
+            <form onSubmit={handleSubscribe} className="mt-5 flex overflow-hidden rounded-[16px] border border-white/14 bg-white/12 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.7)] backdrop-blur-md">
               <input
                 type="email"
                 value={email}
