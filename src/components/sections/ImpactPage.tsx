@@ -156,64 +156,34 @@ export function ImpactPage() {
     });
   }, [impactData]);
   return (
-    <div className="relative bg-slate-50 pb-20">
-      {/* Dark Teal Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#061e1b] via-[#031412] to-[#010908] py-24 md:py-28 lg:py-32">
-        {/* Background Graphic Lines / Decorative Grid */}
-        <div className="pointer-events-none absolute inset-0 opacity-15">
-          <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern
-                id="grid"
-                width="40"
-                height="40"
-                patternUnits="userSpaceOnUse"
-              >
-                <path
-                  d="M 40 0 L 0 0 0 40"
-                  fill="none"
-                  stroke="rgba(255,255,255,0.15)"
-                  strokeWidth="1"
-                />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
-        </div>
-
-        {/* Ambient background glows */}
-        <div className="pointer-events-none absolute -left-40 top-0 h-96 w-96 rounded-full bg-[#008080]/10 blur-[100px]" />
-        <div className="pointer-events-none absolute -right-40 top-20 h-96 w-96 rounded-full bg-[#e75710]/5 blur-[120px]" />
-
-        <div className="relative site-container-wide text-center">
-          <motion.div
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col items-center"
-          >
-            <span className="text-[0.78rem] font-bold uppercase tracking-[0.3em] text-[#00cca3]">
-              Impact
-            </span>
-
-            <h1 className="mt-5 text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[44px]">
-              GROWTH STORY:{" "}
-              <span className="text-[#ea580c]">APR 2022 – FEB 2026</span>
-            </h1>
-
-            <p className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
-              Building a strong startup ecosystem through{" "}
-              <span className="font-semibold text-[#00cca3]">innovation</span>,{" "}
-              <span className="font-semibold text-[#00cca3]">opportunity</span>{" "}
-              and{" "}
-              <span className="font-semibold text-[#00cca3]">growth</span>.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <div className="relative bg-[#FDF8F2] pb-20 pt-24">
+      {/* Header Section - Matched with Partners/Reports style */}
+      <div className="site-container-wide">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col items-center text-center mb-16"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E42]/25 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#F59E42] shadow-sm backdrop-blur-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#F59E42]" />
+            Impact
+          </div>
+          
+          <h1 className="mt-6 text-2xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-3xl md:text-4xl">
+            GROWTH STORY: <span className="text-[#F59E42]">APR 2022 – FEB 2026</span>
+          </h1>
+          
+          <p className="mx-auto mt-4 max-w-xl text-base text-[#6C5E5B]">
+            Building a strong startup ecosystem through innovation, opportunity and growth.
+          </p>
+          
+          <div className="mt-5 h-1 w-16 rounded-full bg-[#F59E42]" />
+        </motion.div>
+      </div>
 
       {/* Metrics Container Block */}
-      <div className="relative -mt-16 site-container-wide z-10">
+      <div className="relative site-container-wide z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}

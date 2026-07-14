@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Instagram, Linkedin, Search, Twitter, MessageSquareQuote } from "lucide-react";
 import { usePublicSocialLinks } from "@/services/usePublicContent";
@@ -12,10 +12,7 @@ const platforms = [
     icon: Linkedin,
     accent: "from-[#5b0e2d] via-[#8d1d46] to-[#f5d8e0]",
     glow: "bg-[#5b0e2d]/25",
-    testimonial: {
-      quote: "A-Hub's startup networking event connected us with incredible founders and investors. One of the best ecosystem communities for early-stage startups.",
-      author: "Founder, Campus Startup"
-    }
+    embed: "https://www.linkedin.com/embed/feed/update/urn:li:share:7478853567030640640",
   },
   {
     name: "Twitter / X",
@@ -25,10 +22,7 @@ const platforms = [
     icon: Twitter,
     accent: "from-slate-900 via-slate-700 to-[#e8edf3]",
     glow: "bg-slate-900/25",
-    testimonial: {
-      quote: "Attended the A-Hub innovation meetup today. Amazing energy, brilliant founders, and practical startup insights.",
-      author: "Community Member"
-    }
+    tweetUrl: "https://twitter.com/ahub1199375/status/2061400902213456017",
   },
   {
     name: "Instagram",
@@ -38,16 +32,30 @@ const platforms = [
     icon: Instagram,
     accent: "from-[#5b0e2d] via-[#b53d67] to-[#fdf2f5]",
     glow: "bg-pink-500/20",
-    testimonial: {
-      quote: "Love seeing behind-the-scenes startup journeys and founder stories. The content feels authentic and inspiring.",
-      author: "Student Entrepreneur"
-    }
+    instagramEmbed: "https://www.instagram.com/p/DawhjJgMvvV/",
   },
-] as const;
+];
 
 export function FindUsOn() {
   const [cursor, setCursor] = useState({ x: 50, y: 50 });
   const { data: platformsData } = usePublicSocialLinks(platforms);
+
+  useEffect(() => {
+    const twitterScript = document.createElement("script");
+    twitterScript.src = "https://platform.twitter.com/widgets.js";
+    twitterScript.async = true;
+    document.body.appendChild(twitterScript);
+
+    const instagramScript = document.createElement("script");
+    instagramScript.src = "https://www.instagram.com/embed.js";
+    instagramScript.async = true;
+    document.body.appendChild(instagramScript);
+
+    return () => {
+      document.body.removeChild(twitterScript);
+      document.body.removeChild(instagramScript);
+    };
+  }, []);
 
   return (
     <section id="social" className="relative isolate overflow-hidden py-10 text-foreground md:py-14">
@@ -158,18 +166,47 @@ function SocialCard({
         </div>
       </div>
 
-      <div className="relative opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 mt-4 mb-2">
-        <div className="text-xs font-bold text-[#5b0e2d]/80 uppercase tracking-wider mb-1">Latest Community Buzz</div>
-        <div className="bg-[#FFF8F3] rounded-[11px] p-[13px] mt-4 relative border border-[#5b0e2d]/5 shadow-sm">
-          <MessageSquareQuote size={16} className="text-[#5b0e2d]/40 mb-2" />
-          <p className="text-[13px] italic text-[#5b0e2d]/80 leading-relaxed line-clamp-3">
-            "{platform.testimonial.quote}"
-          </p>
-          <div className="mt-2 text-xs font-semibold text-[#5b0e2d]/60">
-            — {platform.testimonial.author}
+      {platform.embed ? (
+        <div className="mt-4 mb-2 overflow-y-auto rounded-[11px] border border-[#5b0e2d]/10 shadow-sm max-h-[250px]">
+          <iframe
+            src="https://www.linkedin.com/embed/feed/update/urn:li:share:7478853567030640640?collapsed=1"
+            height="669"
+            width="504"
+            frameBorder="0"
+            allowFullScreen
+            title="Embedded post"
+            className="w-full"
+          />
+        </div>
+      ) : platform.tweetUrl ? (
+        <div className="mt-4 mb-2 overflow-y-auto rounded-[11px] border border-slate-200/50 shadow-sm max-h-[250px]">
+          <blockquote className="twitter-tweet" data-theme="light">
+            <a href={platform.tweetUrl}></a>
+          </blockquote>
+        </div>
+      ) : platform.instagramEmbed ? (
+        <div className="mt-4 mb-2 overflow-y-auto rounded-[11px] border border-pink-100/50 shadow-sm max-h-[250px]">
+          <blockquote
+            className="instagram-media"
+            data-instgrm-captioned
+            data-instgrm-permalink={`${platform.instagramEmbed}?utm_source=ig_embed&utm_campaign=loading`}
+            data-instgrm-version="14"
+          ></blockquote>
+        </div>
+      ) : (
+        <div className="relative opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 mt-4 mb-2">
+          <div className="text-xs font-bold text-[#5b0e2d]/80 uppercase tracking-wider mb-1">Latest Community Buzz</div>
+          <div className="bg-[#FFF8F3] rounded-[11px] p-[13px] mt-4 relative border border-[#5b0e2d]/5 shadow-sm">
+            <MessageSquareQuote size={16} className="text-[#5b0e2d]/40 mb-2" />
+            <p className="text-[13px] italic text-[#5b0e2d]/80 leading-relaxed line-clamp-3">
+              "{platform.testimonial.quote}"
+            </p>
+            <div className="mt-2 text-xs font-semibold text-[#5b0e2d]/60">
+              — {platform.testimonial.author}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="relative mt-auto pt-6 flex items-center justify-between border-t border-[#5b0e2d]/10">
         <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-muted-foreground">

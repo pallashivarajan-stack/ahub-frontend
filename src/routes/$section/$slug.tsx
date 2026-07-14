@@ -39,7 +39,6 @@ type RouteKey =
   | "about/board"
   | "about/team"
   | "students/dashboard"
-  | "students/internship-calendar"
   | "students/login";
 
 type Profile = { name: string; role: string; org: string; bio: string; linkLabel?: string };
@@ -438,22 +437,6 @@ const pageMap: Record<string, PageDefinition> = {
       { date: "Today", title: "Submit a pitch", body: "Prepare applications and startup documents." },
       { date: "This week", title: "Attend a session", body: "Join a workshop, demo day, or mentor clinic." },
       { date: "Next week", title: "Update profile", body: "Keep skills, interests, and startup data current." },
-    ],
-  },
-  "students/internship-calendar": {
-    kind: "calendar",
-    eyebrow: "Students / Internship Calendar",
-    title: "Internship schedules and startup openings",
-    summary: "Important dates and timeline views for student opportunities across the ecosystem.",
-    timeline: [
-      { date: "Week 1", title: "Startup openings", body: "Browse active student roles and internships." },
-      { date: "Week 2", title: "Application window", body: "Track deadlines for specific startup teams." },
-      { date: "Week 3", title: "Interview cycles", body: "Coordinate with founders and recruiters." },
-    ],
-    cards: [
-      { title: "Timeline view", body: "A clean schedule surface for dates and deadlines." },
-      { title: "Important dates", body: "Use the calendar to stay ahead of opportunities." },
-      { title: "Startup openings", body: "List internships and project-based roles." },
     ],
   },
   "students/login": {

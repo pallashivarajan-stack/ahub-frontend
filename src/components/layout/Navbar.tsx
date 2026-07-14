@@ -225,7 +225,7 @@ const PANEL_CONTENT: Record<
       },
       {
         label: "Reports",
-        href: "/about/reports",
+        href: "/achieve/reports",
         description: "Annual reports, impact metrics, and data insights.",
         image: event4,
       },
@@ -283,12 +283,6 @@ const PANEL_CONTENT: Record<
         description: "Apply for internships and track status.",
         image: event2,
       },
-      {
-        label: "Internship Calendar",
-        href: "/students/internship-calendar",
-        description: "Internship schedules, openings, and timelines.",
-        image: event1,
-      },
     ],
     spotlight: {
       image: event2,
@@ -329,13 +323,6 @@ const PANEL_CONTENT: Record<
 };
 
 const _STUDENT_TABS: StudentTab[] = [
-  {
-    label: "Internship Calendar",
-    href: "/students/internship-calendar",
-    description: "See internship schedules, openings, and important dates in a timeline format.",
-    image: event1,
-    stats: ["Openings", "Timelines", "Important dates"],
-  },
   {
     label: "Internship Registration",
     href: "/students/internship-registration",
@@ -752,12 +739,8 @@ export function Navbar() {
 
             {/* CTA Button - right aligned */}
             <div className="flex shrink-0 items-center gap-2">
-              <a
-                href="#announcement"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection("announcement");
-                }}
+              <Link
+                to="/programs/join-us"
                 className="group hidden lg:inline-flex items-center gap-2 rounded-xl bg-[#c94a0a] px-3.5 py-2.5 text-xs font-medium text-white transition-transform duration-300 hover:-translate-y-0.5 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
               >
                 Join Us
@@ -765,7 +748,7 @@ export function Navbar() {
                   size={15}
                   className="transition-transform duration-300 group-hover:translate-x-0.5"
                 />
-              </a>
+              </Link>
 
               {/* Mobile menu toggle */}
               <div className="flex lg:hidden">
@@ -896,13 +879,9 @@ export function Navbar() {
               ) : null}
 
               {/* CTA Button */}
-              <a
-                href="#announcement"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection("announcement");
-                  closeMenus();
-                }}
+              <Link
+                to="/programs/join-us"
+                onClick={closeMenus}
                 className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#c94a0a] px-5 py-2.5 text-xs font-medium text-white transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(201,74,10,0.28)] active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
               >
                 Join Us
@@ -910,7 +889,7 @@ export function Navbar() {
                   size={15}
                   className="transition-transform duration-300 group-hover:translate-x-0.5"
                 />
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}

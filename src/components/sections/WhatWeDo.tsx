@@ -14,29 +14,29 @@ const defaultItems: Item[] = [
   {
     n: "01",
     kicker: "Discovery",
-    title: "Ideation & Validation",
-    desc: "Helping ideas take shape through market research, mentorship, and validation.",
+    title: "Business Advisory",
+    desc: "Advisory board and mentors, management team identification, access to newer technology & talent.",
     icon: resolveLegacyAsset("/src/assets/what we do/01.png"),
   },
   {
     n: "02",
     kicker: "Expertise",
-    title: "Mentorship & Growth",
-    desc: "Connecting startups with industry experts and providing guidance to grow and scale.",
+    title: "Mentoring & Training",
+    desc: "Mentorship through experts – in-person & virtual. Comprehensive business training programs - Basics of Business Management, Leadership, Business Etiquette, Presentation Skills, etc.",
     icon: resolveLegacyAsset("/src/assets/what we do/02.png"),
   },
   {
     n: "03",
     kicker: "Infrastructure",
-    title: "Resources & Support",
-    desc: "Providing access to essential resources, workspaces, and hands-on support at every stage.",
+    title: "Resources & Market Access",
+    desc: "Networking opportunities, marketing assistance & strategic partnerships, access to corporates & government agencies. Well-equipped workspaces with modern labs, software, meeting rooms, and event facilities.",
     icon: resolveLegacyAsset("/src/assets/what we do/03.png"),
   },
   {
     n: "04",
     kicker: "Capital",
-    title: "Funding & Partnerships",
-    desc: "Facilitating funding opportunities and strategic partnerships to accelerate startup success.",
+    title: "Funding & Legal Support",
+    desc: "Access to bank loans, loan funds, and guarantee programs, angel investors and venture capital. Help with regulatory compliance & accounts, help in IP management and legal counsel.",
     icon: resolveLegacyAsset("/src/assets/what we do/04.png"),
   },
 ];
@@ -76,7 +76,7 @@ function Card({ item }: { item: Item }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onMouseMove={onMove}
-      className="group relative cursor-pointer overflow-hidden rounded-[22px] p-8 sm:p-10 flex h-full flex-col justify-between"
+      className="group relative cursor-pointer overflow-hidden rounded-[22px] p-6 sm:p-8 flex h-full flex-col justify-between"
       style={{
         backgroundColor: "#ffffff",
         border: `1px solid ${hovered ? "transparent" : "rgba(15,23,42,0.06)"}`,
@@ -143,7 +143,7 @@ function Card({ item }: { item: Item }) {
       {/* Background number */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-8 top-4 select-none font-display text-[6.5rem] font-bold leading-none tracking-tight"
+        className="pointer-events-none absolute right-8 top-4 select-none font-display text-[5rem] font-bold leading-none tracking-tight"
         style={{
           color: hovered ? "rgba(255,255,255,0.18)" : "rgba(15,23,42,0.03)",
           transform: hovered ? "translate3d(0,-4px,0)" : "translate3d(0,0,0)",
@@ -158,8 +158,8 @@ function Card({ item }: { item: Item }) {
         <div
           className="relative shrink-0"
           style={{
-            width: 104,
-            height: 104,
+            width: 100,
+            height: 100,
             transform: hovered
               ? "translate3d(0,-3px,0) scale(1.08)"
               : "translate3d(0,0,0) scale(1)",
@@ -173,8 +173,8 @@ function Card({ item }: { item: Item }) {
           <img
             src={icon}
             alt=""
-            width={104}
-            height={104}
+            width={100}
+            height={100}
             className="h-full w-full object-contain"
             draggable={false}
           />
@@ -213,7 +213,7 @@ function Card({ item }: { item: Item }) {
           </div>
 
           <h3
-            className="font-display text-xl font-bold tracking-tight sm:text-[1.375rem]"
+            className="font-display text-lg font-bold tracking-tight sm:text-[1.25rem]"
             style={{
               color: hovered ? "#ffffff" : "#0F172A",
               transition: `color 550ms ${EASE} 100ms`,
@@ -232,7 +232,7 @@ function Card({ item }: { item: Item }) {
           />
 
           <p
-            className="mt-4 max-w-md text-[0.9rem] leading-relaxed"
+            className="mt-4 max-w-md text-[0.85rem] leading-relaxed"
             style={{
               color: hovered ? "rgba(255,255,255,0.9)" : "rgba(15,23,42,0.6)",
               transition: `color 600ms ${EASE} 150ms`,

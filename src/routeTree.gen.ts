@@ -14,7 +14,6 @@ import { Route as IncubatorsRouteImport } from './routes/incubators'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as StudentsInternshipRegistrationRouteImport } from './routes/students/internship-registration'
-import { Route as StudentsInternshipCalendarRouteImport } from './routes/students/internship-calendar'
 import { Route as StudentsDashboardRouteImport } from './routes/students/dashboard'
 import { Route as StartupsStartupRegistrationRouteImport } from './routes/startups/startup-registration'
 import { Route as StartupsStartupPortfolioRouteImport } from './routes/startups/startup-portfolio'
@@ -23,6 +22,7 @@ import { Route as StartupsBlogRouteImport } from './routes/startups/blog'
 import { Route as ProgramsPitchToUsRouteImport } from './routes/programs/pitch-to-us'
 import { Route as ProgramsJoinUsRouteImport } from './routes/programs/join-us'
 import { Route as EventsStartupsEventsRouteImport } from './routes/events/startups-events'
+import { Route as EventsEventRegistrationRouteImport } from './routes/events/event-registration'
 import { Route as EventsCaseStudiesRouteImport } from './routes/events/case-studies'
 import { Route as EventsCalendarRouteImport } from './routes/events/calendar'
 import { Route as EcosystemPartnersRouteImport } from './routes/ecosystem/partners'
@@ -71,12 +71,6 @@ const StudentsInternshipRegistrationRoute =
     path: '/students/internship-registration',
     getParentRoute: () => rootRouteImport,
   } as any)
-const StudentsInternshipCalendarRoute =
-  StudentsInternshipCalendarRouteImport.update({
-    id: '/students/internship-calendar',
-    path: '/students/internship-calendar',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const StudentsDashboardRoute = StudentsDashboardRouteImport.update({
   id: '/students/dashboard',
   path: '/students/dashboard',
@@ -117,6 +111,11 @@ const ProgramsJoinUsRoute = ProgramsJoinUsRouteImport.update({
 const EventsStartupsEventsRoute = EventsStartupsEventsRouteImport.update({
   id: '/events/startups-events',
   path: '/events/startups-events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsEventRegistrationRoute = EventsEventRegistrationRouteImport.update({
+  id: '/events/event-registration',
+  path: '/events/event-registration',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EventsCaseStudiesRoute = EventsCaseStudiesRouteImport.update({
@@ -251,6 +250,7 @@ export interface FileRoutesByFullPath {
   '/ecosystem/partners': typeof EcosystemPartnersRoute
   '/events/calendar': typeof EventsCalendarRoute
   '/events/case-studies': typeof EventsCaseStudiesRoute
+  '/events/event-registration': typeof EventsEventRegistrationRoute
   '/events/startups-events': typeof EventsStartupsEventsRoute
   '/programs/join-us': typeof ProgramsJoinUsRoute
   '/programs/pitch-to-us': typeof ProgramsPitchToUsRoute
@@ -259,7 +259,6 @@ export interface FileRoutesByFullPath {
   '/startups/startup-portfolio': typeof StartupsStartupPortfolioRoute
   '/startups/startup-registration': typeof StartupsStartupRegistrationRoute
   '/students/dashboard': typeof StudentsDashboardRoute
-  '/students/internship-calendar': typeof StudentsInternshipCalendarRoute
   '/students/internship-registration': typeof StudentsInternshipRegistrationRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -288,6 +287,7 @@ export interface FileRoutesByTo {
   '/ecosystem/partners': typeof EcosystemPartnersRoute
   '/events/calendar': typeof EventsCalendarRoute
   '/events/case-studies': typeof EventsCaseStudiesRoute
+  '/events/event-registration': typeof EventsEventRegistrationRoute
   '/events/startups-events': typeof EventsStartupsEventsRoute
   '/programs/join-us': typeof ProgramsJoinUsRoute
   '/programs/pitch-to-us': typeof ProgramsPitchToUsRoute
@@ -296,7 +296,6 @@ export interface FileRoutesByTo {
   '/startups/startup-portfolio': typeof StartupsStartupPortfolioRoute
   '/startups/startup-registration': typeof StartupsStartupRegistrationRoute
   '/students/dashboard': typeof StudentsDashboardRoute
-  '/students/internship-calendar': typeof StudentsInternshipCalendarRoute
   '/students/internship-registration': typeof StudentsInternshipRegistrationRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -326,6 +325,7 @@ export interface FileRoutesById {
   '/ecosystem/partners': typeof EcosystemPartnersRoute
   '/events/calendar': typeof EventsCalendarRoute
   '/events/case-studies': typeof EventsCaseStudiesRoute
+  '/events/event-registration': typeof EventsEventRegistrationRoute
   '/events/startups-events': typeof EventsStartupsEventsRoute
   '/programs/join-us': typeof ProgramsJoinUsRoute
   '/programs/pitch-to-us': typeof ProgramsPitchToUsRoute
@@ -334,7 +334,6 @@ export interface FileRoutesById {
   '/startups/startup-portfolio': typeof StartupsStartupPortfolioRoute
   '/startups/startup-registration': typeof StartupsStartupRegistrationRoute
   '/students/dashboard': typeof StudentsDashboardRoute
-  '/students/internship-calendar': typeof StudentsInternshipCalendarRoute
   '/students/internship-registration': typeof StudentsInternshipRegistrationRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -365,6 +364,7 @@ export interface FileRouteTypes {
     | '/ecosystem/partners'
     | '/events/calendar'
     | '/events/case-studies'
+    | '/events/event-registration'
     | '/events/startups-events'
     | '/programs/join-us'
     | '/programs/pitch-to-us'
@@ -373,7 +373,6 @@ export interface FileRouteTypes {
     | '/startups/startup-portfolio'
     | '/startups/startup-registration'
     | '/students/dashboard'
-    | '/students/internship-calendar'
     | '/students/internship-registration'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -402,6 +401,7 @@ export interface FileRouteTypes {
     | '/ecosystem/partners'
     | '/events/calendar'
     | '/events/case-studies'
+    | '/events/event-registration'
     | '/events/startups-events'
     | '/programs/join-us'
     | '/programs/pitch-to-us'
@@ -410,7 +410,6 @@ export interface FileRouteTypes {
     | '/startups/startup-portfolio'
     | '/startups/startup-registration'
     | '/students/dashboard'
-    | '/students/internship-calendar'
     | '/students/internship-registration'
     | '/admin'
   id:
@@ -439,6 +438,7 @@ export interface FileRouteTypes {
     | '/ecosystem/partners'
     | '/events/calendar'
     | '/events/case-studies'
+    | '/events/event-registration'
     | '/events/startups-events'
     | '/programs/join-us'
     | '/programs/pitch-to-us'
@@ -447,7 +447,6 @@ export interface FileRouteTypes {
     | '/startups/startup-portfolio'
     | '/startups/startup-registration'
     | '/students/dashboard'
-    | '/students/internship-calendar'
     | '/students/internship-registration'
     | '/admin/'
   fileRoutesById: FileRoutesById
@@ -477,6 +476,7 @@ export interface RootRouteChildren {
   EcosystemPartnersRoute: typeof EcosystemPartnersRoute
   EventsCalendarRoute: typeof EventsCalendarRoute
   EventsCaseStudiesRoute: typeof EventsCaseStudiesRoute
+  EventsEventRegistrationRoute: typeof EventsEventRegistrationRoute
   EventsStartupsEventsRoute: typeof EventsStartupsEventsRoute
   ProgramsJoinUsRoute: typeof ProgramsJoinUsRoute
   ProgramsPitchToUsRoute: typeof ProgramsPitchToUsRoute
@@ -485,7 +485,6 @@ export interface RootRouteChildren {
   StartupsStartupPortfolioRoute: typeof StartupsStartupPortfolioRoute
   StartupsStartupRegistrationRoute: typeof StartupsStartupRegistrationRoute
   StudentsDashboardRoute: typeof StudentsDashboardRoute
-  StudentsInternshipCalendarRoute: typeof StudentsInternshipCalendarRoute
   StudentsInternshipRegistrationRoute: typeof StudentsInternshipRegistrationRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -525,13 +524,6 @@ declare module '@tanstack/react-router' {
       path: '/students/internship-registration'
       fullPath: '/students/internship-registration'
       preLoaderRoute: typeof StudentsInternshipRegistrationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/students/internship-calendar': {
-      id: '/students/internship-calendar'
-      path: '/students/internship-calendar'
-      fullPath: '/students/internship-calendar'
-      preLoaderRoute: typeof StudentsInternshipCalendarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/students/dashboard': {
@@ -588,6 +580,13 @@ declare module '@tanstack/react-router' {
       path: '/events/startups-events'
       fullPath: '/events/startups-events'
       preLoaderRoute: typeof EventsStartupsEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/event-registration': {
+      id: '/events/event-registration'
+      path: '/events/event-registration'
+      fullPath: '/events/event-registration'
+      preLoaderRoute: typeof EventsEventRegistrationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/events/case-studies': {
@@ -765,6 +764,7 @@ const rootRouteChildren: RootRouteChildren = {
   EcosystemPartnersRoute: EcosystemPartnersRoute,
   EventsCalendarRoute: EventsCalendarRoute,
   EventsCaseStudiesRoute: EventsCaseStudiesRoute,
+  EventsEventRegistrationRoute: EventsEventRegistrationRoute,
   EventsStartupsEventsRoute: EventsStartupsEventsRoute,
   ProgramsJoinUsRoute: ProgramsJoinUsRoute,
   ProgramsPitchToUsRoute: ProgramsPitchToUsRoute,
@@ -773,7 +773,6 @@ const rootRouteChildren: RootRouteChildren = {
   StartupsStartupPortfolioRoute: StartupsStartupPortfolioRoute,
   StartupsStartupRegistrationRoute: StartupsStartupRegistrationRoute,
   StudentsDashboardRoute: StudentsDashboardRoute,
-  StudentsInternshipCalendarRoute: StudentsInternshipCalendarRoute,
   StudentsInternshipRegistrationRoute: StudentsInternshipRegistrationRoute,
   AdminIndexRoute: AdminIndexRoute,
 }

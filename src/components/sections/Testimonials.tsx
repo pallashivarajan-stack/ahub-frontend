@@ -5,14 +5,6 @@ import useEmblaCarousel from "embla-carousel-react";
 
 const testimonials = [
   {
-    name: "BVR Mohan Reddy",
-    role: "Chairman",
-    company: "Cyient",
-    text: "Their team understood our vision perfectly and delivered a solution that exceeded our expectations. The entire process was smooth, professional, and result-driven.",
-    rating: 5,
-    image: resolveLegacyAsset("/src/assets/visitors/bvr mohan reddy.jpeg"),
-  },
-  {
     name: "N. R. Narayana Murthy",
     role: "Founder & Former CEO",
     company: "Infosys",
@@ -21,12 +13,12 @@ const testimonials = [
     image: resolveLegacyAsset("/src/assets/visitors/naryana murthy.png"),
   },
   {
-    name: "Rishi Mehta",
-    role: "Chief Executive Officer",
-    company: "WAISL",
-    text: "From legal guidance to investor introductions, A-Hub provided end-to-end support that made our startup journey seamless.",
+    name: "Natarajan Chandrasekaran",
+    role: "Executive Chairman",
+    company: "Tata Sons",
+    text: "What you have today is quite impressive considering that you achieved it in less than two years.",
     rating: 5,
-    image: resolveLegacyAsset("/src/assets/visitors/rishi mehta.jpg"),
+    image: resolveLegacyAsset("/src/assets/testimonals/Natrajan_chnadra sekaran.png"),
   },
 ];
 

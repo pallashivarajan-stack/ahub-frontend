@@ -4,16 +4,10 @@ import { resolveLegacyAsset } from "@/lib/assets";
 export function DistinguishedVisitors() {
   const visitorsFallback = [
     {
-      name: "BVR Mohan Reddy",
-      role: "Chairman",
-      org: "Cyient",
-      image: resolveLegacyAsset("/src/assets/visitors/bvr mohan reddy.jpeg"),
-    },
-    {
-      name: "Rishi Mehta",
-      role: "Chief Executive Officer",
-      org: "WAISL",
-      image: resolveLegacyAsset("/src/assets/visitors/rishi mehta.jpg"),
+      name: "Natarajan Chandrasekaran",
+      role: "Executive Chairman",
+      org: "Tata Sons",
+      image: resolveLegacyAsset("/src/assets/testimonals/Natrajan_chnadra sekaran.png"),
     },
     {
       name: "Mats Viberg",

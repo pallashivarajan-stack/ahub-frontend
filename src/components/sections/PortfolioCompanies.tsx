@@ -15,7 +15,9 @@ import {
   Building,
   Compass,
   Sparkles,
-  Cpu
+  Cpu,
+  MapPin,
+  ShoppingBag
 } from "lucide-react";
 import { portfolio } from "@/data";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
@@ -32,6 +34,8 @@ const ICON_MAP: Record<string, any> = {
   Compass,
   Sparkles,
   TrendingUp,
+  MapPin,
+  ShoppingBag,
 };
 
 const startupStats: Record<
@@ -47,25 +51,25 @@ const startupStats: Record<
     { icon: "GraduationCap", label: "Students Placed", value: "250+" },
     { icon: "Bot", label: "AI Sessions", value: "500+" },
   ],
-  Edumoon: [
-    { icon: "BookOpen", label: "Skills Courses", value: "80+" },
-    { icon: "Users", label: "Student Members", value: "5K+" },
-    { icon: "Cpu", label: "Workshops", value: "50+" },
+  EduEmblem: [
+    { icon: "ShoppingBag", label: "Curated Products", value: "100+" },
+    { icon: "Users", label: "University Communities", value: "10K+" },
+    { icon: "TrendingUp", label: "Discounts Up To", value: "44%" },
   ],
-  GreenJams: [
-    { icon: "Leaf", label: "Carbon Saved", value: "120T+" },
-    { icon: "Building", label: "Agrocrete Blocks", value: "50K+" },
-    { icon: "Compass", label: "CO2 Reduced", value: "85%" },
+  DreamBot: [
+    { icon: "Bot", label: "AI Bots Deployed", value: "100+" },
+    { icon: "Cpu", label: "Automations Run", value: "10K+" },
+    { icon: "TrendingUp", label: "Client Businesses", value: "30+" },
   ],
-  "Pick A Book": [
-    { icon: "BookOpen", label: "Reading Clubs", value: "40+" },
-    { icon: "Users", label: "Club Members", value: "10K+" },
-    { icon: "Sparkles", label: "Book Reviews", value: "200+" },
+  "Joora Drones": [
+    { icon: "Cpu", label: "Drones Deployed", value: "50+" },
+    { icon: "MapPin", label: "Survey Projects", value: "200+" },
+    { icon: "TrendingUp", label: "Areas Covered", value: "10K+ acres" },
   ],
-  Tessrac: [
-    { icon: "TrendingUp", label: "Data Ingested", value: "10TB+" },
-    { icon: "Users", label: "Enterprise Clients", value: "20+" },
-    { icon: "Cpu", label: "Cloud Server Nodes", value: "120+" },
+  KodeFast: [
+    { icon: "GraduationCap", label: "Students Trained", value: "5K+" },
+    { icon: "BookOpen", label: "Coding Courses", value: "30+" },
+    { icon: "TrendingUp", label: "Placement Rate", value: "85%" },
   ],
 };
 
@@ -171,11 +175,11 @@ export function PortfolioCompanies() {
                 {/* ── Collapsed state ── */}
                 <div className={`absolute inset-0 flex items-end justify-center pb-12 transition-all duration-500 ${isActive ? "opacity-0 scale-95" : "opacity-100 scale-100"
                   }`}>
-                  {p.logo ? (
+                      {p.logo ? (
                     <img
                       src={p.logo}
                       alt={p.startup}
-                      className="w-[135px] h-[47px] max-w-none flex-shrink-0 object-contain -rotate-90 transition-all duration-500 group-hover:scale-108"
+                      className={`max-w-none flex-shrink-0 object-contain -rotate-90 transition-all duration-500 group-hover:scale-108 ${p.startup === "DreamBot" ? "w-[100px] h-[35px]" : "w-[135px] h-[47px]"}`}
                       draggable={false}
                     />
                   ) : (
@@ -216,7 +220,7 @@ export function PortfolioCompanies() {
                             <img
                               src={p.logo}
                               alt={`${p.startup} logo`}
-                              className="h-[46px] w-auto max-w-[200px] object-contain flex-shrink-0"
+                              className={`${p.startup === "DreamBot" ? "h-[36px]" : "h-[46px]"} w-auto max-w-[200px] object-contain flex-shrink-0`}
                               draggable={false}
                             />
                           ) : (
@@ -324,7 +328,7 @@ export function PortfolioCompanies() {
                     {/* Passport Portrait Container with overlapping floating card */}
                     <motion.div
                       className="relative z-10"
-                      style={{ width: "180px", height: "240px" }}
+                      style={{ width: "180px", height: "225px" }}
                       initial={{ opacity: 0, scale: 0.95, y: 8 }}
                       animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.95, y: isActive ? 0 : 8 }}
                       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: isActive ? 0.08 : 0 }}
@@ -337,7 +341,7 @@ export function PortfolioCompanies() {
                           <img
                             src={p.founderImage}
                             alt={p.founder}
-                            className="h-full w-full object-cover object-[center_top] transition-transform duration-500 group-hover:scale-[1.03] will-change-transform"
+                            className={`h-full w-full object-[center_top] transition-transform duration-500 group-hover:scale-[1.03] will-change-transform ${p.startup === "DreamBot" ? "object-contain" : "object-cover"}`}
                             draggable={false}
                           />
                         ) : (
@@ -409,7 +413,7 @@ export function PortfolioCompanies() {
                     <img
                       src={p.logo}
                       alt={p.startup}
-                      className="h-8 w-auto max-w-[120px] object-contain flex-shrink-0"
+                      className={`${p.startup === "DreamBot" ? "h-6" : "h-8"} w-auto max-w-[120px] object-contain flex-shrink-0`}
                       draggable={false}
                     />
                   </div>

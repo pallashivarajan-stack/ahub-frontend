@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { usePublicHero } from "@/services/usePublicContent";
 import { resolveLegacyAsset } from "@/lib/assets";
 import { cn } from "@/lib/utils";
@@ -14,7 +15,6 @@ const fallbackHeroData = {
 
 export function Hero() {
   const [videoFailed, setVideoFailed] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false);
   const { isMobile } = useResponsive();
   const prefersReduced =
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -27,19 +27,6 @@ export function Hero() {
     poster = fallbackHeroData.poster,
     video = fallbackHeroData.video,
   } = heroData ?? fallbackHeroData;
-
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-    section?.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
-    window.history.replaceState(null, "", `#${id}`);
-    setIsScrolling(false);
-  };
-
-  const handleExplore = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    setIsScrolling(true);
-    setTimeout(() => scrollToSection("what-we-do"), 100);
-  };
 
   return (
     <section
@@ -107,22 +94,20 @@ export function Hero() {
 
           {/* CTA Button */}
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a
-              href="#what-we-do"
-              onClick={handleExplore}
+            <Link
+              to="/ecosystem/infrastructure"
               className={cn(
                 "group inline-flex items-center justify-center gap-2 rounded-full bg-[#c94a0a] px-4 py-3 sm:px-7 min-h-[43px] text-xs sm:text-sm font-semibold text-white transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:bg-[#b8420a] focus:outline-none focus:ring-2 focus:ring-white/80 focus:ring-offset-2 focus:ring-offset-black active:scale-95 border border-white/10",
-                isScrolling && "pointer-events-none opacity-60",
               )}
               aria-label="Explore the AHUB ecosystem and incubation programs"
             >
-              <span aria-live="polite">{isScrolling ? "Loading..." : "Explore Ecosystem"}</span>
+              <span>Explore Ecosystem</span>
               <ArrowRight
                 size={18}
                 aria-hidden="true"
                 className="transition-transform group-hover:translate-x-1"
               />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

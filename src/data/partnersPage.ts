@@ -1,12 +1,12 @@
 import { resolveLegacyAsset } from "@/lib/assets";
 
-const [alcoveLogo, atpiLogo, avantiLogo, digifacLogo, icompassLogo, ministryLogo, nasscomLogo, rosysLogo, sandlogicLogo, tieLogo] = [
+const [alcoveLogo, atpiLogo, avantiLogo, icompassLogo, ministryLogo, msmeLogo, nasscomLogo, rosysLogo, sandlogicLogo, tieLogo] = [
   "/src/assets/partners/alcove.jpg",
   "/src/assets/partners/atpi.jpg",
   "/src/assets/partners/avanti.png",
-  "/src/assets/partners/digifac.png",
   "/src/assets/partners/icompass.png",
   "/src/assets/partners/ministry of sceince.png",
+  "/src/assets/partners/msme-logo-p.png",
   "/src/assets/partners/nasscom.png",
   "/src/assets/partners/rosys.jpg",
   "/src/assets/partners/sandlogic.jpg",
@@ -42,11 +42,6 @@ export const marqueePartners: PartnerItem[] = [
     description: "Driving technology innovation and startup ecosystem growth across India.",
   },
   {
-    name: "Digifac",
-    logo: digifacLogo,
-    description: "Digital factory solutions enabling industry 4.0 transformation.",
-  },
-  {
     name: "Ministry of Science",
     logo: ministryLogo,
     description: "Supporting scientific research and technology-led innovation initiatives.",
@@ -70,6 +65,11 @@ export const marqueePartners: PartnerItem[] = [
     name: "Rosys",
     logo: rosysLogo,
     description: "Technology solutions partner driving digital transformation.",
+  },
+  {
+    name: "MSME",
+    logo: msmeLogo,
+    description: "Micro, Small and Medium Enterprises support and development initiatives.",
   },
 ];
 
@@ -108,6 +108,12 @@ export const popularPartners: PartnerItem[] = [
     name: "ATPI",
     logo: atpiLogo,
     description: "Promoting technology parks and industrial innovation infrastructure across regions.",
+    href: "#",
+  },
+  {
+    name: "MSME",
+    logo: msmeLogo,
+    description: "Micro, Small and Medium Enterprises support and development initiatives.",
     href: "#",
   },
 ];

@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { LazyMotion, m as motion, domAnimation } from "framer-motion";
-import { Search, Filter, FileText, Download, ArrowRight, ArrowUpRight } from "lucide-react";
+import { Search, FileText, Download, ArrowRight, ArrowUpRight } from "lucide-react";
 import { resolveLegacyAsset } from "@/lib/assets";
 
 const AUIC_REPORTS = [
   {
-    title: "Vizag Startup Ecosystem",
+    title: "Incubation Business Plan",
     subtitle: "AUIC Incubation Hub",
-    description: "An overview of the thriving Vizag startup ecosystem, growth metrics, and community impact.",
-    pages: 42,
-    size: "6.8 MB",
-    image: resolveLegacyAsset("/src/assets/reports/vizag startup ecosystem.png"),
-    downloadLink: "https://drive.google.com/file/d/1o-4secfMEEROoHAUuDEJbNYHM8MYO-yu/view",
+    description: "Strategic framework, operational guidelines, and long-term vision for scaling the incubation hub.",
+    pages: 35,
+    size: "4.5 MB",
+    image: resolveLegacyAsset("/src/assets/reports/business plan for a-hub.png"),
+    downloadFile: resolveLegacyAsset("/src/assets/reports/BUSINESS PLANOF A-HUB.pdf"),
   },
   {
     title: "Funding Report 2025",
@@ -20,16 +20,16 @@ const AUIC_REPORTS = [
     pages: 28,
     size: "3.2 MB",
     image: resolveLegacyAsset("/src/assets/reports/funding report.png"),
-    downloadLink: "https://drive.google.com/file/d/1iNPE0d8gAJq9GiLxBO2BS9afHjMGdwos/view",
+    downloadFile: resolveLegacyAsset("/src/assets/reports/FUNDING REPORT.pdf"),
   },
   {
-    title: "Incubation Business Plan",
+    title: "Vizag Startup Ecosystem",
     subtitle: "AUIC Incubation Hub",
-    description: "Strategic framework, operational guidelines, and long-term vision for scaling the incubation hub.",
-    pages: 35,
-    size: "4.5 MB",
-    image: resolveLegacyAsset("/src/assets/reports/business plan for a-hub.png"),
-    downloadLink: "https://drive.google.com/file/d/1S61RF3ZeujEirWhYqagqnoGe3H1HDQoU/view",
+    description: "An overview of the thriving Vizag startup ecosystem, growth metrics, and community impact.",
+    pages: 42,
+    size: "6.8 MB",
+    image: resolveLegacyAsset("/src/assets/reports/vizag startup ecosystem.png"),
+    downloadFile: resolveLegacyAsset("/src/assets/reports/VIZAG IIM INTERN.pdf"),
   },
 ];
 
@@ -66,178 +66,179 @@ const STARTUP_REPORTS = [
 export function ReportsPage() {
   const [activeTab, setActiveTab] = useState("All Reports");
   
-  const tabs = ["All Reports", "Startup Reports", "AUIC Reports", "Annual Reports", "Impact Reports"];
+  const tabs = ["All Reports", "Startup Reports", "AHUB Reports"];
 
   return (
     <LazyMotion features={domAnimation}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');`}</style>
       <div 
-        className="w-full bg-[#FDF8F2] pt-32 pb-24 px-6 md:px-12"
+        className="w-full bg-[#FDF8F2] pt-24 pb-24 px-6 md:px-12"
         style={{ fontFamily: "'Manrope', 'Helvetica Neue', sans-serif" }}
       >
         <div className="mx-auto max-w-[1200px]">
           
           {/* HEADER SECTION */}
-          <div className="mb-12">
-            <div className="mb-4 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#F59E42]">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col items-center text-center mb-12"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E42]/25 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#F59E42] shadow-sm backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-[#F59E42]" />
-              REPORTS
+              Reports
             </div>
             
-            <h1 className="text-[48px] md:text-[64px] font-bold leading-[1.05] tracking-[-1.5px] text-[#1B1B1B] mb-6 max-w-[700px]">
+            <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl">
               Insights that drive <span className="text-[#F59E42]">innovation.</span>
             </h1>
             
-            <p className="text-[17px] leading-[1.6] text-[#6B7280] max-w-[500px] mb-10">
-              Explore reports from our startups and AUIC. Built with transparency. Shared for impact.
+            <p className="mx-auto mt-4 max-w-xl text-base text-[#6C5E5B]">
+              Explore reports from our startups and AHUB. Built with transparency. Shared for impact.
             </p>
             
-            {/* SEARCH & FILTERS REMOVED */}
-          </div>
+            <div className="mt-5 h-1 w-16 rounded-full bg-[#F59E42]" />
+          </motion.div>
 
           {/* STARTUP REPORTS SECTION */}
-          <div className="mb-20">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <h2 className="text-[32px] font-bold tracking-tight text-[#1B1B1B]">Startup Reports</h2>
-                <div className="h-px w-16 bg-[#F59E42] hidden sm:block" />
+          {(activeTab === "All Reports" || activeTab === "Startup Reports") && (
+            <div className="mb-20">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-4">
+                  <h2 className="text-[32px] font-bold tracking-tight text-[#1B1B1B]">Startup Reports</h2>
+                  <div className="h-px w-16 bg-[#F59E42] hidden sm:block" />
+                </div>
               </div>
-              <button className="text-[14px] font-bold text-[#F59E42] flex items-center gap-1.5 hover:opacity-80 transition-opacity">
-                View all <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {STARTUP_REPORTS.map((report, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-white rounded-[24px] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col group hover:shadow-[0_16px_50px_rgba(0,0,0,0.08)] transition-all duration-300"
-                >
-                  <div className="relative h-[220px] w-full overflow-hidden bg-gray-100">
-                    <img 
-                      src={report.image} 
-                      alt={report.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 shadow-sm">
-                      <FileText className="h-3.5 w-3.5 text-[#F59E42]" />
-                      <span className="text-[11px] font-bold text-gray-800">PDF</span>
-                    </div>
-                    <a 
-                      href={report.downloadFile} 
-                      download
-                      className="absolute bottom-4 right-4 h-10 w-10 bg-[#F59E42] rounded-full flex items-center justify-center text-white shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-[#e8902e]"
-                    >
-                      <Download className="h-4 w-4" />
-                    </a>
-                  </div>
-                  
-                  <div className="p-6 flex flex-col flex-1">
-                    <h3 className="text-[20px] font-bold text-[#1B1B1B] leading-tight mb-1">{report.title}</h3>
-                    <p className="text-[14px] font-medium text-gray-500 mb-4">{report.subtitle}</p>
-                    
-                    <div className="mb-6 mt-auto">
-                      <p className="text-[14px] text-gray-600 leading-[1.5]">{report.description}</p>
-                    </div>
-                    
-                    <div className="pt-5 border-t border-gray-100 flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-[12px] font-semibold text-gray-500">
-                        <span>{report.pages} Pages</span>
-                        <div className="flex items-center gap-1">
-                          <FileText className="h-3 w-3" /> PDF
-                        </div>
-                        <span>{report.size}</span>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {STARTUP_REPORTS.map((report, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="bg-white rounded-[24px] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col group hover:shadow-[0_16px_50px_rgba(0,0,0,0.08)] transition-all duration-300"
+                  >
+                    <div className="relative h-[220px] w-full overflow-hidden bg-gray-100">
+                      <img 
+                        src={report.image} 
+                        alt={report.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 shadow-sm">
+                        <FileText className="h-3.5 w-3.5 text-[#F59E42]" />
+                        <span className="text-[11px] font-bold text-gray-800">PDF</span>
                       </div>
                       <a 
-                        href={report.downloadFile}
+                        href={report.downloadFile} 
                         download
-                        className="text-[13px] font-bold text-[#F59E42] flex items-center gap-1 hover:gap-1.5 transition-all"
+                        className="absolute bottom-4 right-4 h-10 w-10 bg-[#F59E42] rounded-full flex items-center justify-center text-white shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-[#e8902e]"
                       >
-                        Download <ArrowRight className="h-3.5 w-3.5" />
+                        <Download className="h-4 w-4" />
                       </a>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* AUIC REPORTS SECTION */}
-          <div className="mb-12">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <h2 className="text-[32px] font-bold tracking-tight text-[#1B1B1B]">AUIC Reports</h2>
-                <div className="h-px w-16 bg-[#F59E42] hidden sm:block" />
-              </div>
-              <button className="text-[14px] font-bold text-[#F59E42] flex items-center gap-1.5 hover:opacity-80 transition-opacity">
-                View all <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {AUIC_REPORTS.map((report, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-white rounded-[24px] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col group hover:shadow-[0_16px_50px_rgba(0,0,0,0.08)] transition-all duration-300"
-                >
-                  <div className="relative h-[220px] w-full overflow-hidden bg-gray-100">
-                    <img 
-                      src={report.image} 
-                      alt={report.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 shadow-sm">
-                      <FileText className="h-3.5 w-3.5 text-[#F59E42]" />
-                      <span className="text-[11px] font-bold text-gray-800">PDF</span>
-                    </div>
-                    <a 
-                      href={report.downloadLink} 
-                      target="_blank"
-                      rel="noreferrer"
-                      className="absolute bottom-4 right-4 h-10 w-10 bg-[#1B1B1B] rounded-full flex items-center justify-center text-white shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-black"
-                    >
-                      <ArrowUpRight className="h-4 w-4" />
-                    </a>
-                  </div>
-                  
-                  <div className="p-6 flex flex-col flex-1">
-                    <h3 className="text-[20px] font-bold text-[#1B1B1B] leading-tight mb-1">{report.title}</h3>
-                    <p className="text-[14px] font-medium text-gray-500 mb-4">{report.subtitle}</p>
                     
-                    <div className="mb-6 mt-auto">
-                      <p className="text-[14px] text-gray-600 leading-[1.5]">{report.description}</p>
-                    </div>
-                    
-                    <div className="pt-5 border-t border-gray-100 flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-[12px] font-semibold text-gray-500">
-                        <span>{report.pages} Pages</span>
-                        <div className="flex items-center gap-1">
-                          <FileText className="h-3 w-3" /> PDF
+                    <div className="p-6 flex flex-col flex-1">
+                      <h3 className="text-[20px] font-bold text-[#1B1B1B] leading-tight mb-1">{report.title}</h3>
+                      <p className="text-[14px] font-medium text-gray-500 mb-4">{report.subtitle}</p>
+                      
+                      <div className="mb-6 mt-auto">
+                        <p className="text-[14px] text-gray-600 leading-[1.5]">{report.description}</p>
+                      </div>
+                      
+                      <div className="pt-5 border-t border-gray-100 flex items-center justify-between">
+                        <div className="flex items-center gap-4 text-[12px] font-semibold text-gray-500">
+                          <span>{report.pages} Pages</span>
+                          <div className="flex items-center gap-1">
+                            <FileText className="h-3 w-3" /> PDF
+                          </div>
+                          <span>{report.size}</span>
                         </div>
-                        <span>{report.size}</span>
+                        <a 
+                          href={report.downloadFile}
+                          download
+                          className="text-[13px] font-bold text-[#F59E42] flex items-center gap-1 hover:gap-1.5 transition-all"
+                        >
+                          Download <ArrowRight className="h-3.5 w-3.5" />
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* AHUB REPORTS SECTION */}
+          {(activeTab === "All Reports" || activeTab === "AHUB Reports") && (
+            <div className="mb-12">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-4">
+                  <h2 className="text-[32px] font-bold tracking-tight text-[#1B1B1B]">AHUB Reports</h2>
+                  <div className="h-px w-16 bg-[#F59E42] hidden sm:block" />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {AUIC_REPORTS.map((report, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="bg-white rounded-[24px] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col group hover:shadow-[0_16px_50px_rgba(0,0,0,0.08)] transition-all duration-300"
+                  >
+                    <div className="relative h-[220px] w-full overflow-hidden bg-gray-100">
+                      <img 
+                        src={report.image} 
+                        alt={report.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 shadow-sm">
+                        <FileText className="h-3.5 w-3.5 text-[#F59E42]" />
+                        <span className="text-[11px] font-bold text-gray-800">PDF</span>
                       </div>
                       <a 
-                        href={report.downloadLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[13px] font-bold text-[#1B1B1B] flex items-center gap-1 hover:gap-1.5 transition-all"
+                        href={report.downloadFile} 
+                        download
+                        className="absolute bottom-4 right-4 h-10 w-10 bg-[#1B1B1B] rounded-full flex items-center justify-center text-white shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-black"
                       >
-                        Preview <ArrowUpRight className="h-3.5 w-3.5" />
+                        <Download className="h-4 w-4" />
                       </a>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                    
+                    <div className="p-6 flex flex-col flex-1">
+                      <h3 className="text-[20px] font-bold text-[#1B1B1B] leading-tight mb-1">{report.title}</h3>
+                      <p className="text-[14px] font-medium text-gray-500 mb-4">{report.subtitle}</p>
+                      
+                      <div className="mb-6 mt-auto">
+                        <p className="text-[14px] text-gray-600 leading-[1.5]">{report.description}</p>
+                      </div>
+                      
+                      <div className="pt-5 border-t border-gray-100 flex items-center justify-between">
+                        <div className="flex items-center gap-4 text-[12px] font-semibold text-gray-500">
+                          <span>{report.pages} Pages</span>
+                          <div className="flex items-center gap-1">
+                            <FileText className="h-3 w-3" /> PDF
+                          </div>
+                          <span>{report.size}</span>
+                        </div>
+                        <a 
+                          href={report.downloadFile}
+                          download
+                          className="text-[13px] font-bold text-[#1B1B1B] flex items-center gap-1 hover:gap-1.5 transition-all"
+                        >
+                          Download <ArrowRight className="h-3.5 w-3.5" />
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
           
           {/* CONTACT BANNER */}
           <motion.div 
