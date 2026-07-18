@@ -2,6 +2,8 @@ import ahubImg from "@/assets/infastructure/ahub.jpg";
 import collaborativeImg from "@/assets/infastructure/collabrative environment.png";
 import conferenceHallImg from "@/assets/infastructure/confenrce hall.jpg";
 import iotLabsImg from "@/assets/infastructure/iot labs.jpeg";
+import { Banknote, Cpu, Target, Presentation, TrendingUp, Scale, Lightbulb, BarChart2, Rocket } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export type BlogPost = {
   id: string;
@@ -10,6 +12,9 @@ export type BlogPost = {
   image: string;
   description?: string;
   imagePosition?: string;
+  icon?: LucideIcon;
+  iconColor?: string;
+  iconBg?: string;
 };
 
 export type TimelineStep = {
@@ -19,6 +24,9 @@ export type TimelineStep = {
   date: string;
   image: string;
   imagePosition?: string;
+  icon?: LucideIcon;
+  iconColor?: string;
+  iconBg?: string;
 };
 
 export const blogImages = {
@@ -37,6 +45,9 @@ export const featuredPosts: BlogPost[] = [
     readTime: "5 min read",
     image: conferenceHallImg,
     imagePosition: "center",
+    icon: Banknote,
+    iconColor: "text-amber-600",
+    iconBg: "bg-amber-50",
   },
   {
     id: "building-mvp",
@@ -44,6 +55,9 @@ export const featuredPosts: BlogPost[] = [
     readTime: "6 min read",
     image: iotLabsImg,
     imagePosition: "center",
+    icon: Cpu,
+    iconColor: "text-blue-600",
+    iconBg: "bg-blue-50",
   },
   {
     id: "product-market-fit",
@@ -51,6 +65,9 @@ export const featuredPosts: BlogPost[] = [
     readTime: "8 min read",
     image: collaborativeImg,
     imagePosition: "center top",
+    icon: Target,
+    iconColor: "text-emerald-600",
+    iconBg: "bg-emerald-50",
   },
   {
     id: "pitching-investors",
@@ -58,6 +75,9 @@ export const featuredPosts: BlogPost[] = [
     readTime: "7 min read",
     image: ahubImg,
     imagePosition: "center",
+    icon: Presentation,
+    iconColor: "text-violet-600",
+    iconBg: "bg-violet-50",
   },
 ];
 
@@ -69,6 +89,9 @@ export const wideFeaturedPosts: BlogPost[] = [
     readTime: "10 min read",
     image: ahubImg,
     imagePosition: "center",
+    icon: TrendingUp,
+    iconColor: "text-rose-600",
+    iconBg: "bg-rose-50",
   },
   {
     id: "legal-compliance",
@@ -77,6 +100,9 @@ export const wideFeaturedPosts: BlogPost[] = [
     readTime: "9 min read",
     image: conferenceHallImg,
     imagePosition: "center",
+    icon: Scale,
+    iconColor: "text-cyan-600",
+    iconBg: "bg-cyan-50",
   },
 ];
 
@@ -88,6 +114,9 @@ export const journeyTimeline: TimelineStep[] = [
     date: "Jan 2024",
     image: collaborativeImg,
     imagePosition: "center",
+    icon: Lightbulb,
+    iconColor: "text-amber-500",
+    iconBg: "bg-amber-50",
   },
   {
     id: "research",
@@ -96,6 +125,9 @@ export const journeyTimeline: TimelineStep[] = [
     date: "Mar 2024",
     image: iotLabsImg,
     imagePosition: "center",
+    icon: BarChart2,
+    iconColor: "text-blue-500",
+    iconBg: "bg-blue-50",
   },
   {
     id: "product",
@@ -104,6 +136,9 @@ export const journeyTimeline: TimelineStep[] = [
     date: "Jun 2024",
     image: ahubImg,
     imagePosition: "center",
+    icon: Cpu,
+    iconColor: "text-emerald-500",
+    iconBg: "bg-emerald-50",
   },
   {
     id: "growth",
@@ -112,5 +147,8 @@ export const journeyTimeline: TimelineStep[] = [
     date: "Sep 2024",
     image: conferenceHallImg,
     imagePosition: "center",
+    icon: Rocket,
+    iconColor: "text-violet-500",
+    iconBg: "bg-violet-50",
   },
 ];

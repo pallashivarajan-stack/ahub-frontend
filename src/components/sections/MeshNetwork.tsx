@@ -13,6 +13,18 @@ const legacyPaths = [
   "/src/assets/partners/rosys.jpg",
   "/src/assets/partners/sandlogic.jpg",
   "/src/assets/partners/tie.jpg",
+  "/src/assets/partners/meity.jpg",
+  "/src/assets/partners/Ni-msme.png",
+  "/src/assets/partners/ed.jpg",
+  "/src/assets/partners/cii.png",
+  "/src/assets/partners/tie_women.jpg",
+  "/src/assets/partners/young indians.jpg",
+  "/src/assets/partners/TiE-U.png",
+  "/src/assets/partners/sandhya_aqua.jpg",
+  "/src/assets/partners/purude.jpg",
+  "/src/assets/partners/acir.jpg",
+  "/src/assets/partners/wageningen.png",
+  "/src/assets/partners/pbl_trnasport.png",
 ];
 
 const partnerFallback = legacyPaths.map(resolveLegacyAsset);

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight, Globe, Rocket, Search } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Globe, Rocket, Search, Building, Calendar, MapPin, User, Info } from "lucide-react";
 import {
   categories,
   filterStartups,
@@ -84,7 +84,51 @@ export function StartupPortfolioPage() {
   };
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-20 md:pb-32 md:pt-24">
+    <section className="relative isolate overflow-hidden bg-[#FFF7ED] pb-24 pt-20 md:pb-32 md:pt-24">
+      <style>{`
+        .pc-scene {
+          perspective: 1200px;
+          width: 100%;
+          max-width: 280px;
+          height: 340px;
+          margin: 0 auto;
+        }
+        .pc-inner {
+          width: 100%; height: 100%;
+          position: relative;
+          transition: transform 650ms cubic-bezier(.22,1,.36,1), box-shadow 650ms ease;
+          transform-style: preserve-3d;
+          cursor: pointer;
+        }
+        .pc-scene:hover .pc-inner {
+          transform: rotateY(180deg) translateY(-6px);
+        }
+        .pc-scene:hover { z-index: 10; }
+        .pc-face {
+          position: absolute; width: 100%; height: 100%;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          border-radius: 28px;
+          background: #FFFDF8;
+          border: 1px solid #F5E4D3;
+          box-shadow: 0 8px 32px rgba(246,139,31,0.08), 0 2px 8px rgba(0,0,0,0.03);
+          overflow: hidden;
+          transition: box-shadow 650ms ease;
+        }
+        .pc-scene:hover .pc-face {
+          box-shadow: 0 20px 60px rgba(255,138,61,0.15), 0 4px 16px rgba(0,0,0,0.04);
+        }
+        .pc-back { transform: rotateY(180deg); }
+        .pc-scene:hover .pc-logo-img { transform: scale(1.03); }
+        .pc-logo-img { transition: transform 650ms cubic-bezier(.22,1,.36,1); }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
       <BackgroundDecor />
 
       <div className="relative site-container-wide">
@@ -339,7 +383,7 @@ const DirectoryGrid = React.forwardRef<HTMLDivElement, {
           No startups match your filters. Try adjusting your search.
         </div>
       ) : (
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid gap-6 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center">
           {startups.map((startup, index) => (
             <StartupGridCard key={startup.id} startup={startup} index={index} />
           ))}
@@ -354,101 +398,191 @@ const noiseSvg = `data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://
 function StartupGridCard({ startup, index }: { startup: StartupItem; index: number }) {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.4, delay: (index % 4) * 0.05 }}
-      style={{ borderRadius: 28 }}
-      className="group relative flex flex-col overflow-hidden border border-[#FDEAD4] bg-white shadow-[0_10px_30px_rgba(249,115,22,0.08),0_25px_80px_rgba(249,115,22,0.12)] transition-all duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:scale-[1.015] hover:border-[#FDBA74]/40 hover:shadow-[0_16px_40px_rgba(249,115,22,0.12),0_40px_100px_rgba(249,115,22,0.18)]"
+      transition={{ duration: 0.5, delay: (index % 4) * 0.06 }}
+      className="pc-scene"
     >
-      {/* Noise texture */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.035] mix-blend-soft-light"
-        style={{ backgroundImage: `url("${noiseSvg}")`, backgroundSize: "128px" }}
-      />
+      <div className="pc-inner">
 
-      {/* Radial glow */}
-      <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br from-[#F97316]/8 to-transparent blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-16 -left-16 h-32 w-32 rounded-full bg-gradient-to-tr from-[#FDBA74]/10 to-transparent blur-2xl" />
+        {/* ═══════════ FRONT FACE ═══════════ */}
+        <div className="pc-face relative flex flex-col">
 
-      {/* Gradient accent top */}
-      <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-[#F97316]/0 via-[#F97316] to-[#F97316]/0 opacity-0 transition-opacity duration-[450ms] group-hover:opacity-100" />
-
-      {/* ── Image Section ── */}
-      <div className="relative mx-4 mt-4 overflow-hidden rounded-[22px] bg-gradient-to-b from-[#FFF7ED] to-[#FFEDD5] shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]">
-        <div className="flex items-center justify-center px-8 py-9">
-          <img
-            src={startup.logo}
-            alt={startup.name}
-            className="max-h-[72px] max-w-[160px] object-contain transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
-          />
-        </div>
-        {/* Reflection overlay */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-black/[0.02]" />
-      </div>
-
-      {/* ── Content ── */}
-      <div className="flex flex-1 flex-col px-5 pb-3 pt-4">
-        {/* Top row: name + year */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <h3 className="text-base font-[700] leading-snug tracking-tight text-[#111827]">
-              {startup.name}
-            </h3>
-            {/* Industry badge */}
-            <span className="mt-2 inline-flex items-center gap-1 rounded-full border border-[#FDEAD4] bg-white/80 px-3 py-0.5 text-[10px] font-semibold tracking-wide text-[#F97316] shadow-[0_1px_3px_rgba(249,115,22,0.06)] backdrop-blur-sm">
-              {startup.industry}
+          {/* ── Top-left: SINE Incubatee capsule ── */}
+          <div className="absolute top-4 left-4 z-10">
+            <span className="inline-block rounded-full bg-gradient-to-r from-[#FFECD2] to-[#FCE2C4] px-3 py-[4px] text-[9px] font-semibold tracking-wide text-[#E07B1A]">
+              SINE Incubatee
             </span>
           </div>
-          {/* Year glass pill */}
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#FDEAD4] bg-white/70 px-2.5 py-1 text-[11px] font-medium text-[#6B7280] shadow-[0_1px_3px_rgba(0,0,0,0.02)] backdrop-blur-sm">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#F97316] shadow-[0_0_6px_rgba(249,115,22,0.3)]" />
-            {startup.founded}
-          </span>
+
+          {/* ── Top-right: 3×3 dot grid ── */}
+          <div className="absolute top-4 right-4 z-10 grid grid-cols-3 gap-[4px]">
+            {[...Array(9)].map((_, i) => (
+              <span key={i} className="block h-[2.5px] w-[2.5px] rounded-full bg-[#F68B1F]/25" />
+            ))}
+          </div>
+
+          {/* ── Center: logo + name + description ── */}
+          <div className="flex flex-1 flex-col items-center justify-center px-5 pt-12 pb-10 z-10">
+            {startup.logo ? (
+              <img
+                src={startup.logo}
+                alt={startup.name}
+                className="pc-logo-img max-w-[160px] max-h-[80px] object-contain"
+              />
+            ) : (
+              <div className="pc-logo-img flex h-[72px] w-[72px] items-center justify-center rounded-xl bg-gradient-to-br from-[#F68B1F] to-[#FFB45B] text-white text-2xl font-black shadow-md">
+                {startup.name.substring(0, 2).toUpperCase()}
+              </div>
+            )}
+
+            <h3 className="mt-3 text-center text-[14px] font-bold leading-snug text-[#222] max-w-[220px] line-clamp-2">
+              {startup.name}
+            </h3>
+
+            <p className="mt-1.5 text-center text-[10px] font-medium text-[#999] leading-relaxed max-w-[200px] line-clamp-2">
+              {startup.description}
+            </p>
+          </div>
+
+          {/* ── Bottom-center: small orange indicator line ── */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10">
+            <div className="h-[2.5px] w-6 rounded-full bg-[#F68B1F]" />
+          </div>
+
+          <CardWave />
         </div>
 
-        {/* Description */}
-        <p className="mt-3 line-clamp-3 flex-1 text-xs leading-[1.7] text-[#4B5563]">
-          {startup.description}
-        </p>
+        {/* ═══ BACK FACE ═══ */}
+        <div className="pc-face pc-back relative flex flex-col">
 
-        {/* Gradient divider */}
-        <div className="relative mb-2 mt-4">
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#F97316]/25 to-transparent" />
+          {/* Right-side wave (Background) */}
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-[120px] overflow-hidden rounded-r-[28px] z-0">
+            <svg viewBox="0 0 100 200" className="absolute right-0 top-0 h-full w-full" preserveAspectRatio="none">
+              <path d="M100,0 L100,200 L65,200 C70,160 60,130 72,100 C84,70 65,40 72,0 Z" fill="#F68B1F" fillOpacity="0.04" />
+              <path d="M100,50 L100,200 L74,200 C78,170 70,145 80,125 C90,105 75,80 82,50 Z" fill="#F68B1F" fillOpacity="0.08" />
+              <path d="M100,110 L100,200 L82,200 C84,185 80,170 88,155 C96,140 86,125 90,110 Z" fill="#F68B1F" fillOpacity="0.2" />
+            </svg>
+          </div>
+
+          {/* Content (Scrollable if needed) */}
+          <div className="flex flex-col flex-1 p-5 z-10 overflow-y-auto scrollbar-hide">
+            
+            {/* Header */}
+            <h4 className="text-[14px] font-bold text-[#222] text-center mb-1">STARTUP DETAILS</h4>
+            <div className="mx-auto h-[2px] w-8 rounded-full bg-[#F68B1F] mb-4" />
+
+            {/* Row: Founder(s) */}
+            <div className="flex items-start gap-2.5">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
+                <User className="h-3 w-3 text-[#F68B1F]" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Founder(s)</p>
+                <p className="text-[11px] text-[#222] font-bold leading-tight">{startup.name} Founders</p>
+              </div>
+            </div>
+            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
+
+            {/* Row: Incubator */}
+            <div className="flex items-start gap-2.5">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
+                <Building className="h-3 w-3 text-[#F68B1F]" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Incubator</p>
+                <p className="text-[11px] text-[#222] font-bold leading-tight">SINE Incubatee</p>
+              </div>
+            </div>
+            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
+
+            {/* Row: Sector */}
+            <div className="flex items-start gap-2.5">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
+                <Rocket className="h-3 w-3 text-[#F68B1F]" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Sector</p>
+                <p className="text-[11px] text-[#222] font-bold leading-tight">{startup.industry}</p>
+              </div>
+            </div>
+            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
+
+            {/* Row: Year of Incubation */}
+            <div className="flex items-start gap-2.5">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
+                <Calendar className="h-3 w-3 text-[#F68B1F]" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Year of Incubation</p>
+                <p className="text-[11px] text-[#222] font-bold leading-tight">{startup.founded}</p>
+              </div>
+            </div>
+            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
+
+            {/* Row: Location */}
+            <div className="flex items-start gap-2.5">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
+                <MapPin className="h-3 w-3 text-[#F68B1F]" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Location</p>
+                <p className="text-[11px] text-[#222] font-bold leading-tight">India</p>
+              </div>
+            </div>
+            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
+
+            {/* Row: Website */}
+            <div className="flex items-start gap-2.5">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
+                <Globe className="h-3 w-3 text-[#F68B1F]" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Website</p>
+                <a
+                  href={startup.website || `https://www.google.com/search?q=${encodeURIComponent(startup.name + ' startup')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] text-[#F68B1F] font-bold leading-tight hover:underline"
+                >
+                  Visit Link
+                </a>
+              </div>
+            </div>
+            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
+
+            {/* Row: About */}
+            <div className="flex items-start gap-2.5 pb-4">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
+                <Info className="h-3 w-3 text-[#F68B1F]" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">About</p>
+                <p className="text-[10.5px] text-[#444] font-medium leading-[1.5] pr-1">
+                  {startup.description}
+                </p>
+              </div>
+            </div>
+
+          </div>
         </div>
 
-        {/* ── Bottom row ── */}
-        <div className="flex items-center justify-between">
-          {/* Globe glass button */}
-          {startup.website ? (
-            <a
-              href={startup.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#FDEAD4] bg-white/70 text-[#F97316] shadow-[0_2px_6px_rgba(249,115,22,0.06)] backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-[#FFF7ED] hover:shadow-[0_4px_12px_rgba(249,115,22,0.15)]"
-              aria-label={`Visit ${startup.name} website`}
-            >
-              <Globe className="h-3.5 w-3.5" />
-            </a>
-          ) : (
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#F0EBE5] bg-gray-50 text-[#D4CCC6]">
-              <Globe className="h-3.5 w-3.5" />
-            </span>
-          )}
-
-          {/* CTA */}
-          <button
-            type="button"
-            className="group/cta inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#F97316] to-[#FB923C] px-4 py-2 text-xs font-semibold text-white shadow-[0_4px_14px_rgba(249,115,22,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
-          >
-            <span>View Details</span>
-            <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover/cta:translate-x-0.5" />
-          </button>
-        </div>
       </div>
     </motion.article>
   );
 }
+
+/** Layered orange wave decoration for the front-face bottom-right corner */
+const CardWave = () => (
+  <div className="pointer-events-none absolute bottom-0 right-0 h-[130px] w-[130px] overflow-hidden rounded-br-[28px]">
+    <svg viewBox="0 0 100 100" className="absolute bottom-0 right-0 h-full w-full" preserveAspectRatio="none">
+      <path d="M100,10 C55,20 20,55 5,100 L100,100 Z" fill="#F68B1F" fillOpacity="0.1" />
+      <path d="M100,38 C68,44 38,66 22,100 L100,100 Z" fill="#FFB45B" fillOpacity="0.25" />
+      <path d="M100,62 C84,70 65,84 50,100 L100,100 Z" fill="#F68B1F" fillOpacity="0.7" />
+    </svg>
+  </div>
+);
 
 function Pagination({
   page,

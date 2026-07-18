@@ -256,9 +256,9 @@ export function ReportsPage() {
                 <p className="text-[15px] text-gray-600">Contact our team and we'll help you find the information you need.</p>
               </div>
             </div>
-            <button className="whitespace-nowrap px-6 py-3 rounded-full border border-[#F59E42] text-[#F59E42] font-bold text-[14px] hover:bg-[#F59E42] hover:text-white transition-colors shrink-0">
-              Contact Us &rarr;
-            </button>
+            <a href="/#lets-connect" className="whitespace-nowrap px-6 py-3 rounded-full border border-[#F59E42] text-[#F59E42] font-bold text-[14px] hover:bg-[#F59E42] hover:text-white transition-colors shrink-0">
+              Let's Connect &rarr;
+            </a>
           </motion.div>
 
         </div>

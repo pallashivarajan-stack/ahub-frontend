@@ -1164,18 +1164,6 @@ export function RewardsPage() {
                 <div className="rw-metric-lbl">NIRF Innovation<br />Ranking 2023</div>
               </div>
 
-
-
-              <div className="rw-metric">
-                <div className="rw-metric-val">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2">
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                  </svg>
-                  52+
-                </div>
-                <div className="rw-metric-lbl">Years of<br />Legacy</div>
-              </div>
-
             </div>
           </div>
         </motion.div>

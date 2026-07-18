@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { usePublicInternshipRegistration } from "@/services/usePublicContent";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -16,6 +16,7 @@ import {
   Award,
   TrendingUp,
   ChevronRight,
+  X,
 } from "lucide-react";
 
 import { resolveLegacyAsset } from "@/lib/assets";
@@ -29,38 +30,137 @@ type StartupInternship = {
   location: string;
   domain: string;
   status: "Open" | "Applied" | "New";
+  detailedInfo?: {
+    date: string;
+    description: string;
+    responsibilities: string[];
+    skills: string[];
+    prerequisites: string[];
+    process: string;
+    benefits?: string[];
+  };
 };
 
 const DEFAULT_INTERNSHIPS: StartupInternship[] = [
   {
     id: "ib-ai",
     companyName: "InterviewBuddy",
-    role: "AI Platform Intern",
+    role: "UI/UX Designer Intern",
     logo: resolveLegacyAsset("/src/assets/startups/interview buddy.png"),
     duration: "12 Weeks",
     location: "Remote",
-    domain: "AI/ML",
+    domain: "Design",
     status: "Applied",
+    detailedInfo: {
+      date: "February 20, 2025",
+      description: "Design is where a product’s life-cycle begins and as such determines the success of the product to a measurable degree, making the role of a UI/UX Designer indispensable. One’s responsibilities would involve working with multiple teams to learn & understand user requirements to design interfaces and experiences that resonate perfectly with consumers expectations.",
+      responsibilities: [
+        "Understand the product requirements.",
+        "Conduct user research & create detailed, comprehensive and well-structured documentation as required.",
+        "Adhere to style standards on fonts, colours and images.",
+        "Gather and evaluate user requirements, in collaboration with product managers and engineers.",
+        "Illustrate design ideas using storyboards, process flows and sitemaps.",
+        "Design user interface elements & components, like menus, buttons and cards.",
+        "Develop UI mockups and prototypes that clearly illustrate how sites function and look like."
+      ],
+      skills: [
+        "Concept mapping & Story boarding",
+        "Wireframing",
+        "Visual design",
+        "Prototyping",
+        "Figma"
+      ],
+      prerequisites: [
+        "Excellent Communication - Verbal and Written.",
+        "Good knowledge about Google Sheets and Google Drive.",
+        "Ability to understand the elements of a product and comprehend the logic behind actions & flows.",
+        "Ability to quickly learn new concepts & approaches as required."
+      ],
+      process: "Interested candidates should submit their resume to interviewbuddy.net or visit our website interviewbuddy.net"
+    }
   },
   {
-    id: "em-fe",
-    companyName: "Edumoon",
-    role: "Frontend Intern",
-    logo: resolveLegacyAsset("/src/assets/startups/edumoon.png"),
-    duration: "8 Weeks",
-    location: "Hybrid",
-    domain: "Frontend",
-    status: "Open",
-  },
-  {
-    id: "gd-be",
-    companyName: "GreenDams",
-    role: "Backend Intern",
-    logo: resolveLegacyAsset("/src/assets/startups/greenjams_logo.jpg"),
-    duration: "12 Weeks",
+    id: "rhodium-ops",
+    companyName: "Rhodium Tech",
+    role: "Designated Operations Person",
+    logo: resolveLegacyAsset("/src/assets/testimonals/rhodium tech.jpg"),
+    duration: "Full Time",
     location: "On-site",
-    domain: "Backend",
+    domain: "Operations",
     status: "Open",
+    detailedInfo: {
+      date: "February 20, 2025",
+      description: "Rhodium Tech is recruiting a Designated Operations Person to oversee industrial spare query handling, port operations, and office functions in addition to monitoring fieldwork. The job provides first-hand experience in logistics, procurement, and operations management. Good communication skills and a personal computer and vehicle are a must, and freshers are also encouraged to apply.",
+      responsibilities: [
+        "Enquiries of Industrial Spares/Items.",
+        "Port Operations – Berthing Schedule and Vessel Status",
+        "Representing Negotiations on behalf of the company.",
+        "Bank Related Works.",
+        "Office Paper Work includes Orders and Invoices.",
+        "Supervising the field works."
+      ],
+      skills: [
+        "Should be punctual",
+        "Office timings are 0830-1830 hours",
+        "Should be able to manage port operations and supervise other field works",
+        "Good Communication Skills",
+        "Should have personal computer and vehicle"
+      ],
+      prerequisites: [
+        "Undergraduate (PASS/FAIL) with minimum English speaking skills."
+      ],
+      benefits: [
+        "Hands-on experience in logistics and operational management.",
+        "Exposure to port operations, procurement, and field supervision.",
+        "Opportunity to develop negotiation and communication skills.",
+        "Certification of experience upon completion.",
+        "Potential for future growth based on performance."
+      ],
+      process: "Interested candidates should submit their resume to rhodium.tech6@gmail.com. Or can contact Ph: +91-7731878897"
+    }
+  },
+  {
+    id: "g2v-eng",
+    companyName: "G2V Solar",
+    role: "Engineering CAD Intern",
+    logo: resolveLegacyAsset("/src/assets/testimonals/g2v_solar_solutions_pvt_ltd_logo.jpg"),
+    duration: "Full Time",
+    location: "On-site",
+    domain: "Engineering",
+    status: "Open",
+    detailedInfo: {
+      date: "February 20, 2025",
+      description: "G2V Solar is seeking a motivated Engineering CAD Intern to assist our design and engineering team in creating detailed solar PV system layouts and technical drawings. This role offers hands-on experience with industry-standard CAD tools and an opportunity to work on real-world renewable energy projects.",
+      responsibilities: [
+        "CAD Drawing & Drafting: Assist in preparing 2D and 3D CAD models for solar PV systems; Create detailed engineering drawings for mounting structures, electrical layouts, and site plans; Ensure compliance with company guidelines and project specifications.",
+        "Design Support & Optimization: Collaborate with the design team to develop solar PV layouts based on site survey data; Perform basic shading analysis and evaluate solar panel placements for optimal efficiency; Assist in modifying designs based on feedback from engineers and project managers.",
+        "Documentation & Compliance: Maintain updated records of drawings and design iterations; Assist in preparing documentation for project approvals and regulatory compliance.",
+        "Software Utilization: Work with software tools such as AutoCAD, SketchUp, SolidWorks, and PVsyst (training will be provided if necessary); Support engineers in preparing simulations and reports for solar system performance analysis.",
+        "Interdepartmental Coordination: Communicate with the procurement, project management, and installation teams to ensure design feasibility; Participate in meetings and contribute to discussions regarding system design improvements.",
+        "Site Visits & Field Work (If required): Assist in on-site data collection, including measurements and feasibility assessments; Support the installation team in verifying design implementation on-site."
+      ],
+      skills: [
+        "Proficiency in AutoCAD (mandatory).",
+        "Proficiency in MS Excel.",
+        "Familiarity with SketchUp, SolidWorks, PVsyst, or other relevant design software is a plus.",
+        "Basic understanding of electrical and structural aspects of solar PV systems.",
+        "Analytical & Problem-Solving Skills: Ability to analyze design problems and suggest improvements.",
+        "Communication: Strong verbal and written communication skills.",
+        "Attention to Detail: Accuracy in drafting and documentation.",
+        "Team Player: Ability to work collaboratively in a fast-paced environment."
+      ],
+      prerequisites: [
+        "Pursuing or recently completed a Diploma/Degree in Mechanical, Civil, Electrical, or Renewable Energy Engineering."
+      ],
+      benefits: [
+        "Hands-on experience in the growing renewable energy industry.",
+        "Exposure to real-world solar projects and technical design processes.",
+        "Mentorship from experienced engineers.",
+        "Certificate of internship completion.",
+        "Potential for future employment based on performance."
+      ],
+      process: "Interested candidates should submit their resume to inc@g2vsolar.com with the subject line “Application for Engineering CAD Intern.”"
+    }
   },
   {
     id: "pb-da",
@@ -96,7 +196,25 @@ const DEFAULT_INTERNSHIPS: StartupInternship[] = [
 
 export function InternshipRegistrationPage() {
   const { data: internshipsData } = usePublicInternshipRegistration(DEFAULT_INTERNSHIPS);
-  const [internships, setInternships] = useState<StartupInternship[]>(internshipsData ?? DEFAULT_INTERNSHIPS);
+  
+  const mergeDefaults = (data: StartupInternship[]) => {
+    return data.map(item => {
+      const def = DEFAULT_INTERNSHIPS.find(d => d.id === item.id);
+      return {
+        ...item,
+        detailedInfo: item.detailedInfo ?? def?.detailedInfo,
+        role: def?.role ?? item.role
+      };
+    });
+  };
+
+  const [internships, setInternships] = useState<StartupInternship[]>(() => mergeDefaults(internshipsData ?? DEFAULT_INTERNSHIPS));
+
+  useEffect(() => {
+    if (internshipsData) {
+      setInternships(mergeDefaults(internshipsData));
+    }
+  }, [internshipsData]);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -109,8 +227,13 @@ export function InternshipRegistrationPage() {
 
   const [resumeName, setResumeName] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [selectedInternship, setSelectedInternship] = useState<StartupInternship | null>(null);
   
   const formRef = useRef<HTMLDivElement | null>(null);
+
+  const handleInfoClick = (internship: StartupInternship) => {
+    setSelectedInternship(internship);
+  };
 
   const handleApplyClick = (internship: StartupInternship) => {
     setFormData((prev) => ({
@@ -152,7 +275,7 @@ export function InternshipRegistrationPage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#FDF8F2] pb-20 pt-28 md:pb-28 md:pt-32">
+    <div className="relative min-h-screen overflow-hidden bg-[#FDF8F2] pb-20 pt-14 md:pb-32 md:pt-16 lg:pt-20">
       
       {/* Background Decor */}
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -170,7 +293,7 @@ export function InternshipRegistrationPage() {
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-1.5 rounded-full border border-[#F59E42] bg-[#FFF8F2] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#F59E42] shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full border border-[#F59E42]/25 bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#F59E42] shadow-sm backdrop-blur-sm"
           >
             <Calendar className="h-3.5 w-3.5" />
             INTERNSHIPS
@@ -180,50 +303,27 @@ export function InternshipRegistrationPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative mt-6 font-display text-4xl font-[800] tracking-tight text-[#2D1B1B] sm:text-5xl md:text-6xl lg:text-[72px] leading-tight"
+            className="mt-6 text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl"
           >
             Internship Opportunities
-            <span className="absolute bottom-[-10px] left-1/2 h-[3.5px] w-36 -translate-x-1/2 rounded-full bg-[#F59E42]" />
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 max-w-xl text-sm leading-relaxed text-[#6C5E5B] sm:text-base md:text-lg"
+            className="mx-auto mt-4 max-w-xl text-base text-[#6C5E5B]"
           >
             Explore structured internship programs from top startups and build your career.
           </motion.p>
-
-          {/* Dotted Minimal Patterns & Floating Rocket Illustrations */}
-          <div className="absolute left-6 top-0 hidden lg:block opacity-45 pointer-events-none select-none">
-            <svg width="60" height="60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="5" cy="5" r="2" fill="#F59E42" />
-              <circle cx="20" cy="5" r="2" fill="#F59E42" />
-              <circle cx="35" cy="5" r="2" fill="#F59E42" />
-              <circle cx="50" cy="5" r="2" fill="#F59E42" />
-              <circle cx="5" cy="20" r="2" fill="#F59E42" />
-              <circle cx="20" cy="20" r="2" fill="#F59E42" />
-              <circle cx="35" cy="20" r="2" fill="#F59E42" />
-              <circle cx="50" cy="20" r="2" fill="#F59E42" />
-              <circle cx="5" cy="35" r="2" fill="#F59E42" />
-              <circle cx="20" cy="35" r="2" fill="#F59E42" />
-              <circle cx="35" cy="35" r="2" fill="#F59E42" />
-              <circle cx="50" cy="35" r="2" fill="#F59E42" />
-              <circle cx="5" cy="50" r="2" fill="#F59E42" />
-              <circle cx="20" cy="50" r="2" fill="#F59E42" />
-              <circle cx="35" cy="50" r="2" fill="#F59E42" />
-              <circle cx="50" cy="50" r="2" fill="#F59E42" />
-            </svg>
-          </div>
-
+          
           <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
-            className="absolute right-8 top-[-20px] hidden lg:block text-[#F59E42] opacity-35"
-          >
-            <Rocket className="h-12 w-12 transform rotate-45" />
-          </motion.div>
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-5 h-1 w-16 rounded-full bg-[#F59E42]"
+          />
+
         </div>
 
         {/* INTERNSHIP OPPORTUNITIES GRID */}
@@ -239,16 +339,7 @@ export function InternshipRegistrationPage() {
                 whileHover={{ y: -6 }}
                 className="group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-white/60 bg-white p-6 shadow-[0_12px_36px_-20px_rgba(45,27,27,0.06)] hover:border-[#F59E42]/20 hover:shadow-[0_20px_45px_-15px_rgba(245,158,66,0.16)] transition-all duration-300"
               >
-                {/* Top Status Badge */}
-                <span className={`absolute left-5 top-5 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                  internship.status === "Applied"
-                    ? "bg-[#DCFCE7] text-[#16A34A]"
-                    : internship.status === "New"
-                    ? "bg-[#FFF0E0] text-[#FF8800]"
-                    : "bg-blue-50 text-blue-600"
-                }`}>
-                  {internship.status}
-                </span>
+
 
                 {/* Center: Large Centered Logo Container */}
                 <div className="mt-6 flex justify-center">
@@ -284,7 +375,7 @@ export function InternshipRegistrationPage() {
                 {/* Bottom CTA Arrow */}
                 <button
                   type="button"
-                  onClick={() => handleApplyClick(internship)}
+                  onClick={() => handleInfoClick(internship)}
                   className="mt-5 flex h-10 w-10 items-center justify-center rounded-full border border-slate-100 bg-[#FDF8F2] text-slate-700 hover:text-white hover:bg-[#F59E42] group-hover:border-[#F59E42]/20 transition-all self-center shadow-sm"
                 >
                   <ChevronRight className="h-5 w-5 transform transition-transform group-hover:translate-x-0.5" />
@@ -532,6 +623,129 @@ export function InternshipRegistrationPage() {
           </div>
         </section>
       </div>
+      {/* INTERNSHIP DETAILS DIALOG */}
+      <AnimatePresence>
+        {selectedInternship && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedInternship(null)}
+              className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            />
+            
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", duration: 0.5, bounce: 0 }}
+              className="relative w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-slate-100 bg-[#FDF8F2] px-6 py-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white p-2 shadow-sm border border-slate-100">
+                    <img src={selectedInternship.logo} alt="Logo" className="max-h-full max-w-full object-contain" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-[#2D1B1B]">Intern | {selectedInternship.companyName} | Portfolio Company</h2>
+                    <p className="text-sm font-medium text-[#6C5E5B]">By Andhra University Incubation Council</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedInternship(null)}
+                  className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="max-h-[70vh] overflow-y-auto px-6 py-6 text-sm text-[#4A3F3D] leading-relaxed">
+                {selectedInternship.detailedInfo ? (
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#F59E42]">
+                      <Calendar className="h-4 w-4" />
+                      {selectedInternship.detailedInfo.date}
+                    </div>
+                    
+                    <p>{selectedInternship.detailedInfo.description}</p>
+                    
+                    <div>
+                      <h3 className="text-base font-bold text-[#2D1B1B] mb-2">Responsibilities:</h3>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {selectedInternship.detailedInfo.responsibilities.map((req, i) => (
+                          <li key={i}>{req}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-base font-bold text-[#2D1B1B] mb-2">Required Skills & Qualifications:</h3>
+                      <h4 className="font-semibold mt-2 mb-1">Skills:</h4>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {selectedInternship.detailedInfo.skills.map((skill, i) => (
+                          <li key={i}>{skill}</li>
+                        ))}
+                      </ul>
+                      
+                      <h4 className="font-semibold mt-4 mb-1">General Prerequisites:</h4>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {selectedInternship.detailedInfo.prerequisites.map((req, i) => (
+                          <li key={i}>{req}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {selectedInternship.detailedInfo.benefits && (
+                      <div>
+                        <h3 className="text-base font-bold text-[#2D1B1B] mb-2">Benefits:</h3>
+                        <ul className="list-disc pl-5 space-y-1">
+                          {selectedInternship.detailedInfo.benefits.map((benefit, i) => (
+                            <li key={i}>{benefit}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <div>
+                      <h3 className="text-base font-bold text-[#2D1B1B] mb-2">Application Process:</h3>
+                      <p>{selectedInternship.detailedInfo.process}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="py-8 text-center text-slate-500">
+                    <p className="mb-4 text-lg font-medium text-[#2D1B1B]">More details coming soon!</p>
+                    <p>Contact us for more information about the {selectedInternship.role} position at {selectedInternship.companyName}.</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer */}
+              <div className="flex justify-end gap-3 border-t border-slate-100 bg-slate-50 px-6 py-4">
+                <button
+                  onClick={() => setSelectedInternship(null)}
+                  className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 transition-colors"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={() => {
+                    handleApplyClick(selectedInternship);
+                    setSelectedInternship(null);
+                  }}
+                  className="rounded-lg bg-[#F59E42] px-6 py-2 text-sm font-bold text-white shadow-sm hover:bg-[#E08D38] transition-colors"
+                >
+                  Apply Now
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

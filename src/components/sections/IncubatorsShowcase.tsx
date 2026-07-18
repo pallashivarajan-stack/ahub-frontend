@@ -174,9 +174,9 @@ export function IncubatorsShowcase() {
           <div className="mt-4 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
             <div
               className="rounded-[1.5rem] p-5 flex flex-col justify-between"
-              style={{ background: "var(--gradient-brand)" }}
+              style={{ background: "linear-gradient(135deg, #F59E42 0%, #F97316 50%, #EA580C 100%)", border: "2px solid #F59E42" }}
             >
-              <p className="text-sm font-medium text-neutral-900">
+              <p className="text-sm font-medium text-white">
                 {c.blurb}
               </p>
               <div className="mt-4 grid grid-cols-3 gap-2.5">
@@ -197,7 +197,7 @@ export function IncubatorsShowcase() {
               </div>
               <div>
                 <button className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2 text-sm font-bold text-neutral-900 transition-all duration-200 hover:scale-105 active:scale-95">
-                  Visit {c.name} <ArrowUpRight className="h-4 w-4" />
+                  Visit <ArrowUpRight className="h-4 w-4" />
                 </button>
               </div>
             </div>

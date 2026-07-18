@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen, Clock } from "lucide-react";
 import {
   blogImages,
   featuredPosts,
@@ -10,6 +10,7 @@ import {
   type TimelineStep,
 } from "@/data/startupBlog";
 import { usePublicStartupBlog } from "@/services/usePublicContent";
+import { resolveLegacyAsset } from "@/lib/assets";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -78,8 +79,8 @@ function BlogHero({ images }: { images: typeof blogImages }) {
       >
         <div className="overflow-hidden rounded-2xl shadow-[0_20px_60px_-30px_rgba(28,25,23,0.18)]">
           <img
-            src={images.hero}
-            alt="Startup team collaborating at AHUB"
+            src={resolveLegacyAsset("/src/assets/testimonals/starups.png")}
+            alt="Startups at AHUB"
             className="aspect-[4/3] w-full object-cover lg:aspect-[5/4]"
           />
         </div>
@@ -135,6 +136,7 @@ function BlogCardsGrid({ posts, widePosts }: { posts: typeof featuredPosts; wide
   );
 }
 
+
 function SmallBlogCard({ post, index }: { post: BlogPost; index: number }) {
   return (
     <motion.article
@@ -144,19 +146,19 @@ function SmallBlogCard({ post, index }: { post: BlogPost; index: number }) {
       transition={{ duration: 0.5, delay: index * 0.06 }}
       className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_12px_40px_-24px_rgba(28,25,23,0.12)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(249,115,22,0.18)]"
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <img
-          src={post.image}
-          alt={post.title}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          style={{ objectPosition: post.imagePosition ?? "center" }}
-        />
+      <div className={`relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden ${post.iconBg ?? "bg-[#FFF7ED]"}`}>
+        {post.icon && (
+          <post.icon className={`h-20 w-20 transition-transform duration-500 group-hover:scale-110 ${post.iconColor ?? "text-[#F97316]"}`} strokeWidth={1.5} />
+        )}
       </div>
 
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-sm font-[800] leading-snug text-[#1C1917] md:text-[15px]">{post.title}</h3>
         <div className="mt-auto flex items-center justify-between pt-4">
-          <span className="text-xs text-[#78716C]">{post.readTime}</span>
+          <span className="flex items-center gap-1 text-xs text-[#78716C]">
+            <Clock className="h-3 w-3" />
+            {post.readTime}
+          </span>
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FFF7ED] text-[#F97316] transition-colors group-hover:bg-[#F97316] group-hover:text-white">
             <ArrowRight className="h-4 w-4" />
           </span>
@@ -175,13 +177,10 @@ function WideBlogCard({ post, index }: { post: BlogPost; index: number }) {
       transition={{ duration: 0.5, delay: index * 0.08 }}
       className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_12px_40px_-24px_rgba(28,25,23,0.12)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(249,115,22,0.18)] sm:flex-row"
     >
-      <div className="relative aspect-[16/10] overflow-hidden sm:aspect-auto sm:w-[45%]">
-        <img
-          src={post.image}
-          alt={post.title}
-          className="h-full min-h-[180px] w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          style={{ objectPosition: post.imagePosition ?? "center" }}
-        />
+      <div className={`relative flex aspect-[16/10] w-full items-center justify-center overflow-hidden sm:aspect-auto sm:w-[38%] ${post.iconBg ?? "bg-[#FFF7ED]"}`}>
+        {post.icon && (
+          <post.icon className={`h-24 w-24 transition-transform duration-500 group-hover:scale-110 ${post.iconColor ?? "text-[#F97316]"}`} strokeWidth={1.5} />
+        )}
       </div>
 
       <div className="flex flex-1 flex-col justify-center p-6 md:p-8">
@@ -190,7 +189,10 @@ function WideBlogCard({ post, index }: { post: BlogPost; index: number }) {
           <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-[#78716C]">{post.description}</p>
         ) : null}
         <div className="mt-5 flex items-center justify-between">
-          <span className="text-xs text-[#78716C]">{post.readTime}</span>
+          <span className="flex items-center gap-1 text-xs text-[#78716C]">
+            <Clock className="h-3 w-3" />
+            {post.readTime}
+          </span>
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FFF7ED] text-[#F97316] transition-colors group-hover:bg-[#F97316] group-hover:text-white">
             <ArrowRight className="h-4 w-4" />
           </span>
@@ -228,13 +230,14 @@ function TimelineCard({ step, index }: { step: TimelineStep; index: number }) {
       transition={{ duration: 0.5, delay: index * 0.08 }}
       className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_12px_40px_-24px_rgba(28,25,23,0.12)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(249,115,22,0.15)]"
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <img
-          src={step.image}
-          alt={step.title}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          style={{ objectPosition: step.imagePosition ?? "center" }}
-        />
+      <div className={`relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden ${step.iconBg ?? "bg-[#FFF7ED]"}`}>
+        {/* Step number badge */}
+        <div className="absolute left-4 top-4 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-white text-xs font-[800] text-[#F97316] shadow-sm">
+          {index + 1}
+        </div>
+        {step.icon && (
+          <step.icon className={`h-20 w-20 transition-transform duration-500 group-hover:scale-110 ${step.iconColor ?? "text-[#F97316]"}`} strokeWidth={1.5} />
+        )}
       </div>
 
       <div className="flex flex-1 flex-col p-5">

@@ -7,11 +7,11 @@ export const Route = createFileRoute("/ecosystem/infrastructure")({
   component: EcosystemInfrastructurePage,
   head: () => ({
     meta: [
-      { title: "Infrastructure — AHUB Ecosystem" },
+      { title: "Infrastructure — āhub Ecosystem" },
       {
         name: "description",
         content:
-          "Explore AHUB's world-class startup infrastructure — coworking spaces, research labs, event venues, and collaborative environments.",
+          "Explore āhub's world-class startup infrastructure — coworking spaces, research labs, event venues, and collaborative environments.",
       },
     ],
   }),

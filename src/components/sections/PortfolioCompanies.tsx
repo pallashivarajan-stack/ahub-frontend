@@ -57,19 +57,19 @@ const startupStats: Record<
     { icon: "TrendingUp", label: "Discounts Up To", value: "44%" },
   ],
   DreamBot: [
-    { icon: "Bot", label: "AI Bots Deployed", value: "100+" },
-    { icon: "Cpu", label: "Automations Run", value: "10K+" },
-    { icon: "TrendingUp", label: "Client Businesses", value: "30+" },
+    { icon: "Bot", label: "Support Available", value: "24/7" },
+    { icon: "Cpu", label: "Tasks Automated", value: "Multi" },
+    { icon: "TrendingUp", label: "Control Modes", value: "3" },
   ],
   "Joora Drones": [
-    { icon: "Cpu", label: "Drones Deployed", value: "50+" },
-    { icon: "MapPin", label: "Survey Projects", value: "200+" },
-    { icon: "TrendingUp", label: "Areas Covered", value: "10K+ acres" },
+    { icon: "MapPin", label: "Projects Completed", value: "170+" },
+    { icon: "Users", label: "Clients Served", value: "50+" },
+    { icon: "TrendingUp", label: "Faster Than Traditional", value: "10x" },
   ],
   KodeFast: [
-    { icon: "GraduationCap", label: "Students Trained", value: "5K+" },
-    { icon: "BookOpen", label: "Coding Courses", value: "30+" },
-    { icon: "TrendingUp", label: "Placement Rate", value: "85%" },
+    { icon: "Sparkles", label: "Applications Built", value: "500+" },
+    { icon: "Cpu", label: "Automation Rate", value: "98%" },
+    { icon: "TrendingUp", label: "Integrations", value: "50+" },
   ],
 };
 
@@ -166,7 +166,7 @@ export function PortfolioCompanies() {
                   opacity: isActive ? 1 : 0.75,
                 }}
                 transition={{ type: "spring", stiffness: 180, damping: 24 }}
-                className="maroon-gradient-border group relative basis-0 overflow-hidden rounded-[27px] border border-orange-100/50 bg-[#FDFBF7] text-left shadow-[0_20px_60px_-30px_rgba(90,30,44,0.14)] focus:outline-none will-change-transform"
+                className={`group relative basis-0 overflow-hidden rounded-[27px] border-2 bg-[#FDFBF7] text-left focus:outline-none will-change-transform transition-colors duration-300 ${isActive ? "border-[#F59E42] shadow-[0_20px_60px_-15px_rgba(245,158,66,0.3)]" : "border-[#F59E42]/20 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.1)] hover:border-[#F59E42]/50"}`}
               >
                 {isActive && (
                   <div className="absolute inset-0 opacity-5 bg-gradient-to-br from-orange-500/20 to-transparent" />
@@ -253,7 +253,7 @@ export function PortfolioCompanies() {
                                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-50 text-[#FF7A00] mb-1.5">
                                   <IconComponent size={14} />
                                 </div>
-                                <p className="text-[8px] font-semibold text-slate-400 uppercase tracking-wider truncate w-full">
+                                <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-wider leading-tight w-full">
                                   {stat.label}
                                 </p>
                                 <p className="text-base font-bold text-slate-800 mt-0.5">

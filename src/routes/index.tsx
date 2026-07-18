@@ -13,7 +13,7 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { MeshNetwork } from "@/components/sections/MeshNetwork";
 import { Partners } from "@/components/sections/Partners";
 import { FindUsOn } from "@/components/sections/FindUsOn";
-import { ContactUs } from "@/components/sections/ContactUs";
+
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -70,7 +70,7 @@ function Index() {
         <Partners />
         <DistinguishedVisitors />
         <FindUsOn />
-        <ContactUs />
+
       </main>
       <Footer />
       <script

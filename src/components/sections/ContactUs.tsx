@@ -154,12 +154,12 @@ export function ContactUs() {
 
       <section
         id="contact"
-        className="relative isolate overflow-hidden bg-[#FFF8F1] py-12 md:py-16"
+        className="relative isolate overflow-hidden bg-[#FFF8F2] py-12 md:py-16"
         style={{ fontFamily: "'Montserrat', sans-serif" }}
       >
         <div className="mx-auto w-full max-w-[900px] px-6">
           {/* ── OUTER CARD ───────────────────────────────────────────────── */}
-          <div className="overflow-hidden rounded-[20px] border border-[#f0e6dc] bg-white shadow-[0_6px_24px_-6px_rgba(0,0,0,0.06),0_24px_64px_-16px_rgba(0,0,0,0.08)]">
+          <div className="overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-[42%_58%]">
 
               {/* ══════════════════ LEFT PANEL ══════════════════ */}
@@ -168,7 +168,7 @@ export function ContactUs() {
                 whileInView="show"
                 viewport={{ once: true }}
                 variants={fadeUp}
-                className="relative flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#FFF8F1] via-[#FFF3E8] to-[#FFE8D0] p-6 md:p-8"
+                className="relative flex flex-col justify-between overflow-hidden p-6 md:p-8"
               >
                 {/* ── Decorative top-left semi-circle ── */}
                 <div
@@ -250,7 +250,7 @@ export function ContactUs() {
                 whileInView="show"
                 viewport={{ once: true }}
                 variants={slideLeft}
-                className="flex flex-col gap-5 bg-white p-6 md:p-8"
+                className="flex flex-col gap-5 p-6 md:p-8"
               >
                 {/* ── FORM ── */}
                 <form

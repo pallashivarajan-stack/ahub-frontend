@@ -251,10 +251,10 @@ export function CaseStudiesPage() {
 
           <div className="mt-8 flex justify-center">
             <a
-              href="/programs/join-us"
+              href="/ecosystem/infrastructure"
               className="inline-flex items-center gap-2 rounded-full bg-[#F58220] px-8 py-3.5 text-[16px] font-bold text-white shadow-[0_6px_22px_rgba(245,130,32,0.25)] transition-all duration-300 hover:bg-[#E0721B] hover:shadow-[0_8px_28px_rgba(245,130,32,0.35)]"
             >
-              Explore Incubation
+              Explore Ecosystem
               <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
           </div>

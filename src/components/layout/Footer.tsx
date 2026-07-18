@@ -1,4 +1,4 @@
-import { ArrowRight, Github, Instagram, Linkedin, Twitter } from "lucide-react";
+import { ArrowRight, Instagram, Linkedin, Twitter } from "lucide-react";
 import { useState } from "react";
 import { navLinks } from "@/data";
 
@@ -51,7 +51,6 @@ export function Footer() {
                 { Icon: Twitter, href: "https://twitter.com/ahub_in", label: "Twitter" },
                 { Icon: Linkedin, href: "https://linkedin.com/company/ahub-in", label: "LinkedIn" },
                 { Icon: Instagram, href: "https://instagram.com/ahub.in", label: "Instagram" },
-                { Icon: Github, href: "https://github.com/ahub", label: "GitHub" },
               ].map(({ Icon, href, label }, i) => (
                 <a key={i} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid h-8 w-8 place-items-center rounded-full border border-white/14 bg-white/10 text-white/82 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/18 hover:text-white hover:shadow-[0_14px_30px_-18px_rgba(0,0,0,0.8)]">
                   <Icon size={14} />
@@ -63,7 +62,14 @@ export function Footer() {
           <div>
             <div className="text-xs uppercase tracking-[0.24em] text-white/62">Navigate</div>
             <ul className="mt-5 space-y-3 text-sm">
-              {navLinks.map((l) => (
+              {[
+                { label: "Vision & Roadmap", href: "#vision" },
+                { label: "Startup Portfolio & Partners", href: "#portfolio" },
+                { label: "Internship Registrations", href: "#internship" },
+                { label: "Join Us", href: "#join" },
+                { label: "Board", href: "#board" },
+                { label: "Team", href: "#team" },
+              ].map((l) => (
                 <li key={l.label}>
                   <a href={l.href} className="inline-block text-white/84 transition-all duration-300 hover:-translate-y-0.5 hover:text-white hover:underline hover:decoration-white/40 hover:underline-offset-4">{l.label}</a>
                 </li>
@@ -78,7 +84,6 @@ export function Footer() {
               <li>AU north campus, madillapalem,</li>
               <li>visakhapatnam - 530013.</li>
               <li className="pt-1">techsupport@a-hub.co</li>
-              <li>+91 44 4500 2200</li>
             </ul>
           </div>
 

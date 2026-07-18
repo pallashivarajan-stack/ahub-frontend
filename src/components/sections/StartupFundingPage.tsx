@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Banknote, Calendar, Gem, Orbit, Radar, Rocket, Search, Shield, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowRight, Search, TrendingUp, Puzzle, Handshake, HeartHandshake, Layers, MessageCircle, Gift, Network, LineChart, Gem, Rocket, Banknote, Calendar, Orbit, Radar, Shield, Sparkles } from "lucide-react";
 import {
   featuredFundingStartups,
   filterFundingStartups,
@@ -50,7 +50,7 @@ export function StartupFundingPage() {
 
       <div className="relative site-container-wide">
         <FundingHeader highlights={displayData.fundingHighlights} />
-        <FeaturedGrid highlights={displayData.fundingHighlights} featured={displayData.featuredFundingStartups} />
+        <AssociateProgramsGrid />
         <FilterSection
           statuses={displayData.fundingStatuses}
           search={search}
@@ -113,67 +113,64 @@ const cardVisuals: Record<string, { icon: React.ComponentType<{ className?: stri
   followon: { icon: Rocket, gradient: "from-rose-400/25 via-rose-500/10 to-rose-600/5", bg: "bg-rose-50", iconColor: "text-rose-600", glow: "shadow-rose-500/20" },
 };
 
-function FeaturedGrid({ highlights, featured }: { highlights: typeof fundingHighlights; featured: typeof featuredFundingStartups }) {
+const associatePrograms = [
+  {
+    title: "Incubation",
+    icon: Puzzle,
+    text: "For incubation support at a hub, please fill this form with details about your start-up, and we will reach out to you."
+  },
+  {
+    title: "Invest",
+    icon: LineChart,
+    text: "Collaborate with us as angles or VCs to invest in our curated early and growth stage startups. Please fill this form and we will reach out to you."
+  },
+  {
+    title: "CSR Partner",
+    icon: Handshake,
+    text: "Trust your CSR funds for significantly high impact outcomes for your CSR spend. Please fill this form and we will reach out to you."
+  },
+  {
+    title: "Donate",
+    icon: HeartHandshake,
+    text: "Help us create more impact by helping us with your funds to invest in building the ecosystem infrastructure. Please fill this form and we will reach out to you."
+  },
+  {
+    title: "Advisory",
+    icon: Layers,
+    text: "The ecosystem is in need of experts to advise us on our vision and direction as part of our Advisory Board. Please fill this form with details about your start-up, and we will reach out to you."
+  },
+  {
+    title: "Network",
+    icon: Network,
+    text: "Help connect us to decision makers and CSR partners who can help and support us in our growth story. Please fill this form and we will reach out to you."
+  }
+];
+
+function AssociateProgramsGrid() {
   return (
     <motion.div {...fadeUp} className="mt-14 lg:mt-16">
-      <div className="mb-8 max-w-2xl">
-        <h2 className="text-2xl font-[800] text-[#2D1B1B] md:text-3xl">Funding Pathways</h2>
-        <p className="mt-2 text-sm leading-relaxed text-[#6C5E5B] md:text-[15px]">
-          Structured capital support designed to help founders move from validation to scale with confidence.
-        </p>
-      </div>
-
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {highlights.map((item, index) => {
-          const visual = cardVisuals[item.id] ?? cardVisuals.seed;
-          const Icon = visual.icon;
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {associatePrograms.map((item, index) => {
+          const Icon = item.icon;
           return (
-            <motion.article
-              key={item.id}
+            <motion.div
+              key={item.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: index * 0.06 }}
-              className="group flex flex-col overflow-hidden rounded-[28px] bg-white shadow-[0_12px_40px_-24px_rgba(45,27,27,0.1)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-20px_rgba(245,158,66,0.18)]"
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              className="flex flex-col items-center text-center rounded-[28px] bg-white p-8 shadow-[0_12px_40px_-24px_rgba(45,27,27,0.1)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-20px_rgba(245,158,66,0.18)]"
             >
-              <div className={`relative flex h-44 items-center justify-center overflow-hidden bg-gradient-to-br ${visual.gradient} ${visual.bg} p-6`}>
-                <div className={`flex h-20 w-20 items-center justify-center rounded-2xl bg-white/80 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.03] backdrop-blur-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/95 group-hover:shadow-xl ${visual.glow}`}>
-                  <Icon className={`h-10 w-10 ${visual.iconColor} transition-all duration-500 group-hover:scale-110`} />
-                </div>
+              <div className="mb-6 flex h-[88px] w-[88px] items-center justify-center rounded-full bg-[#FFF9F5] relative">
+                <Icon className="h-10 w-10 text-[#0F172A]" strokeWidth={1.5} />
               </div>
-              <div className="flex flex-1 flex-col p-6">
-                <span className="inline-flex w-fit rounded-full bg-[#FFF4E8] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#F59E42]">
-                  {item.tag}
-                </span>
-                <h3 className="mt-3 text-lg font-[800] text-[#2D1B1B]">{item.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-[#6C5E5B]">{item.body}</p>
-              </div>
-            </motion.article>
+              <h3 className="mb-3 text-xl font-[800] text-[#0F172A]">{item.title}</h3>
+              <p className="text-[13px] leading-[1.6] text-[#475569]">
+                {item.text}
+              </p>
+            </motion.div>
           );
         })}
-      </div>
-
-      <div className="mt-10 rounded-[28px] border border-[#F59E42]/10 bg-white/80 p-6 shadow-sm md:p-8">
-        <div className="mb-6 flex items-center gap-2">
-          <TrendingUp className="h-5 w-5 text-[#F59E42]" />
-          <h3 className="text-lg font-[800] text-[#2D1B1B]">Recently Funded Startups</h3>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredFundingStartups.map((startup) => (
-            <div
-              key={startup.id}
-              className="flex items-center gap-4 rounded-[20px] border border-[#F5F0EB] bg-[#FAFAFA] p-4 transition-colors hover:border-[#F59E42]/20 hover:bg-[#FFF8F3]"
-            >
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[14px] bg-white p-2 shadow-sm">
-                <img src={startup.logo} alt={startup.name} className="max-h-10 max-w-10 object-contain" />
-              </div>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-[800] text-[#2D1B1B]">{startup.name}</p>
-                <p className="mt-0.5 text-xs text-[#F59E42]">{startup.fundingAmount} raised</p>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </motion.div>
   );

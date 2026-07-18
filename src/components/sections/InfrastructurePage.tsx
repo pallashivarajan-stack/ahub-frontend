@@ -107,7 +107,7 @@ function HeroSection({ images }: { images: any }) {
           <div className="overflow-hidden rounded-[32px] shadow-[0_24px_60px_-30px_rgba(45,27,27,0.2)]">
             <img
               src={images.hero}
-              alt="AHUB innovation campus"
+              alt="āhub innovation campus"
               className="aspect-[4/3] w-full object-cover lg:aspect-[5/4]"
             />
           </div>
@@ -182,7 +182,7 @@ function GalleryStrip({ data }: { data: any }) {
     <section className="py-8 md:py-12">
       <div className="site-container-wide">
         <motion.div {...fadeUp} className="mb-8">
-          <h2 className="text-xl font-[800] text-[#2D1B1B] md:text-2xl">Inside AHUB</h2>
+          <h2 className="text-xl font-[800] text-[#2D1B1B] md:text-2xl">Inside āhub</h2>
           <p className="mt-2 text-sm text-[#6C5E5B]">Spaces where founders build, collaborate, and showcase.</p>
         </motion.div>
 

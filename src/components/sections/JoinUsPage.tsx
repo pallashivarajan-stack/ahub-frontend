@@ -535,11 +535,11 @@ function CTABanner() {
           </div>
         </div>
         <a
-          href="mailto:techsupport@a-hub.co"
+          href="/#lets-connect"
           className="group inline-flex flex-shrink-0 items-center gap-2 rounded-xl border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-95"
           style={{ borderColor: ORANGE, color: ORANGE }}
         >
-          Contact Us
+          Let's Connect
           <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5" />
         </a>
       </div>
