@@ -21,7 +21,8 @@ export const PUBLIC_CONTENT_ENDPOINTS = {
   visionRoadmap: "/api/public/vision-roadmap",
   whatWeDo: "/api/public/what-we-do",
   studentDashboard: "/api/public/student-dashboard",
-  startupEvents: "/api/public/startup-events",
+  startupEvents: "/api/public/startup-events-list",
+  startupEventsCollage: "/api/public/startup-events-collage",
   rewards: "/api/public/rewards",
   internshipRegistration: "/api/public/internship-registration",
   internshipCalendar: "/api/public/internship-calendar",
@@ -51,6 +52,10 @@ export const PUBLIC_CONTENT_ENDPOINTS = {
   press: "/api/public/press",
   /** Press page metadata */
   pressPage: "/api/public/press-page",
+  /** Reports — startup reports and AHUB reports */
+  reports: "/api/public/reports",
+  /** Internship listings from dedicated table */
+  internshipListings: "/api/public/internship-listings",
 } as const;
 
 export type PublicContentKey = keyof typeof PUBLIC_CONTENT_ENDPOINTS;

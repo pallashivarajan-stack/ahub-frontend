@@ -140,7 +140,7 @@ export function IncubatorsShowcase() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="aspect-[4/3] w-full rounded-[1.25rem] object-cover sm:aspect-auto sm:h-64"
+                className="w-full rounded-[1.25rem] object-cover h-48 sm:h-56 md:h-64"
               />
             </AnimatePresence>
 
@@ -202,7 +202,7 @@ export function IncubatorsShowcase() {
               </div>
             </div>
 
-            <div ref={constraintsRef} className="relative flex items-center justify-center px-8">
+            <div ref={constraintsRef} className="relative flex min-h-[200px] items-center justify-center px-8 py-4">
               <button
                 type="button"
                 onClick={prev}

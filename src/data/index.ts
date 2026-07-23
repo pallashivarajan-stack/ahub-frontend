@@ -46,8 +46,8 @@ export const portfolio = [
     desc: "AI-powered mock interviews and placement readiness for students and early-career professionals.",
     achievements: ["AI Mock Interviews", "Placement Ready", "Empowering Careers"],
     funding: "Seed · $1.2M",
-    logo: asset("/src/assets/portolfio companies/images__8_-removebg-preview.png"),
-    founderImage: asset("/src/assets/portfolio/interview_buddy_founder.png"),
+    logo: asset("/src/assets/portfolio_companies/interview_buddy_logo.png"),
+    founderImage: asset("/src/assets/portfolio_companies/interview_buddy_founder.png"),
     website: "https://interviewbuddy.in",
   },
   {

@@ -2,8 +2,9 @@ import { useState, useCallback, useEffect } from "react";
 import { LazyMotion, m as motion, domAnimation } from "framer-motion";
 import { resolveLegacyAsset } from "@/lib/assets";
 import useEmblaCarousel from "embla-carousel-react";
+import { usePublicTestimonials } from "@/services/usePublicContent";
 
-const testimonials = [
+const defaultTestimonials = [
   {
     name: "N. R. Narayana Murthy",
     role: "Founder & Former CEO",
@@ -24,6 +25,7 @@ const testimonials = [
 
 export function Testimonials() {
   const [current, setCurrent] = useState(0);
+  const { data: testimonials = defaultTestimonials } = usePublicTestimonials(defaultTestimonials);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "center", dragFree: false },

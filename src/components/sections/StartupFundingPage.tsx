@@ -21,99 +21,7 @@ const fadeUp = {
   transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
 };
 
-export function StartupFundingPage() {
-  const fundingFallback = { fundingHighlights, featuredFundingStartups, fundingStartups, fundingStatuses };
-  const { data: fundingData } = usePublicStartupFunding(fundingFallback);
-  const displayData = fundingData ?? fundingFallback;
-
-  const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("All");
-  const [category, setCategory] = useState("All");
-  const [applied, setApplied] = useState({ search: "", status: "All", category: "All" });
-
-  const filtered = useMemo(
-    () => filterFundingStartups(displayData.fundingStartups, applied),
-    [applied, displayData.fundingStartups],
-  );
-
-  const applyFilters = () => setApplied({ search, status, category });
-  const resetFilters = () => {
-    setSearch("");
-    setStatus("All");
-    setCategory("All");
-    setApplied({ search: "", status: "All", category: "All" });
-  };
-
-  return (
-    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-14 md:pb-32 md:pt-16 lg:pt-20">
-      <BackgroundDecor />
-
-      <div className="relative site-container-wide">
-        <FundingHeader highlights={displayData.fundingHighlights} />
-        <AssociateProgramsGrid />
-        <FilterSection
-          statuses={displayData.fundingStatuses}
-          search={search}
-          status={status}
-          category={category}
-          onSearchChange={setSearch}
-          onStatusChange={setStatus}
-          onCategoryChange={setCategory}
-          onApply={applyFilters}
-          onReset={resetFilters}
-        />
-        <FundedStartupsList startups={filtered} />
-      </div>
-    </section>
-  );
-}
-
-function BackgroundDecor() {
-  return (
-    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_85%_8%,rgba(245,158,66,0.1),transparent_55%),radial-gradient(50%_45%_at_10%_15%,rgba(245,158,66,0.07),transparent_50%)]" />
-      <div className="absolute -left-24 top-24 h-72 w-72 rounded-full bg-[#F59E42]/8 blur-3xl" />
-      <div className="absolute -right-20 top-48 h-56 w-56 rounded-full bg-[#FFE8D0]/70 blur-2xl" />
-    </div>
-  );
-}
-
-function FundingHeader({ highlights }: { highlights: typeof fundingHighlights }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="flex flex-col items-center text-center"
-    >
-      <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E42]/30 bg-[#FFF8F3] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#F59E42]">
-        <Banknote className="h-3.5 w-3.5" />
-        Startup Funding
-      </div>
-
-      <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl">
-        Startup Funding
-      </h1>
-
-      <p className="mt-5 max-w-2xl text-sm leading-relaxed text-[#6C5E5B] md:text-base">
-        Explore funding pathways, investor access, and startups building momentum inside the AHUB ecosystem.
-      </p>
-
-      <div className="mt-5 h-1 w-16 rounded-full bg-[#F59E42]" />
-    </motion.div>
-  );
-}
-
-const cardVisuals: Record<string, { icon: React.ComponentType<{ className?: string }>; gradient: string; bg: string; iconColor: string; glow: string }> = {
-  seed: { icon: Gem, gradient: "from-emerald-400/25 via-emerald-500/10 to-emerald-600/5", bg: "bg-emerald-50", iconColor: "text-emerald-600", glow: "shadow-emerald-500/20" },
-  angel: { icon: Orbit, gradient: "from-amber-400/25 via-amber-500/10 to-amber-600/5", bg: "bg-amber-50", iconColor: "text-amber-600", glow: "shadow-amber-500/20" },
-  grants: { icon: Shield, gradient: "from-blue-400/25 via-blue-500/10 to-blue-600/5", bg: "bg-blue-50", iconColor: "text-blue-600", glow: "shadow-blue-500/20" },
-  demo: { icon: Sparkles, gradient: "from-violet-400/25 via-violet-500/10 to-violet-600/5", bg: "bg-violet-50", iconColor: "text-violet-600", glow: "shadow-violet-500/20" },
-  matching: { icon: Radar, gradient: "from-cyan-400/25 via-cyan-500/10 to-cyan-600/5", bg: "bg-cyan-50", iconColor: "text-cyan-600", glow: "shadow-cyan-500/20" },
-  followon: { icon: Rocket, gradient: "from-rose-400/25 via-rose-500/10 to-rose-600/5", bg: "bg-rose-50", iconColor: "text-rose-600", glow: "shadow-rose-500/20" },
-};
-
-const associatePrograms = [
+const defaultAssociatePrograms = [
   {
     title: "Incubation",
     icon: Puzzle,
@@ -146,15 +54,115 @@ const associatePrograms = [
   }
 ];
 
-function AssociateProgramsGrid() {
+export function StartupFundingPage() {
+  const { data: rawFundingData } = usePublicStartupFunding(null);
+
+  const header = rawFundingData?.header || {
+    badgeText: "Startup Funding",
+    mainTitle: "Startup Funding",
+    description: "Explore funding pathways, investor access, and startups building momentum inside the AHUB ecosystem.",
+  };
+
+  const programs = rawFundingData?.associatePrograms || defaultAssociatePrograms;
+
+  const startupsList = fundingStartups;
+
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("All");
+  const [category, setCategory] = useState("All");
+  const [applied, setApplied] = useState({ search: "", status: "All", category: "All" });
+
+  const filtered = useMemo(
+    () => filterFundingStartups(startupsList, applied),
+    [applied, startupsList],
+  );
+
+  const applyFilters = () => setApplied({ search, status, category });
+  const resetFilters = () => {
+    setSearch("");
+    setStatus("All");
+    setCategory("All");
+    setApplied({ search: "", status: "All", category: "All" });
+  };
+
+  return (
+    <section className="relative isolate overflow-hidden bg-[#FDF8F2] pb-24 pt-14 md:pb-32 md:pt-16 lg:pt-20">
+      <BackgroundDecor />
+
+      <div className="relative site-container-wide">
+        <FundingHeader header={header} />
+        <AssociateProgramsGrid programs={programs} />
+        <FilterSection
+          statuses={fundingStatuses}
+          search={search}
+          status={status}
+          category={category}
+          onSearchChange={setSearch}
+          onStatusChange={setStatus}
+          onCategoryChange={setCategory}
+          onApply={applyFilters}
+          onReset={resetFilters}
+        />
+        <FundedStartupsList startups={filtered} />
+      </div>
+    </section>
+  );
+}
+
+function BackgroundDecor() {
+  return (
+    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_85%_8%,rgba(245,158,66,0.1),transparent_55%),radial-gradient(50%_45%_at_10%_15%,rgba(245,158,66,0.07),transparent_50%)]" />
+      <div className="absolute -left-24 top-24 h-72 w-72 rounded-full bg-[#F59E42]/8 blur-3xl" />
+      <div className="absolute -right-20 top-48 h-56 w-56 rounded-full bg-[#FFE8D0]/70 blur-2xl" />
+    </div>
+  );
+}
+
+function FundingHeader({ header }: { header: { badgeText: string; mainTitle: string; description: string } }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className="flex flex-col items-center text-center"
+    >
+      <div className="inline-flex items-center gap-2 rounded-full border border-[#F59E42]/30 bg-[#FFF8F3] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#F59E42]">
+        <Banknote className="h-3.5 w-3.5" />
+        {header.badgeText || "Startup Funding"}
+      </div>
+
+      <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-[#2D1B1B] sm:text-4xl md:text-5xl">
+        {header.mainTitle || "Startup Funding"}
+      </h1>
+
+      <p className="mt-5 max-w-2xl text-sm leading-relaxed text-[#6C5E5B] md:text-base">
+        {header.description}
+      </p>
+
+      <div className="mt-5 h-1 w-16 rounded-full bg-[#F59E42]" />
+    </motion.div>
+  );
+}
+
+const PROGRAM_ICONS: Record<string, React.ComponentType<{ className?: string; strokeWidth?: number }>> = {
+  Incubation: Puzzle,
+  Invest: LineChart,
+  "CSR Partner": Handshake,
+  Donate: HeartHandshake,
+  Advisory: Layers,
+  Network: Network,
+};
+
+function AssociateProgramsGrid({ programs }: { programs: { title: string; text: string; icon?: any }[] }) {
   return (
     <motion.div {...fadeUp} className="mt-14 lg:mt-16">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {associatePrograms.map((item, index) => {
-          const Icon = item.icon;
+        {programs.map((item, index) => {
+          const Icon = PROGRAM_ICONS[item.title] || Puzzle;
           return (
             <motion.div
-              key={item.title}
+              key={item.title || index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
@@ -273,6 +281,7 @@ function FilterSection({
 }
 
 function FundedStartupsList({ startups }: { startups: typeof fundingStartups }) {
+  const limitedStartups = startups.slice(0, 5);
   return (
     <motion.div {...fadeUp} className="mt-16">
       <div className="mb-8 max-w-2xl">
@@ -281,17 +290,17 @@ function FundedStartupsList({ startups }: { startups: typeof fundingStartups }) 
           A curated selection of AHUB startups with active funding journeys — not the full portfolio directory.
         </p>
         <p className="mt-1 text-xs text-[#B0A8A4]">
-          Showing {startups.length} startup{startups.length !== 1 ? "s" : ""}
+          Showing {limitedStartups.length} startup{limitedStartups.length !== 1 ? "s" : ""}
         </p>
       </div>
 
-      {startups.length === 0 ? (
+      {limitedStartups.length === 0 ? (
         <div className="rounded-[24px] bg-white p-12 text-center text-sm text-[#6C5E5B] shadow-sm">
           No startups match your filters.
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          {startups.map((startup, index) => (
+          {limitedStartups.map((startup, index) => (
             <FundingListCard key={startup.id} startup={startup} index={index} />
           ))}
         </div>

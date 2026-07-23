@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { LazyMotion, m as motion, domAnimation } from "framer-motion";
-import { Search, FileText, Download, ArrowRight, ArrowUpRight } from "lucide-react";
+import { Search, FileText, Download, ArrowRight } from "lucide-react";
 import { resolveLegacyAsset } from "@/lib/assets";
+import { usePublicReports } from "@/services/usePublicContent";
 
 const AUIC_REPORTS = [
   {
@@ -64,6 +65,11 @@ const STARTUP_REPORTS = [
 ];
 
 export function ReportsPage() {
+  const { data: reportsData } = usePublicReports(null);
+
+  const startupReports = reportsData?.startupReports ?? STARTUP_REPORTS;
+  const ahubReports = reportsData?.ahubReports ?? AUIC_REPORTS;
+
   const [activeTab, setActiveTab] = useState("All Reports");
   
   const tabs = ["All Reports", "Startup Reports", "AHUB Reports"];
@@ -111,7 +117,7 @@ export function ReportsPage() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {STARTUP_REPORTS.map((report, idx) => (
+                {startupReports.map((report, idx) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 20 }}
@@ -181,7 +187,7 @@ export function ReportsPage() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {AUIC_REPORTS.map((report, idx) => (
+                {ahubReports.map((report, idx) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 20 }}

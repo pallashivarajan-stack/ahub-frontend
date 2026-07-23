@@ -1,8 +1,5 @@
-import {
-  filterStartups,
-  startupDirectory,
-  type StartupItem,
-} from "@/data/startupPortfolio";
+import { resolveLegacyAsset } from "@/lib/assets";
+import { filterStartups, type StartupItem } from "@/data/startupPortfolio";
 
 export type FundingHighlight = {
   id: string;
@@ -17,44 +14,80 @@ export type FundedStartup = StartupItem & {
   fundingStatus: "Funded" | "Raising" | "Eligible";
 };
 
-const curatedIds = [
-  "interview-buddy",
-  "greenjams",
-  "sandlogic",
-  "sweya",
-  "return-trucks",
-  "joora",
-  "digiotai",
-  "icompass",
-  "agri-dna",
-  "antar-iot",
-  "talentspotify",
-  "vyomastra",
+export const fundingStartups: FundedStartup[] = [
+  {
+    id: "interview-buddy",
+    name: "Interview Buddy",
+    logo: resolveLegacyAsset("/src/assets/startups/interview buddy.png"),
+    category: "EdTech",
+    industry: "Education",
+    founded: 2021,
+    fundingStage: "Seed",
+    description: "AI-powered mock interview and placement readiness platform helping students improve career outcomes.",
+    website: "https://interviewbuddy.in",
+    popularity: 95,
+    fundingAmount: "₹1.2 Cr",
+    fundingStatus: "Funded",
+    addedOrder: 1
+  },
+  {
+    id: "agri-dna",
+    name: "Agri DNA",
+    logo: resolveLegacyAsset("/src/assets/startups/agri dna.jpg"),
+    category: "AgriTech",
+    industry: "Agriculture",
+    founded: 2021,
+    fundingStage: "Pre-Seed",
+    description: "Precision agriculture tools using genomics and data to improve crop yield and farmer income.",
+    popularity: 68,
+    fundingAmount: "₹30 L",
+    fundingStatus: "Raising",
+    addedOrder: 2
+  },
+  {
+    id: "bizpro",
+    name: "BizPro",
+    logo: resolveLegacyAsset("/src/assets/startups/bizpro.png"),
+    category: "SaaS",
+    industry: "Enterprise",
+    founded: 2023,
+    fundingStage: "Pre-Seed",
+    description: "Business operations suite helping SMBs manage workflows, billing, and customer relationships.",
+    website: "https://bizproindia.com/",
+    popularity: 65,
+    fundingAmount: "₹15 L",
+    fundingStatus: "Eligible",
+    addedOrder: 3
+  },
+  {
+    id: "sweya",
+    name: "Sweya",
+    logo: resolveLegacyAsset("/src/assets/startups/sweya.png"),
+    category: "HealthTech",
+    industry: "Healthcare",
+    founded: 2021,
+    fundingStage: "Seed",
+    description: "Digital health platform improving patient outcomes through smart monitoring and care coordination.",
+    popularity: 82,
+    fundingAmount: "₹75 L",
+    fundingStatus: "Raising",
+    addedOrder: 4
+  },
+  {
+    id: "eduemblem",
+    name: "EduEmblem",
+    logo: resolveLegacyAsset("/src/assets/portfolio_companies/eduemblem.png"),
+    category: "EdTech",
+    industry: "Education",
+    founded: 2022,
+    fundingStage: "Seed",
+    description: "E-learning platform with gamified emblem rewards and skill micro-credentials for K-12 students.",
+    popularity: 78,
+    fundingAmount: "₹45 L",
+    fundingStatus: "Funded",
+    addedOrder: 5
+  }
 ];
-
-const fundingMeta: Record<string, { fundingAmount: string; fundingStatus: FundedStartup["fundingStatus"] }> = {
-  "interview-buddy": { fundingAmount: "₹1.2 Cr", fundingStatus: "Funded" },
-  greenjams: { fundingAmount: "₹50 L", fundingStatus: "Funded" },
-  sandlogic: { fundingAmount: "₹8 Cr", fundingStatus: "Funded" },
-  sweya: { fundingAmount: "₹75 L", fundingStatus: "Raising" },
-  "return-trucks": { fundingAmount: "₹1 Cr", fundingStatus: "Funded" },
-  joora: { fundingAmount: "₹60 L", fundingStatus: "Funded" },
-  digiotai: { fundingAmount: "₹40 L", fundingStatus: "Raising" },
-  icompass: { fundingAmount: "₹25 L", fundingStatus: "Eligible" },
-  "agri-dna": { fundingAmount: "₹30 L", fundingStatus: "Raising" },
-  "antar-iot": { fundingAmount: "₹55 L", fundingStatus: "Funded" },
-  talentspotify: { fundingAmount: "₹90 L", fundingStatus: "Funded" },
-  vyomastra: { fundingAmount: "₹1.5 Cr", fundingStatus: "Raising" },
-};
-
-function toFundedStartup(startup: StartupItem): FundedStartup {
-  const meta = fundingMeta[startup.id] ?? { fundingAmount: "—", fundingStatus: "Eligible" as const };
-  return { ...startup, ...meta };
-}
-
-export const fundingStartups: FundedStartup[] = startupDirectory
-  .filter((s) => curatedIds.includes(s.id))
-  .map(toFundedStartup);
 
 export const featuredFundingStartups = fundingStartups.slice(0, 6);
 

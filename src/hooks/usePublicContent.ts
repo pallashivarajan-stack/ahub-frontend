@@ -37,4 +37,5 @@ export {
   usePublicJoinUs,
   usePublicPitchToUs,
   usePublicStartupRegistration,
+  usePublicInternshipListings,
 } from "@/services/usePublicContent";

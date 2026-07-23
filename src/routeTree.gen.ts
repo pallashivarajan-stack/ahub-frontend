@@ -30,10 +30,16 @@ import { Route as EcosystemMentorsRouteImport } from './routes/ecosystem/mentors
 import { Route as EcosystemInvestorsRouteImport } from './routes/ecosystem/investors'
 import { Route as EcosystemInfrastructureRouteImport } from './routes/ecosystem/infrastructure'
 import { Route as ApproachOperationalModelRouteImport } from './routes/approach/operational-model'
+import { Route as AdminVisitorsRouteImport } from './routes/admin/visitors'
+import { Route as AdminTestimonialsRouteImport } from './routes/admin/testimonials'
 import { Route as AdminTeamRouteImport } from './routes/admin/team'
+import { Route as AdminPartnersLogosRouteImport } from './routes/admin/partners-logos'
 import { Route as AdminMentorsRouteImport } from './routes/admin/mentors'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as AdminLatestEventsRouteImport } from './routes/admin/latest-events'
+import { Route as AdminInternshipRegistrationRouteImport } from './routes/admin/internship-registration'
 import { Route as AdminInfrastructureRouteImport } from './routes/admin/infrastructure'
+import { Route as AdminFindUsOnRouteImport } from './routes/admin/find-us-on'
 import { Route as AdminBoardRouteImport } from './routes/admin/board'
 import { Route as AchieveReportsRouteImport } from './routes/achieve/reports'
 import { Route as AchieveImpactRouteImport } from './routes/achieve/impact'
@@ -154,9 +160,24 @@ const ApproachOperationalModelRoute =
     path: '/approach/operational-model',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminVisitorsRoute = AdminVisitorsRouteImport.update({
+  id: '/admin/visitors',
+  path: '/admin/visitors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
+  id: '/admin/testimonials',
+  path: '/admin/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminTeamRoute = AdminTeamRouteImport.update({
   id: '/admin/team',
   path: '/admin/team',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPartnersLogosRoute = AdminPartnersLogosRouteImport.update({
+  id: '/admin/partners-logos',
+  path: '/admin/partners-logos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMentorsRoute = AdminMentorsRouteImport.update({
@@ -169,9 +190,25 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLatestEventsRoute = AdminLatestEventsRouteImport.update({
+  id: '/admin/latest-events',
+  path: '/admin/latest-events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminInternshipRegistrationRoute =
+  AdminInternshipRegistrationRouteImport.update({
+    id: '/admin/internship-registration',
+    path: '/admin/internship-registration',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminInfrastructureRoute = AdminInfrastructureRouteImport.update({
   id: '/admin/infrastructure',
   path: '/admin/infrastructure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminFindUsOnRoute = AdminFindUsOnRouteImport.update({
+  id: '/admin/find-us-on',
+  path: '/admin/find-us-on',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminBoardRoute = AdminBoardRouteImport.update({
@@ -239,10 +276,16 @@ export interface FileRoutesByFullPath {
   '/achieve/impact': typeof AchieveImpactRoute
   '/achieve/reports': typeof AchieveReportsRoute
   '/admin/board': typeof AdminBoardRoute
+  '/admin/find-us-on': typeof AdminFindUsOnRoute
   '/admin/infrastructure': typeof AdminInfrastructureRoute
+  '/admin/internship-registration': typeof AdminInternshipRegistrationRoute
+  '/admin/latest-events': typeof AdminLatestEventsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/mentors': typeof AdminMentorsRoute
+  '/admin/partners-logos': typeof AdminPartnersLogosRoute
   '/admin/team': typeof AdminTeamRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/visitors': typeof AdminVisitorsRoute
   '/approach/operational-model': typeof ApproachOperationalModelRoute
   '/ecosystem/infrastructure': typeof EcosystemInfrastructureRoute
   '/ecosystem/investors': typeof EcosystemInvestorsRoute
@@ -276,10 +319,16 @@ export interface FileRoutesByTo {
   '/achieve/impact': typeof AchieveImpactRoute
   '/achieve/reports': typeof AchieveReportsRoute
   '/admin/board': typeof AdminBoardRoute
+  '/admin/find-us-on': typeof AdminFindUsOnRoute
   '/admin/infrastructure': typeof AdminInfrastructureRoute
+  '/admin/internship-registration': typeof AdminInternshipRegistrationRoute
+  '/admin/latest-events': typeof AdminLatestEventsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/mentors': typeof AdminMentorsRoute
+  '/admin/partners-logos': typeof AdminPartnersLogosRoute
   '/admin/team': typeof AdminTeamRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/visitors': typeof AdminVisitorsRoute
   '/approach/operational-model': typeof ApproachOperationalModelRoute
   '/ecosystem/infrastructure': typeof EcosystemInfrastructureRoute
   '/ecosystem/investors': typeof EcosystemInvestorsRoute
@@ -314,10 +363,16 @@ export interface FileRoutesById {
   '/achieve/impact': typeof AchieveImpactRoute
   '/achieve/reports': typeof AchieveReportsRoute
   '/admin/board': typeof AdminBoardRoute
+  '/admin/find-us-on': typeof AdminFindUsOnRoute
   '/admin/infrastructure': typeof AdminInfrastructureRoute
+  '/admin/internship-registration': typeof AdminInternshipRegistrationRoute
+  '/admin/latest-events': typeof AdminLatestEventsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/mentors': typeof AdminMentorsRoute
+  '/admin/partners-logos': typeof AdminPartnersLogosRoute
   '/admin/team': typeof AdminTeamRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/visitors': typeof AdminVisitorsRoute
   '/approach/operational-model': typeof ApproachOperationalModelRoute
   '/ecosystem/infrastructure': typeof EcosystemInfrastructureRoute
   '/ecosystem/investors': typeof EcosystemInvestorsRoute
@@ -353,10 +408,16 @@ export interface FileRouteTypes {
     | '/achieve/impact'
     | '/achieve/reports'
     | '/admin/board'
+    | '/admin/find-us-on'
     | '/admin/infrastructure'
+    | '/admin/internship-registration'
+    | '/admin/latest-events'
     | '/admin/login'
     | '/admin/mentors'
+    | '/admin/partners-logos'
     | '/admin/team'
+    | '/admin/testimonials'
+    | '/admin/visitors'
     | '/approach/operational-model'
     | '/ecosystem/infrastructure'
     | '/ecosystem/investors'
@@ -390,10 +451,16 @@ export interface FileRouteTypes {
     | '/achieve/impact'
     | '/achieve/reports'
     | '/admin/board'
+    | '/admin/find-us-on'
     | '/admin/infrastructure'
+    | '/admin/internship-registration'
+    | '/admin/latest-events'
     | '/admin/login'
     | '/admin/mentors'
+    | '/admin/partners-logos'
     | '/admin/team'
+    | '/admin/testimonials'
+    | '/admin/visitors'
     | '/approach/operational-model'
     | '/ecosystem/infrastructure'
     | '/ecosystem/investors'
@@ -427,10 +494,16 @@ export interface FileRouteTypes {
     | '/achieve/impact'
     | '/achieve/reports'
     | '/admin/board'
+    | '/admin/find-us-on'
     | '/admin/infrastructure'
+    | '/admin/internship-registration'
+    | '/admin/latest-events'
     | '/admin/login'
     | '/admin/mentors'
+    | '/admin/partners-logos'
     | '/admin/team'
+    | '/admin/testimonials'
+    | '/admin/visitors'
     | '/approach/operational-model'
     | '/ecosystem/infrastructure'
     | '/ecosystem/investors'
@@ -465,10 +538,16 @@ export interface RootRouteChildren {
   AchieveImpactRoute: typeof AchieveImpactRoute
   AchieveReportsRoute: typeof AchieveReportsRoute
   AdminBoardRoute: typeof AdminBoardRoute
+  AdminFindUsOnRoute: typeof AdminFindUsOnRoute
   AdminInfrastructureRoute: typeof AdminInfrastructureRoute
+  AdminInternshipRegistrationRoute: typeof AdminInternshipRegistrationRoute
+  AdminLatestEventsRoute: typeof AdminLatestEventsRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminMentorsRoute: typeof AdminMentorsRoute
+  AdminPartnersLogosRoute: typeof AdminPartnersLogosRoute
   AdminTeamRoute: typeof AdminTeamRoute
+  AdminTestimonialsRoute: typeof AdminTestimonialsRoute
+  AdminVisitorsRoute: typeof AdminVisitorsRoute
   ApproachOperationalModelRoute: typeof ApproachOperationalModelRoute
   EcosystemInfrastructureRoute: typeof EcosystemInfrastructureRoute
   EcosystemInvestorsRoute: typeof EcosystemInvestorsRoute
@@ -638,11 +717,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApproachOperationalModelRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/visitors': {
+      id: '/admin/visitors'
+      path: '/admin/visitors'
+      fullPath: '/admin/visitors'
+      preLoaderRoute: typeof AdminVisitorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/testimonials': {
+      id: '/admin/testimonials'
+      path: '/admin/testimonials'
+      fullPath: '/admin/testimonials'
+      preLoaderRoute: typeof AdminTestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/team': {
       id: '/admin/team'
       path: '/admin/team'
       fullPath: '/admin/team'
       preLoaderRoute: typeof AdminTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/partners-logos': {
+      id: '/admin/partners-logos'
+      path: '/admin/partners-logos'
+      fullPath: '/admin/partners-logos'
+      preLoaderRoute: typeof AdminPartnersLogosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/mentors': {
@@ -659,11 +759,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/latest-events': {
+      id: '/admin/latest-events'
+      path: '/admin/latest-events'
+      fullPath: '/admin/latest-events'
+      preLoaderRoute: typeof AdminLatestEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/internship-registration': {
+      id: '/admin/internship-registration'
+      path: '/admin/internship-registration'
+      fullPath: '/admin/internship-registration'
+      preLoaderRoute: typeof AdminInternshipRegistrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/infrastructure': {
       id: '/admin/infrastructure'
       path: '/admin/infrastructure'
       fullPath: '/admin/infrastructure'
       preLoaderRoute: typeof AdminInfrastructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/find-us-on': {
+      id: '/admin/find-us-on'
+      path: '/admin/find-us-on'
+      fullPath: '/admin/find-us-on'
+      preLoaderRoute: typeof AdminFindUsOnRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/board': {
@@ -753,10 +874,16 @@ const rootRouteChildren: RootRouteChildren = {
   AchieveImpactRoute: AchieveImpactRoute,
   AchieveReportsRoute: AchieveReportsRoute,
   AdminBoardRoute: AdminBoardRoute,
+  AdminFindUsOnRoute: AdminFindUsOnRoute,
   AdminInfrastructureRoute: AdminInfrastructureRoute,
+  AdminInternshipRegistrationRoute: AdminInternshipRegistrationRoute,
+  AdminLatestEventsRoute: AdminLatestEventsRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminMentorsRoute: AdminMentorsRoute,
+  AdminPartnersLogosRoute: AdminPartnersLogosRoute,
   AdminTeamRoute: AdminTeamRoute,
+  AdminTestimonialsRoute: AdminTestimonialsRoute,
+  AdminVisitorsRoute: AdminVisitorsRoute,
   ApproachOperationalModelRoute: ApproachOperationalModelRoute,
   EcosystemInfrastructureRoute: EcosystemInfrastructureRoute,
   EcosystemInvestorsRoute: EcosystemInvestorsRoute,

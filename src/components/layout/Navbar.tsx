@@ -153,12 +153,6 @@ const PANEL_CONTENT: Record<
         image: inst3,
       },
       {
-        label: "Investors",
-        href: "/ecosystem/investors",
-        description: "Funding partners, angels, and venture support.",
-        image: inst2,
-      },
-      {
         label: "Startup Events",
         href: "/events/startups-events",
         description: "Demo days, pitch sessions, and founder meetups.",
@@ -186,12 +180,6 @@ const PANEL_CONTENT: Record<
         href: "/programs/pitch-to-us",
         description: "Startup submission and founder intake.",
         image: event3,
-      },
-      {
-        label: "Seminar Hall Booking",
-        href: "/ecosystem/seminar-hall-booking",
-        description: "Request a venue, date, and support package.",
-        image: event1,
       },
       {
         label: "Startup Funding",
@@ -354,7 +342,12 @@ const MobileMenuToggle = forwardRef<HTMLButtonElement, { open: boolean; onClick:
       aria-label={open ? "Close menu" : "Open menu"}
       aria-expanded={open}
       aria-controls="mobile-menu-panel"
-      className="grid min-h-[40px] min-w-[40px] place-items-center rounded-lg border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.08)] text-white transition hover:border-[rgba(255,255,255,0.25)] hover:bg-[rgba(255,255,255,0.12)] focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
+      className={cn(
+        "grid min-h-[40px] min-w-[40px] place-items-center transition focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none",
+        open
+          ? "rounded-full bg-white text-black"
+          : "rounded-lg border border-slate-200 bg-slate-100 text-slate-700 hover:border-slate-300 hover:bg-slate-200",
+      )}
       onClick={onClick}
     >
       <span className="relative flex h-4 w-4 items-center justify-center">
@@ -772,7 +765,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-40 lg:hidden"
+            className="fixed inset-0 z-40 lg:hidden pointer-events-auto"
           >
             {/* Dark overlay background */}
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
@@ -803,7 +796,7 @@ export function Navbar() {
                 <MobileMenuToggle open onClick={closeMenus} />
               </div>
 
-              {/* Navigation items */}
+              {/* Navigation sections with inline links */}
               <motion.ul
                 initial="hidden"
                 animate="visible"
@@ -811,16 +804,18 @@ export function Navbar() {
                   hidden: {},
                   visible: { transition: { staggerChildren: 0.05, delayChildren: 0.08 } },
                 }}
-                className="mt-6 grid gap-2"
+                className="mt-6 grid gap-3"
               >
                 {NAV_ITEMS.map((item) => {
                   const isActive =
                     activeSection === item.href.slice(1) || activePanel === item.panel;
+                  const panelContent = item.panel ? PANEL_CONTENT[item.panel] : null;
                   return (
                     <motion.li
                       key={item.label}
                       variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
                     >
+                      {/* Section header button */}
                       <button
                         type="button"
                         onClick={() => {
@@ -838,45 +833,47 @@ export function Navbar() {
                           closeMenus();
                         }}
                         className={cn(
-                          "w-full rounded-lg px-4 py-3 text-left text-sm font-medium uppercase tracking-widest transition-all duration-300 border",
+                          "w-full rounded-lg px-4 py-3 text-left text-sm font-semibold uppercase tracking-widest transition-all duration-300 border flex items-center justify-between",
                           isActive
                             ? "border-[#e75710]/40 bg-[#e75710]/10 text-white"
                             : "border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] text-white/80 hover:border-[rgba(255,255,255,0.2)] hover:text-white",
                         )}
                       >
                         <NavLabel label={item.label} />
+                        {panelContent && (
+                          <ChevronDown
+                            size={14}
+                            className={cn(
+                              "transition-transform duration-300 text-white/50",
+                              activePanel === item.panel ? "rotate-180 text-[#e75710]" : "",
+                            )}
+                          />
+                        )}
                       </button>
+
+                      {/* Inline sub-links — shown when panel is open */}
+                      {panelContent && activePanel === item.panel && (
+                        <div className="mt-1.5 grid gap-1 pl-2">
+                          {panelContent.links.map((link) => (
+                            <Link
+                              key={link.href}
+                              to={link.href}
+                              onClick={closeMenus}
+                              className="flex items-center justify-between rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] px-4 py-2.5 text-left transition hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)]"
+                            >
+                              <div>
+                                <div className="text-sm font-medium text-white">{link.label}</div>
+                                <div className="mt-0.5 text-xs text-white/50">{link.description}</div>
+                              </div>
+                              <ArrowRight size={13} className="shrink-0 text-[#e75710] ml-2" />
+                            </Link>
+                          ))}
+                        </div>
+                      )}
                     </motion.li>
                   );
                 })}
               </motion.ul>
-
-              {/* Active panel content */}
-              {activePanel ? (
-                <div className="mt-6 rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] p-4">
-                  <div className="text-xs uppercase tracking-widest text-white/60">
-                    {PANEL_CONTENT[activePanel].eyebrow}
-                  </div>
-                  <p className="mt-2 text-sm leading-relaxed text-white/70">
-                    {PANEL_CONTENT[activePanel].summary}
-                  </p>
-                  <div className="mt-4 grid gap-2 max-h-64 overflow-y-auto">
-                    {PANEL_CONTENT[activePanel].links.map((item) => (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        onClick={closeMenus}
-                        className="rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.05)] px-3 py-2.5 text-left text-sm transition hover:border-[rgba(255,255,255,0.2)] hover:bg-[rgba(255,255,255,0.08)]"
-                      >
-                        <div className="font-medium text-white">{item.label}</div>
-                        <div className="mt-0.5 text-xs uppercase tracking-widest text-white/60">
-                          {item.description}
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
 
               {/* CTA Button */}
               <Link

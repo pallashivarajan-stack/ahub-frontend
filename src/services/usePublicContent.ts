@@ -26,11 +26,13 @@ import {
   fetchPublicWhatWeDo,
   fetchPublicStudentDashboard,
   fetchPublicStartupEvents,
+  fetchPublicStartupEventsCollage,
   fetchPublicRewards,
   fetchPublicInternshipRegistration,
   fetchPublicInternshipCalendar,
   fetchPublicInstitutionsClubs,
   fetchPublicStartupBlog,
+  fetchPublicReports,
   fetchPublicStartupFunding,
   fetchPublicInvestors,
   fetchPublicAhubNetwork,
@@ -45,21 +47,55 @@ import {
   fetchPublicPress,
   fetchPublicPressPage,
   fetchPublicPartnerItems,
+  fetchPublicInternshipListings,
 } from "@/services/publicContent";
 import { portfolio as staticPortfolio, events as staticEvents } from "@/data";
 
 /* ── Specialised hooks (custom fallback logic) ─────────────────────────── */
 
-/** Portfolio with static fallback — UI receives identical shape either way */
+/** Portfolio — always shows exactly the 5 fixed companies.
+ *  DB entries override their matching static slot by name; defaults fill remaining slots. */
 export function usePublicPortfolio() {
   return useQuery({
     queryKey: ["public", "portfolio"],
     queryFn: async () => {
       const data = await fetchPublicPortfolio();
-      return data?.length ? data : staticPortfolio;
+      // Build a lookup from DB data by startup name (lowercase)
+      const dbByName = new Map(
+        (data || []).map((d: any) => [String(d.startup ?? "").toLowerCase().trim(), d])
+      );
+      // For each of the 5 fixed slots, use DB version if available, else static default
+      return (staticPortfolio as any[]).map((s: any) => {
+        const slotKey = String(s.startup ?? "").toLowerCase().trim();
+        const match = dbByName.get(slotKey);
+        const _slotId = slotKey.replace(/\s+/g, "");
+
+        if (!match) {
+          return { ...s, _slotId };
+        }
+
+        // Merge match into s, only overriding properties that are actually set in match
+        const merged = { ...s, _slotId };
+        if (match.startup) merged.startup = match.startup;
+        if (match.industry) merged.industry = match.industry;
+        if (match.category) merged.category = match.category;
+        if (match.desc) merged.desc = match.desc;
+        if (match.funding) merged.funding = match.funding;
+        if (match.logo) merged.logo = match.logo;
+        if (match.founder) merged.founder = match.founder;
+        if (match.founderTitle) merged.founderTitle = match.founderTitle;
+        if (match.founderImage) merged.founderImage = match.founderImage;
+        if (match.website) merged.website = match.website;
+        if (match.websiteUrl) merged.websiteUrl = match.websiteUrl;
+        if (match.stats) merged.stats = match.stats;
+        return merged;
+      });
     },
     staleTime: 60_000,
-    placeholderData: staticPortfolio,
+    placeholderData: staticPortfolio.map(s => ({
+      ...s,
+      _slotId: String(s.startup ?? "").toLowerCase().trim().replace(/\s+/g, "")
+    })),
   });
 }
 
@@ -68,7 +104,10 @@ export function usePublicEvents() {
     queryKey: ["public", "events"],
     queryFn: async () => {
       const data = await fetchPublicEvents();
-      return data?.length ? data : staticEvents;
+      if (data?.length) return data;
+      const admin = getAdminLocalStorage<any[]>(ADMIN_LATEST_EVENTS_KEY);
+      if (admin?.length) return admin;
+      return staticEvents;
     },
     staleTime: 60_000,
     placeholderData: staticEvents,
@@ -93,8 +132,47 @@ export function usePublicIncubators<T>(fallbackData: T) {
     queryKey: ["public", "incubators"],
     queryFn: async () => {
       const data = await fetchPublicIncubators();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return data?.length ? (data as any) : fallbackData;
+      
+      // If we don't have an array as fallback (e.g. initial render weirdness), just return data
+      if (!Array.isArray(fallbackData)) {
+        return data?.length ? (data as any) : fallbackData;
+      }
+
+      // Build a lookup from DB data by incubator heading (name)
+      const dbByName = new Map(
+        (data || []).map((d: any) => [String(d.heading ?? "").toLowerCase().trim(), d])
+      );
+
+      // Merge DB data over the static fallback
+      return fallbackData.map((s: any) => {
+        const slotKey = String(s.name ?? "").toLowerCase().trim();
+        const match = dbByName.get(slotKey);
+        
+        if (!match) return s;
+
+        // Merge match into s
+        const merged = { ...s };
+        if (match.heading) merged.name = match.heading;
+        if (match.subheading) merged.tagline = match.subheading;
+        if (match.image_url) merged.image = match.image_url;
+        
+        // Try to parse description as JSON to extract extended fields
+        if (match.description) {
+          try {
+            const parsed = JSON.parse(match.description);
+            if (parsed.short) merged.short = parsed.short;
+            if (parsed.long) merged.long = parsed.long;
+            if (parsed.blurb) merged.blurb = parsed.blurb;
+            if (parsed.card) merged.card = parsed.card;
+            if (parsed.stats) merged.stats = parsed.stats;
+          } catch (e) {
+            // If it's not valid JSON, just use it as the `short` description
+            merged.short = match.description;
+          }
+        }
+        
+        return merged;
+      });
     },
     staleTime: 60_000,
     placeholderData: fallbackData,
@@ -106,8 +184,10 @@ export function usePublicPartners<T>(fallbackData: T) {
     queryKey: ["public", "partners"],
     queryFn: async () => {
       const data = await fetchPublicPartners();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return data?.length ? (data as any) : fallbackData;
+      if (data?.length) return data as any;
+      const admin = getAdminLocalStorage<string[]>(ADMIN_PARTNERS_LOGOS_KEY);
+      if (admin?.length) return admin as any;
+      return fallbackData;
     },
     staleTime: 60_000,
     placeholderData: fallbackData,
@@ -119,8 +199,10 @@ export function usePublicSocialLinks<T>(fallbackData: T) {
     queryKey: ["public", "socialLinks"],
     queryFn: async () => {
       const data = await fetchPublicSocialLinks();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return data?.length ? (data as any) : fallbackData;
+      if (data?.length) return data as any;
+      const admin = getAdminLocalStorage<any[]>(ADMIN_SOCIAL_LINKS_KEY);
+      if (admin?.length) return admin as any;
+      return fallbackData;
     },
     staleTime: 60_000,
     placeholderData: fallbackData,
@@ -166,6 +248,11 @@ function getAdminLocalStorage<T>(key: string): T | null {
 const ADMIN_MENTORS_KEY = "ahub_admin_mentors_data";
 const ADMIN_TEAM_KEY = "ahub_admin_team_data";
 const ADMIN_INFRASTRUCTURE_KEY = "ahub_admin_infrastructure_data";
+const ADMIN_LATEST_EVENTS_KEY = "ahub_admin_latest_events_data";
+const ADMIN_PARTNERS_LOGOS_KEY = "ahub_admin_partners_logos_data";
+const ADMIN_VISITORS_KEY = "ahub_admin_visitors_data";
+const ADMIN_SOCIAL_LINKS_KEY = "ahub_admin_social_links_data";
+const ADMIN_TESTIMONIALS_KEY = "ahub_admin_testimonials_data";
 
 /* ── Generic-based hooks ───────────────────────────────────────────────── */
 
@@ -216,15 +303,23 @@ export const usePublicVisionRoadmap = <T>(fallbackData: T) => useGenericPublicCo
 export const usePublicWhatWeDo = <T>(fallbackData: T) => useGenericPublicContent("whatWeDo", fetchPublicWhatWeDo, fallbackData);
 export const usePublicStudentDashboard = <T>(fallbackData: T) => useGenericPublicContent("studentDashboard", fetchPublicStudentDashboard, fallbackData);
 export const usePublicStartupEvents = <T>(fallbackData: T) => useGenericPublicContent("startupEvents", fetchPublicStartupEvents, fallbackData);
+export const usePublicStartupEventsCollage = <T>(fallbackData: T) => useGenericPublicContent("startupEventsCollage", fetchPublicStartupEventsCollage, fallbackData);
 export const usePublicRewards = <T>(fallbackData: T) => useGenericPublicContent("rewards", fetchPublicRewards, fallbackData);
 export const usePublicInternshipRegistration = <T>(fallbackData: T) => useGenericPublicContent("internshipRegistration", fetchPublicInternshipRegistration, fallbackData);
 export const usePublicInternshipCalendar = <T>(fallbackData: T) => useGenericPublicContent("internshipCalendar", fetchPublicInternshipCalendar, fallbackData);
 export const usePublicInstitutionsClubs = <T>(fallbackData: T) => useGenericPublicContent("institutionsClubs", fetchPublicInstitutionsClubs, fallbackData);
 export const usePublicStartupBlog = <T>(fallbackData: T) => useGenericPublicContent("startupBlog", fetchPublicStartupBlog, fallbackData);
+export const usePublicReports = <T>(fallbackData: T) => useGenericPublicContent("reports", fetchPublicReports, fallbackData);
 export const usePublicStartupFunding = <T>(fallbackData: T) => useGenericPublicContent("startupFunding", fetchPublicStartupFunding, fallbackData);
 export const usePublicInvestors = <T>(fallbackData: T) => useGenericPublicContent("investors", fetchPublicInvestors, fallbackData);
 export const usePublicAhubNetwork = <T>(fallbackData: T) => useGenericPublicContent("ahubNetwork", fetchPublicAhubNetwork, fallbackData);
-export const usePublicDistinguishedVisitors = <T>(fallbackData: T) => useGenericPublicContent("distinguishedVisitors", fetchPublicDistinguishedVisitors, fallbackData);
+export const usePublicDistinguishedVisitors = <T>(fallbackData: T) =>
+  useGenericPublicContent("distinguishedVisitors", async () => {
+    const data = await fetchPublicDistinguishedVisitors();
+    if (data) return data as any;
+    const admin = getAdminLocalStorage<T>(ADMIN_VISITORS_KEY);
+    return admin ?? fallbackData;
+  }, fallbackData);
 export const usePublicPartnersPage = <T>(fallbackData: T) => useGenericPublicContent("partnersPage", fetchPublicPartnersPage, fallbackData);
 export const usePublicImpact = <T>(fallbackData: T) => useGenericPublicContent("impact", fetchPublicImpact, fallbackData);
 export const usePublicOperationalModel = <T>(fallbackData: T) => useGenericPublicContent("operationalModel", fetchPublicOperationalModel, fallbackData);
@@ -235,3 +330,26 @@ export const usePublicCaseStudies = <T>(fallbackData: T) => useGenericPublicCont
 export const usePublicPress = <T>(fallbackData: T) => useGenericPublicContent("press", fetchPublicPress, fallbackData);
 export const usePublicPressPage = <T>(fallbackData: T) => useGenericPublicContent("pressPage", fetchPublicPressPage, fallbackData);
 export const usePublicPartnerItems = <T>(fallbackData: T) => useGenericPublicContent("partnerItems", fetchPublicPartnerItems, fallbackData);
+export function usePublicInternshipListings<T>(fallbackData: T) {
+  return useQuery({
+    queryKey: ["public", "internshipListings"],
+    queryFn: async () => {
+      const data = await fetchPublicInternshipListings();
+      return data?.length ? data : fallbackData;
+    },
+    staleTime: 60_000,
+    placeholderData: fallbackData,
+  });
+}
+
+export function usePublicTestimonials<T>(fallbackData: T) {
+  return useQuery({
+    queryKey: ["public", "testimonials"],
+    queryFn: async () => {
+      const admin = getAdminLocalStorage<T>(ADMIN_TESTIMONIALS_KEY);
+      return admin ?? fallbackData;
+    },
+    staleTime: 60_000,
+    placeholderData: fallbackData,
+  });
+}

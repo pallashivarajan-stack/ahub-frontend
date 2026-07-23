@@ -19,7 +19,8 @@ import {
   MapPin,
   ShoppingBag
 } from "lucide-react";
-import { portfolio } from "@/data";
+import { portfolio as staticPortfolio } from "@/data";
+import { usePublicPortfolio } from "@/services/usePublicContent";
 import { SectionHeading } from "@/components/ui-ahub/SectionHeading";
 
 const ICON_MAP: Record<string, any> = {
@@ -73,7 +74,10 @@ const startupStats: Record<
   ],
 };
 
-const getStatsForStartup = (startup: string, achievements: string[]) => {
+const getStatsForStartup = (startup: string, achievements: string[], customStats?: any[]) => {
+  if (customStats && customStats.length === 3) {
+    return customStats;
+  }
   if (startupStats[startup]) {
     return startupStats[startup];
   }
@@ -136,6 +140,8 @@ const ACHIEVEMENT_THEMES = [
 
 export function PortfolioCompanies() {
   const [active, setActive] = useState(0);
+  const { data: portfolioData } = usePublicPortfolio();
+  const portfolio: any[] = (portfolioData as any[]) ?? staticPortfolio;
 
   return (
     <section id="achieve" className="relative overflow-hidden py-10 md:py-14">
@@ -154,9 +160,10 @@ export function PortfolioCompanies() {
         <div className="hidden md:flex mt-20 h-[450px] gap-3 md:h-[480px]">
           {portfolio.map((p: any, i: number) => {
             const isActive = i === active;
+            const isDreamBot = p.startup === "DreamBot" || p._slotId === "dreambot";
             return (
               <motion.button
-                key={p.startup}
+                key={p._slotId || i}
                 onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
                 layout
@@ -179,7 +186,7 @@ export function PortfolioCompanies() {
                     <img
                       src={p.logo}
                       alt={p.startup}
-                      className={`max-w-none flex-shrink-0 object-contain -rotate-90 transition-all duration-500 group-hover:scale-108 ${p.startup === "DreamBot" ? "w-[100px] h-[35px]" : "w-[135px] h-[47px]"}`}
+                      className={`max-w-none flex-shrink-0 object-contain -rotate-90 transition-all duration-500 group-hover:scale-108 ${isDreamBot ? "w-[100px] h-[35px]" : "w-[135px] h-[47px]"}`}
                       draggable={false}
                     />
                   ) : (
@@ -220,7 +227,7 @@ export function PortfolioCompanies() {
                             <img
                               src={p.logo}
                               alt={`${p.startup} logo`}
-                              className={`${p.startup === "DreamBot" ? "h-[36px]" : "h-[46px]"} w-auto max-w-[200px] object-contain flex-shrink-0`}
+                              className={`${isDreamBot ? "h-[36px]" : "h-[46px]"} w-auto max-w-[200px] object-contain flex-shrink-0`}
                               draggable={false}
                             />
                           ) : (
@@ -307,23 +314,7 @@ export function PortfolioCompanies() {
                       }}
                     />
 
-                    {/* Decorative dot grids */}
-                    {/* Top-right dot grid */}
-                    <div
-                      className="absolute top-10 right-10 w-[70px] h-[60px] opacity-25 pointer-events-none z-10"
-                      style={{
-                        backgroundImage: "radial-gradient(circle, #FF7A00 1.5px, transparent 1.5px)",
-                        backgroundSize: "9px 9px",
-                      }}
-                    />
-                    {/* Bottom-left dot grid near portrait */}
-                    <div
-                      className="absolute left-10 bottom-12 w-[50px] h-[50px] opacity-20 pointer-events-none z-10"
-                      style={{
-                        backgroundImage: "radial-gradient(circle, #FF7A00 1.5px, transparent 1.5px)",
-                        backgroundSize: "8px 8px",
-                      }}
-                    />
+
 
                     {/* Passport Portrait Container with overlapping floating card */}
                     <motion.div
@@ -341,13 +332,13 @@ export function PortfolioCompanies() {
                           <img
                             src={p.founderImage}
                             alt={p.founder}
-                            className={`h-full w-full object-[center_top] transition-transform duration-500 group-hover:scale-[1.03] will-change-transform ${p.startup === "DreamBot" ? "object-contain" : "object-cover"}`}
+                            className={`h-full w-full object-[center_top] transition-transform duration-500 group-hover:scale-[1.03] will-change-transform ${p.startup === "DreamBot" || p._slotId === "dreambot" ? "object-contain" : "object-cover"}`}
                             draggable={false}
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center">
                             <span className="text-4xl font-black text-[#F97316]/30 select-none font-display">
-                              {p.founder.charAt(0)}
+                              {p.founder ? p.founder.charAt(0) : ""}
                             </span>
                           </div>
                         )}
@@ -384,39 +375,41 @@ export function PortfolioCompanies() {
 
         {/* Mobile View — Stacks vertically on mobile/tablet screens */}
         <div className="mt-12 grid grid-cols-1 gap-6 md:hidden">
-          {portfolio.map((p: any, idx: number) => (
-            <div
-              key={p.startup}
-              className="maroon-gradient-border group relative overflow-hidden rounded-[22px] border border-orange-100/50 bg-[#FDFBF7] p-5 shadow-[0_16px_40px_-24px_rgba(90,30,44,0.14)] flex flex-col gap-4"
-            >
-              {/* Category and Visit Button */}
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#F97316] bg-orange-50/80 px-2.5 py-1 rounded-full border border-orange-100/30">
-                  {p.category || p.industry}
-                </span>
-                {p.website && (
-                  <a
-                    href={p.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[10px] font-bold text-[#F97316] hover:text-[#FB923C] transition-colors"
-                  >
-                    Visit <ExternalLink size={12} />
-                  </a>
-                )}
-              </div>
+          {portfolio.map((p: any, idx: number) => {
+            const isDreamBot = p.startup === "DreamBot" || p._slotId === "dreambot";
+            return (
+              <div
+                key={p._slotId || idx}
+                className="maroon-gradient-border group relative overflow-hidden rounded-[22px] border border-orange-100/50 bg-[#FDFBF7] p-5 shadow-[0_16px_40px_-24px_rgba(90,30,44,0.14)] flex flex-col gap-4"
+              >
+                {/* Category and Visit Button */}
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#F97316] bg-orange-50/80 px-2.5 py-1 rounded-full border border-orange-100/30">
+                    {p.category || p.industry}
+                  </span>
+                  {p.website && (
+                    <a
+                      href={p.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[10px] font-bold text-[#F97316] hover:text-[#FB923C] transition-colors"
+                    >
+                      Visit <ExternalLink size={12} />
+                    </a>
+                  )}
+                </div>
 
-              {/* Startup Logo/Heading */}
-              <div className="space-y-1">
-                {p.logo ? (
-                  <div className="flex h-10 items-center justify-start">
-                    <img
-                      src={p.logo}
-                      alt={p.startup}
-                      className={`${p.startup === "DreamBot" ? "h-6" : "h-8"} w-auto max-w-[120px] object-contain flex-shrink-0`}
-                      draggable={false}
-                    />
-                  </div>
+                {/* Startup Logo/Heading */}
+                <div className="space-y-1">
+                  {p.logo ? (
+                    <div className="flex h-10 items-center justify-start">
+                      <img
+                        src={p.logo}
+                        alt={p.startup}
+                        className={`${isDreamBot ? "h-6" : "h-8"} w-auto max-w-[120px] object-contain flex-shrink-0`}
+                        draggable={false}
+                      />
+                    </div>
                 ) : (
                   <h3 className="font-display text-xl font-bold tracking-tight text-[#2B1B18] leading-tight">
                     {p.startup}
@@ -483,7 +476,7 @@ export function PortfolioCompanies() {
                 </div>
               </div>
             </div>
-          ))}
+          ); })}
         </div>
       </div>
     </section>

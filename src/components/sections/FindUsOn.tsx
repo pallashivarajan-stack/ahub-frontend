@@ -110,10 +110,14 @@ function SocialCard({
   const Icon = platform.icon || iconMap[platform.iconName] || Search;
 
   return (
-    <motion.a
-      href={platform.href}
-      target="_blank"
-      rel="noreferrer"
+    <motion.div
+      onClick={(e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest("iframe, blockquote, a")) {
+          return;
+        }
+        window.open(platform.href, "_blank", "noreferrer");
+      }}
       initial={{ opacity: 0, y: 24, scale: 0.98 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -125,7 +129,7 @@ function SocialCard({
           y: ((event.clientY - bounds.top) / bounds.height) * 100,
         });
       }}
-      className="group relative overflow-hidden rounded-[24px] border border-[#5b0e2d]/10 bg-white/82 p-6 shadow-[0_24px_80px_-40px_rgba(91,14,45,0.28)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-[#5b0e2d]/20 hover:shadow-[0_28px_90px_-38px_rgba(91,14,45,0.44)] flex flex-col h-full"
+      className="group relative cursor-pointer overflow-hidden rounded-[24px] border border-[#5b0e2d]/10 bg-white/82 p-6 shadow-[0_24px_80px_-40px_rgba(91,14,45,0.28)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-[#5b0e2d]/20 hover:shadow-[0_28px_90px_-38px_rgba(91,14,45,0.44)] flex flex-col h-full"
       style={{
         transformOrigin: "center",
       }}
@@ -217,6 +221,6 @@ function SocialCard({
           Explore <ArrowUpRight size={15} />
         </div>
       </div>
-    </motion.a>
+    </motion.div>
   );
 }

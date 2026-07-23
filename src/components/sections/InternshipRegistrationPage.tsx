@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { usePublicInternshipRegistration } from "@/services/usePublicContent";
+import { usePublicInternshipListings } from "@/services/usePublicContent";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Rocket,
@@ -195,17 +195,29 @@ const DEFAULT_INTERNSHIPS: StartupInternship[] = [
 ];
 
 export function InternshipRegistrationPage() {
-  const { data: internshipsData } = usePublicInternshipRegistration(DEFAULT_INTERNSHIPS);
+  const { data: internshipsData } = usePublicInternshipListings(DEFAULT_INTERNSHIPS);
   
   const mergeDefaults = (data: StartupInternship[]) => {
-    return data.map(item => {
-      const def = DEFAULT_INTERNSHIPS.find(d => d.id === item.id);
+    const list = data.map((item) => {
+      const def = DEFAULT_INTERNSHIPS.find(
+        (d) => d.id === item.id || d.companyName.toLowerCase() === item.companyName.toLowerCase()
+      );
       return {
         ...item,
         detailedInfo: item.detailedInfo ?? def?.detailedInfo,
-        role: def?.role ?? item.role
+        role: item.role || def?.role || "",
       };
     });
+
+    for (const def of DEFAULT_INTERNSHIPS) {
+      const exists = data.some(
+        (item) => item.id === def.id || item.companyName.toLowerCase() === def.companyName.toLowerCase()
+      );
+      if (!exists) {
+        list.push(def);
+      }
+    }
+    return list;
   };
 
   const [internships, setInternships] = useState<StartupInternship[]>(() => mergeDefaults(internshipsData ?? DEFAULT_INTERNSHIPS));

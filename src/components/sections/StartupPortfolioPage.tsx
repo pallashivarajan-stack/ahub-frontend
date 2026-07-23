@@ -37,7 +37,7 @@ export function StartupPortfolioPage() {
   const [category, setCategory] = useState("All");
   const [fundingStage, setFundingStage] = useState("All");
   const [industry, setIndustry] = useState("All");
-  const [sort, setSort] = useState<SortOption>("newest");
+  const [sort, setSort] = useState<SortOption>("default");
   const [applied, setApplied] = useState({
     search: "",
     category: "All",
@@ -79,7 +79,7 @@ export function StartupPortfolioPage() {
     setFundingStage("All");
     setIndustry("All");
     setApplied({ search: "", category: "All", fundingStage: "All", industry: "All" });
-    setSort("newest");
+    setSort("default");
     setPage(1);
   };
 
@@ -163,7 +163,6 @@ function BackgroundDecor() {
       <div className="absolute -left-24 top-24 h-72 w-72 rounded-full bg-[#F59E42]/8 blur-3xl" />
       <div className="absolute -right-20 top-48 h-56 w-56 rounded-full bg-[#FFE8D0]/70 blur-2xl" />
       <div className="absolute bottom-32 left-1/3 h-40 w-40 rounded-full bg-[#FFF4E8]/90 blur-xl" />
-      <div className="absolute right-1/4 top-1/3 opacity-[0.04] [background-image:radial-gradient(#F59E42_1.5px,transparent_1.5px)] [background-size:20px_20px]" />
     </div>
   );
 }
@@ -409,19 +408,6 @@ function StartupGridCard({ startup, index }: { startup: StartupItem; index: numb
         {/* ═══════════ FRONT FACE ═══════════ */}
         <div className="pc-face relative flex flex-col">
 
-          {/* ── Top-left: SINE Incubatee capsule ── */}
-          <div className="absolute top-4 left-4 z-10">
-            <span className="inline-block rounded-full bg-gradient-to-r from-[#FFECD2] to-[#FCE2C4] px-3 py-[4px] text-[9px] font-semibold tracking-wide text-[#E07B1A]">
-              SINE Incubatee
-            </span>
-          </div>
-
-          {/* ── Top-right: 3×3 dot grid ── */}
-          <div className="absolute top-4 right-4 z-10 grid grid-cols-3 gap-[4px]">
-            {[...Array(9)].map((_, i) => (
-              <span key={i} className="block h-[2.5px] w-[2.5px] rounded-full bg-[#F68B1F]/25" />
-            ))}
-          </div>
 
           {/* ── Center: logo + name + description ── */}
           <div className="flex flex-1 flex-col items-center justify-center px-5 pt-12 pb-10 z-10">
@@ -473,97 +459,65 @@ function StartupGridCard({ startup, index }: { startup: StartupItem; index: numb
             <h4 className="text-[14px] font-bold text-[#222] text-center mb-1">STARTUP DETAILS</h4>
             <div className="mx-auto h-[2px] w-8 rounded-full bg-[#F68B1F] mb-4" />
 
-            {/* Row: Founder(s) */}
-            <div className="flex items-start gap-2.5">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
-                <User className="h-3 w-3 text-[#F68B1F]" />
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              {/* Founder(s) */}
+              <div className="flex flex-col gap-1 rounded-xl bg-gradient-to-br from-[#fff] to-[#fafafa] p-2.5 shadow-sm border border-gray-100">
+                <div className="flex items-center gap-1.5">
+                  <User className="h-3 w-3 text-[#F68B1F]" />
+                  <p className="text-[10px] text-[#999] font-medium leading-none">Founder(s)</p>
+                </div>
+                <p className="text-[11px] text-[#222] font-bold leading-tight line-clamp-2">{startup.name} Founders</p>
               </div>
-              <div className="min-w-0">
-                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Founder(s)</p>
-                <p className="text-[11px] text-[#222] font-bold leading-tight">{startup.name} Founders</p>
-              </div>
-            </div>
-            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
 
-            {/* Row: Incubator */}
-            <div className="flex items-start gap-2.5">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
-                <Building className="h-3 w-3 text-[#F68B1F]" />
+              {/* Sector */}
+              <div className="flex flex-col gap-1 rounded-xl bg-gradient-to-br from-[#fff] to-[#fafafa] p-2.5 shadow-sm border border-gray-100">
+                <div className="flex items-center gap-1.5">
+                  <Rocket className="h-3 w-3 text-[#F68B1F]" />
+                  <p className="text-[10px] text-[#999] font-medium leading-none">Sector</p>
+                </div>
+                <p className="text-[11px] text-[#222] font-bold leading-tight line-clamp-2">{startup.industry}</p>
               </div>
-              <div className="min-w-0">
-                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Incubator</p>
-                <p className="text-[11px] text-[#222] font-bold leading-tight">SINE Incubatee</p>
-              </div>
-            </div>
-            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
 
-            {/* Row: Sector */}
-            <div className="flex items-start gap-2.5">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
-                <Rocket className="h-3 w-3 text-[#F68B1F]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Sector</p>
-                <p className="text-[11px] text-[#222] font-bold leading-tight">{startup.industry}</p>
-              </div>
-            </div>
-            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
-
-            {/* Row: Year of Incubation */}
-            <div className="flex items-start gap-2.5">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
-                <Calendar className="h-3 w-3 text-[#F68B1F]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Year of Incubation</p>
+              {/* Year */}
+              <div className="flex flex-col gap-1 rounded-xl bg-gradient-to-br from-[#fff] to-[#fafafa] p-2.5 shadow-sm border border-gray-100">
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="h-3 w-3 text-[#F68B1F]" />
+                  <p className="text-[10px] text-[#999] font-medium leading-none">Founded</p>
+                </div>
                 <p className="text-[11px] text-[#222] font-bold leading-tight">{startup.founded}</p>
               </div>
-            </div>
-            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
 
-            {/* Row: Location */}
-            <div className="flex items-start gap-2.5">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
-                <MapPin className="h-3 w-3 text-[#F68B1F]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Location</p>
+              {/* Location */}
+              <div className="flex flex-col gap-1 rounded-xl bg-gradient-to-br from-[#fff] to-[#fafafa] p-2.5 shadow-sm border border-gray-100">
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="h-3 w-3 text-[#F68B1F]" />
+                  <p className="text-[10px] text-[#999] font-medium leading-none">Location</p>
+                </div>
                 <p className="text-[11px] text-[#222] font-bold leading-tight">India</p>
               </div>
             </div>
-            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
 
-            {/* Row: Website */}
-            <div className="flex items-start gap-2.5">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
-                <Globe className="h-3 w-3 text-[#F68B1F]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">Website</p>
-                <a
-                  href={startup.website || `https://www.google.com/search?q=${encodeURIComponent(startup.name + ' startup')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] text-[#F68B1F] font-bold leading-tight hover:underline"
-                >
-                  Visit Link
-                </a>
-              </div>
-            </div>
-            <div className="my-2.5 h-px w-full bg-[#F5E4D3]" />
-
-            {/* Row: About */}
-            <div className="flex items-start gap-2.5 pb-4">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFECD2]">
+            {/* About */}
+            <div className="flex-1 min-h-0 mb-4 rounded-xl bg-gradient-to-br from-[#fff] to-[#fafafa] p-3 shadow-sm border border-gray-100">
+              <div className="flex items-center gap-1.5 mb-2">
                 <Info className="h-3 w-3 text-[#F68B1F]" />
+                <p className="text-[10px] text-[#999] font-medium leading-none">About</p>
               </div>
-              <div className="min-w-0">
-                <p className="text-[10px] text-[#999] font-medium leading-none mb-1">About</p>
-                <p className="text-[10.5px] text-[#444] font-medium leading-[1.5] pr-1">
-                  {startup.description}
-                </p>
-              </div>
+              <p className="text-[10.5px] text-[#444] font-medium leading-[1.5] line-clamp-5">
+                {startup.description}
+              </p>
             </div>
+
+            {/* Website Button */}
+            <a
+              href={startup.website || `https://www.google.com/search?q=${encodeURIComponent(startup.name + ' startup')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-auto flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#F68B1F] to-[#FFB45B] py-2.5 text-[11px] font-bold text-white shadow-md transition-transform hover:scale-[1.02] active:scale-95"
+            >
+              <Globe className="h-3.5 w-3.5" />
+              Visit Website
+            </a>
 
           </div>
         </div>

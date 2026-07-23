@@ -1,3 +1,4 @@
+// @refresh reset
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -12,7 +13,6 @@ import appCss from "../styles.css?url";
 import { useLenis } from "@/hooks/useLenis";
 import { useEffect } from "react";
 import { initScrollAnimations } from "@/lib/scroll";
-import { Preloader } from "@/components/ui-ahub/Preloader";
 
 function NotFoundComponent() {
   return (
@@ -144,7 +144,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Preloader />
       <Outlet />
     </QueryClientProvider>
   );

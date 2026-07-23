@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, CheckCircle2, Loader2, User, Mail, Phone, Building2, Briefcase, FileText } from "lucide-react";
+import { API_BASE_URL } from "@/services/api";
 
 const ORANGE = "#F59E42";
 
@@ -91,10 +92,36 @@ function DynamicField({
 }
 
 export function EventRegistrationPage() {
+  const [config, setConfig] = useState<any>(null);
   const [values, setValues] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const fields = config?.fields || eventFormFields;
+  const formTitle = config?.title || "Event Registration";
+  const formSubtitle = config?.subtitle || "Fill in the details to reserve your spot";
+  const submitBtnText = config?.submit_button_text || "Register Now";
+  const successMsg = config?.success_message || "Registration submitted successfully! We'll send you a confirmation email shortly.";
+
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const base = API_BASE_URL || "http://localhost:8000";
+        const resp = await fetch(`${base}/api/public/join-us/config?form_type=event_registration`);
+        if (resp.ok) {
+          const data = await resp.json();
+          setConfig(data);
+        }
+      } catch {
+        // use fallback defaults
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchConfig();
+  }, []);
 
   const updateValue = (id: string, val: string) => {
     setValues((prev) => ({ ...prev, [id]: val }));
@@ -104,9 +131,9 @@ export function EventRegistrationPage() {
     e.preventDefault();
     setError("");
 
-    const missing = eventFormFields
-      .filter((f) => f.required && !values[f.id]?.trim())
-      .map((f) => f.label);
+    const missing = fields
+      .filter((f: any) => f.required && !values[f.id]?.trim())
+      .map((f: any) => f.label);
     if (missing.length > 0) {
       setError(`Please fill in: ${missing.join(", ")}`);
       return;
@@ -114,10 +141,19 @@ export function EventRegistrationPage() {
 
     setSubmitting(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      const base = API_BASE_URL || "http://localhost:8000";
+      const resp = await fetch(`${base}/api/public/join-us/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ form_type: "event_registration", data: values }),
+      });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({ detail: "Submission failed" }));
+        throw new Error(err.detail || "Submission failed");
+      }
       setSubmitted(true);
-    } catch {
-      setError("Submission failed. Please try again.");
+    } catch (err: any) {
+      setError(err.message || "Submission failed. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -170,12 +206,16 @@ export function EventRegistrationPage() {
                   <Calendar size={20} style={{ color: ORANGE }} />
                 </div>
                 <div>
-                  <div className="text-base font-bold text-slate-900">Event Registration</div>
-                  <div className="text-[0.75rem] text-slate-500">Fill in the details to reserve your spot</div>
+                  <div className="text-base font-bold text-slate-900">{formTitle}</div>
+                  <div className="text-[0.75rem] text-slate-500">{formSubtitle}</div>
                 </div>
               </div>
 
-              {submitted ? (
+              {loading ? (
+                <div className="flex justify-center items-center py-20">
+                  <Loader2 className="animate-spin text-slate-400" size={32} />
+                </div>
+              ) : submitted ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -188,12 +228,12 @@ export function EventRegistrationPage() {
                     <CheckCircle2 size={32} style={{ color: ORANGE }} />
                   </div>
                   <p className="mt-4 text-center text-sm font-medium text-slate-800">
-                    Registration submitted successfully! We'll send you a confirmation email shortly.
+                    {successMsg}
                   </p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-4">
-                  {eventFormFields.map((field) => (
+                  {fields.map((field: any) => (
                     <DynamicField
                       key={field.id}
                       field={field}
@@ -217,7 +257,7 @@ export function EventRegistrationPage() {
                         Submitting...
                       </>
                     ) : (
-                      "Register Now"
+                      submitBtnText
                     )}
                   </button>
                 </form>

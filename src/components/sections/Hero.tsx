@@ -4,10 +4,9 @@ import { Link } from "@tanstack/react-router";
 import { usePublicHero } from "@/services/usePublicContent";
 import { resolveLegacyAsset } from "@/lib/assets";
 import { cn } from "@/lib/utils";
-import { useResponsive } from "@/hooks/useResponsive";
 
 const fallbackHeroData = {
-  poster: resolveLegacyAsset("/src/assets/hero-poster.jpg"),
+  poster: "",
   video: resolveLegacyAsset("/src/assets/AUIC NIDHI iTBI - a-hub (1080p, h264).mp4"),
   heading: "A premium startup ecosystem for ambitious founders.",
   subheading: "Incubation, mentorship, and strategic support in a cinematic, high-trust setting.",
@@ -15,7 +14,7 @@ const fallbackHeroData = {
 
 export function Hero() {
   const [videoFailed, setVideoFailed] = useState(false);
-  const { isMobile } = useResponsive();
+
   const prefersReduced =
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -34,10 +33,10 @@ export function Hero() {
       className="relative isolate h-[100svh] w-full overflow-hidden text-foreground bg-black"
       aria-label="Hero section - Welcome to AHUB Premium Innovation Hub"
     >
-      {/* VIDEO BACKGROUND LAYER - Desktop Only */}
-      {!videoFailed && !isMobile && !prefersReduced ? (
+      {/* VIDEO BACKGROUND LAYER - All devices including mobile */}
+      {!videoFailed && !prefersReduced ? (
         <video
-          className="absolute inset-0 h-full w-full object-cover object-center will-change-transform z-0"
+          className="absolute top-1/2 left-1/2 min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover z-0"
           autoPlay
           muted
           loop
@@ -45,20 +44,16 @@ export function Hero() {
           preload="metadata"
           poster={poster}
           onError={() => {
-            console.error("Video failed to load:", video);
             setVideoFailed(true);
           }}
-          onLoadStart={() => console.log("Video loading:", video)}
           aria-hidden="true"
-          crossOrigin="anonymous"
           controlsList="nodownload"
           disablePictureInPicture
         >
           {video && <source src={video} type="video/mp4" />}
-          Your browser does not support HTML5 video.
         </video>
       ) : (
-        /* FALLBACK BACKGROUND - Mobile or video error */
+        /* FALLBACK BACKGROUND - video error or reduced motion */
         <div className="absolute inset-0 h-full w-full bg-gradient-to-br from-[#1a0a0a] via-[#2d1215] to-[#1a0a0a] z-0" />
       )}
 

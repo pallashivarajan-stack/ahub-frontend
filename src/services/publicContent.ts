@@ -1,6 +1,15 @@
-import { API_BASE_URL } from "@/lib/media";
-import { resolveBackendMediaUrl } from "@/lib/media";
+import { API_BASE_URL, resolveBackendMediaUrl } from "@/lib/media";
+import { resolveLegacyAsset } from "@/lib/assets";
 import { PUBLIC_CONTENT_ENDPOINTS } from "@/services/publicContentEndpoints";
+
+function resolveSafeMediaUrl(path: string | null | undefined): string {
+  if (!path) return "";
+  const strPath = String(path);
+  if (strPath.startsWith("/src/assets/")) {
+    return resolveLegacyAsset(strPath);
+  }
+  return resolveBackendMediaUrl(strPath);
+}
 
 async function fetchPublic<T>(endpoint: string): Promise<T | null> {
   try {
@@ -17,26 +26,44 @@ async function fetchPublic<T>(endpoint: string): Promise<T | null> {
 
 /** Map backend portfolio row → frontend portfolio card shape (same as PortfolioCompanies) */
 export function mapPortfolioFromApi(item: Record<string, unknown>) {
+  let stats: any[] | undefined = undefined;
+  if (item.linkedin_url && typeof item.linkedin_url === "string") {
+    try {
+      const parsed = JSON.parse(item.linkedin_url);
+      if (Array.isArray(parsed)) {
+        stats = parsed;
+      }
+    } catch {
+      // not a json array
+    }
+  }
+
   return {
-    startup: String(item.company_name ?? item.startup ?? ""),
-    industry: String(item.tag ?? item.industry ?? ""),
-    category: String(item.tag ?? item.category ?? "").toUpperCase(),
-    desc: String(item.description ?? item.desc ?? ""),
+    startup: String(item.name ?? item.company_name ?? item.startup ?? ""),
+    industry: String(item.industry ?? item.tag ?? ""),
+    category: String(item.category ?? item.tag ?? item.industry ?? "").toUpperCase(),
+    desc: String(item.short_description ?? item.description ?? item.desc ?? ""),
     achievements: Array.isArray(item.achievements)
       ? (item.achievements as string[])
-      : ["AI Powered", "Incubated", "Innovator"],
-    funding: item.funding ? String(item.funding) : undefined,
-    logo: resolveBackendMediaUrl(String(item.logo_image ?? item.logo ?? "")),
+      : [String(item.industry ?? "Innovator"), "Incubated", "AI Powered"],
+    funding: item.funding_stage ? String(item.funding_stage) : item.funding ? String(item.funding) : undefined,
+    logo: resolveSafeMediaUrl(String(item.logo_url ?? item.logo_image ?? item.logo ?? "")),
     founder: String(item.founder_name ?? item.founder ?? ""),
-    founderTitle: String(item.founder_designation ?? item.founderTitle ?? ""),
-    founderImage: resolveBackendMediaUrl(
-      String(item.founder_image ?? item.founderImage ?? ""),
+    founderTitle: String(item.founder_title ?? item.founder_designation ?? item.founderTitle ?? "Founder & CEO"),
+    founderImage: resolveSafeMediaUrl(
+      String(item.founder_image_url ?? item.founder_image ?? item.founderImage ?? ""),
     ),
+    website: item.website_url
+      ? String(item.website_url)
+      : item.websiteUrl
+        ? String(item.websiteUrl)
+        : undefined,
     websiteUrl: item.website_url
       ? String(item.website_url)
       : item.websiteUrl
         ? String(item.websiteUrl)
         : undefined,
+    stats,
   };
 }
 
@@ -47,8 +74,8 @@ export function mapEventFromApi(item: Record<string, unknown>) {
     date: String(item.date ?? ""),
     tag: String(item.tag ?? ""),
     desc: String(item.description ?? item.desc ?? ""),
-    img: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? item.img ?? "")),
-    imageFetchUrl: resolveBackendMediaUrl(
+    img: resolveSafeMediaUrl(String(item.image_url ?? item.image ?? item.img ?? "")),
+    imageFetchUrl: resolveSafeMediaUrl(
       String(item.image_url ?? item.image ?? item.img ?? ""),
     ),
   };
@@ -59,7 +86,7 @@ export function mapTeamMemberFromApi(item: Record<string, unknown>) {
   return {
     name: String(item.name ?? ""),
     title: String(item.title ?? ""),
-    image: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? "")),
+    image: resolveSafeMediaUrl(String(item.image_url ?? item.image ?? "")),
     tagline: item.tagline ? String(item.tagline) : undefined,
     visitLink: item.visit_link ? String(item.visit_link) : item.visitLink ? String(item.visitLink) : undefined,
     linkedIn: item.linked_in ? String(item.linked_in) : item.linkedIn ? String(item.linkedIn) : undefined,
@@ -69,7 +96,7 @@ export function mapTeamMemberFromApi(item: Record<string, unknown>) {
 /** Map backend team page metadata → TeamPageMeta shape */
 export function mapTeamPageFromApi(item: Record<string, unknown>) {
   return {
-    groupPhoto: resolveBackendMediaUrl(String(item.group_photo ?? item.groupPhoto ?? "")),
+    groupPhoto: resolveSafeMediaUrl(String(item.group_photo ?? item.groupPhoto ?? "")),
     title: String(item.title ?? ""),
     subtitle: String(item.subtitle ?? ""),
     description: String(item.description ?? ""),
@@ -115,8 +142,8 @@ export async function fetchPublicContentSeed() {
 
 export function mapHeroFromApi(item: Record<string, unknown>) {
   return {
-    poster: item.poster ? resolveBackendMediaUrl(String(item.poster)) : undefined,
-    video: item.video ? resolveBackendMediaUrl(String(item.video)) : undefined,
+    poster: item.poster ? resolveSafeMediaUrl(String(item.poster)) : undefined,
+    video: item.video ? resolveSafeMediaUrl(String(item.video)) : undefined,
     heading: item.heading ? String(item.heading) : undefined,
     subheading: item.subheading ? String(item.subheading) : undefined,
   };
@@ -129,21 +156,21 @@ export function mapIncubatorFromApi(item: Record<string, unknown>) {
     short: String(item.short ?? ""),
     long: String(item.long ?? ""),
     blurb: String(item.blurb ?? ""),
-    image: item.image ? resolveBackendMediaUrl(String(item.image)) : "",
-    card: item.card ? resolveBackendMediaUrl(String(item.card)) : "",
+    image: item.image ? resolveSafeMediaUrl(String(item.image)) : "",
+    card: item.card ? resolveSafeMediaUrl(String(item.card)) : "",
     stats: Array.isArray(item.stats) ? item.stats : undefined,
   };
 }
 
 export function mapPartnerFromApi(item: Record<string, unknown>) {
-  return resolveBackendMediaUrl(String(item.logo_url ?? item.logo ?? item.image ?? item.url ?? ""));
+  return resolveSafeMediaUrl(String(item.logo_url ?? item.logo ?? item.image ?? item.url ?? ""));
 }
 
 /** Map backend partner item → frontend PartnerItem shape (marquee / popular) */
 export function mapPartnerItemFromApi(item: Record<string, unknown>) {
   return {
     name: String(item.name ?? ""),
-    logo: resolveBackendMediaUrl(String(item.logo_url ?? "")),
+    logo: resolveSafeMediaUrl(String(item.logo_url ?? "")),
     description: String(item.description ?? ""),
     href: item.website_url ? String(item.website_url) : undefined,
   };
@@ -212,7 +239,7 @@ export function mapMentorFromApi(item: Record<string, unknown>) {
     name: String(item.name ?? ""),
     title: String(item.title ?? ""),
     organization: String(item.company ?? item.organization ?? item.org ?? ""),
-    image: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? "")),
+    image: resolveSafeMediaUrl(String(item.image_url ?? item.image ?? "")),
     linkedIn: item.linked_in ? String(item.linked_in) : item.linkedIn ? String(item.linkedIn) : undefined,
     tags: Array.isArray(item.tags) ? item.tags : undefined,
   };
@@ -223,7 +250,7 @@ export function mapBoardMemberFromApi(item: Record<string, unknown>) {
     name: String(item.name ?? ""),
     title: String(item.title ?? ""),
     bio: String(item.bio ?? item.description ?? ""),
-    image: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? "")),
+    image: resolveSafeMediaUrl(String(item.image_url ?? item.image ?? "")),
     linkedIn: item.linked_in ? String(item.linked_in) : item.linkedIn ? String(item.linkedIn) : undefined,
   };
 }
@@ -233,7 +260,7 @@ export function mapVisitorFromApi(item: Record<string, unknown>) {
     name: String(item.name ?? ""),
     role: String(item.role ?? item.title ?? ""),
     org: String(item.org ?? item.organization ?? item.company ?? ""),
-    image: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? "")),
+    image: resolveSafeMediaUrl(String(item.image_url ?? item.image ?? "")),
   };
 }
 
@@ -257,14 +284,14 @@ export function mapStartupEventFromApi(item: Record<string, unknown>) {
   return {
     id: String(item.id ?? ""),
     title: String(item.title ?? ""),
-    image: resolveBackendMediaUrl(String(item.image_url ?? item.image ?? "")),
-    logo: item.logo_url ? resolveBackendMediaUrl(String(item.logo_url)) : String(item.logo ?? ""),
+    image: resolveSafeMediaUrl(String(item.image_url ?? item.image ?? "")),
+    logo: item.logo_url ? resolveSafeMediaUrl(String(item.logo_url)) : String(item.logo ?? ""),
     date: {
       month: String(item.month ?? "").toUpperCase(),
       day: String(item.day ?? ""),
       year: String(item.year ?? ""),
     },
-    type: String(item.type ?? ""),
+    type: String(item.event_type ?? item.type ?? ""),
     category: String(item.category ?? "all") as "workshops" | "webinars" | "hackathons" | "networking" | "pitch sessions" | "demo days" | "all",
     location: String(item.location ?? ""),
     time: String(item.time ?? ""),
@@ -272,6 +299,10 @@ export function mapStartupEventFromApi(item: Record<string, unknown>) {
     status: String(item.status ?? "Upcoming") as "Upcoming" | "Live" | "Completed",
     speakers: Array.isArray(item.speakers) ? item.speakers.map(mapSpeakerFromApi) : undefined,
     detailedDescription: item.detailed_description ? String(item.detailed_description) : item.detailedDescription ? String(item.detailedDescription) : undefined,
+    instagramLink: item.instagram_link ? String(item.instagram_link) : item.instagramLink ? String(item.instagramLink) : undefined,
+    featured: Boolean(item.featured ?? false),
+    panelDetails: item.panel_details ? String(item.panel_details) : item.panelDetails ? String(item.panelDetails) : undefined,
+    registrationLink: item.registration_link ? String(item.registration_link) : item.registrationLink ? String(item.registrationLink) : undefined,
   };
 }
 
@@ -279,7 +310,7 @@ export function mapSpeakerFromApi(item: Record<string, unknown>) {
   return {
     name: String(item.name ?? ""),
     role: String(item.role ?? ""),
-    avatar: resolveBackendMediaUrl(String(item.avatar_url ?? item.image_url ?? item.avatar ?? "")),
+    avatar: resolveSafeMediaUrl(String(item.avatar_url ?? item.image_url ?? item.avatar ?? "")),
   };
 }
 
@@ -298,7 +329,7 @@ export function mapStartupOpportunityFromApi(item: Record<string, unknown>) {
     duration: String(item.duration ?? ""),
     stipend: String(item.stipend ?? ""),
     locationType: String(item.location_type ?? item.locationType ?? "Remote") as "Remote" | "Hybrid" | "On-site",
-    logoUrl: resolveBackendMediaUrl(String(item.logo_url ?? item.logo ?? "")),
+    logoUrl: resolveSafeMediaUrl(String(item.logo_url ?? item.logo ?? "")),
   };
 }
 
@@ -324,13 +355,53 @@ export const fetchPublicStatistics = async () => {
   const data = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.statistics);
   return data?.length ? data.map(mapStatisticFromApi) : null;
 };
-export const fetchPublicInfrastructure = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.infrastructure);
+export const fetchPublicInfrastructure = async () => {
+  // Backend returns an array of { section, label, image_url, display_order }
+  const items = await fetchPublic<Record<string, unknown>[]>(PUBLIC_CONTENT_ENDPOINTS.infrastructure);
+  if (!items?.length) return null;
+
+  // Build a lookup by (section, label) -> resolved image URL
+  const lookup = new Map<string, string>();
+  for (const item of items) {
+    const section = String(item.section ?? "");
+    const label = String(item.label ?? "");
+    const imageUrl = resolveSafeMediaUrl(String(item.image_url ?? ""));
+    if (section && label && imageUrl) {
+      lookup.set(`${section}::${label}`, imageUrl);
+    }
+  }
+
+  const get = (section: string, label: string, fallback = "") =>
+    lookup.get(`${section}::${label}`) || fallback;
+
+  // Map to the infrastructureImages shape the frontend page expects
+  const infrastructureImages = {
+    hero: get("hero", "hero image"),
+    collaborative: get("side", "Collaborative Environment"),
+    conference: get("side", "Events & Community Spaces"),
+    labs: get("side", "Advanced Research Facilities"),
+    campus: get("side", "Facility Gallery"),
+    galleryCoworking: get("gallery", "Coworking Space"),
+    galleryStartupBays: get("gallery", "Startup Bays"),
+    galleryEventHall: get("gallery", "Event Hall"),
+    gallerySeminarRoom: get("gallery", "Seminar Room"),
+    galleryInnovationLabs: get("gallery", "Innovation Labs"),
+    masonryCampus: get("masonry", "AHUB Campus"),
+    masonryIoT: get("masonry", "IoT & Robotics Lab"),
+    masonryCollaborative: get("masonry", "Collaborative Zones"),
+    masonryConference: get("masonry", "Conference Hall"),
+    masonryWorkspace: get("masonry", "Founder Workspace"),
+    masonryResearch: get("masonry", "Research Lab"),
+  };
+
+  return { infrastructureImages };
+};
 export function mapStartupPortfolioFromApi(data: Record<string, unknown>) {
   if (!data) return null;
   const directory = ((data.startupDirectory ?? []) as any[]).map((s: any) => ({
     id: String(s.id ?? ""),
     name: String(s.name ?? ""),
-    logo: resolveBackendMediaUrl(s.logo),
+    logo: resolveSafeMediaUrl(s.logo),
     category: String(s.category ?? ""),
     industry: String(s.industry ?? ""),
     founded: Number(s.founded ?? 0),
@@ -342,7 +413,7 @@ export function mapStartupPortfolioFromApi(data: Record<string, unknown>) {
   }));
   const marquee = ((data.logoMarquee ?? []) as any[]).map((m: any) => ({
     name: String(m.name ?? ""),
-    logo: resolveBackendMediaUrl(m.logo),
+    logo: resolveSafeMediaUrl(m.logo),
   }));
   return {
     startupDirectory: directory,
@@ -364,15 +435,15 @@ export const fetchPublicVisionRoadmap = async () => {
   return {
     visionData: ((data.visionData ?? []) as any[]).map((v: any) => ({
       ...v,
-      image: resolveBackendMediaUrl(v.image),
+      image: resolveSafeMediaUrl(v.image),
     })),
     roadmapData: {
       ...(data.roadmapData as any),
-      image: resolveBackendMediaUrl((data.roadmapData as any)?.image),
+      image: resolveSafeMediaUrl((data.roadmapData as any)?.image),
     },
     timelineYears: ((data.timelineYears ?? []) as any[]).map((t: any) => ({
       ...t,
-      image: resolveBackendMediaUrl(t.image),
+      image: resolveSafeMediaUrl(t.image),
     })),
   };
 };
@@ -389,12 +460,40 @@ export const fetchPublicStartupEvents = async () => {
   if (!data?.length) return null;
   return data.map(mapStartupEventFromApi);
 };
+export const fetchPublicStartupEventsCollage = async () => {
+  const data = await fetchPublic<Record<string, string | null>>(PUBLIC_CONTENT_ENDPOINTS.startupEventsCollage);
+  if (!data) return null;
+  return {
+    main: data.main ? resolveSafeMediaUrl(data.main) : null,
+    card1: data.card1 ? resolveSafeMediaUrl(data.card1) : null,
+    card2: data.card2 ? resolveSafeMediaUrl(data.card2) : null,
+    card3: data.card3 ? resolveSafeMediaUrl(data.card3) : null,
+  };
+};
 export const fetchPublicRewards = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.rewards);
 export const fetchPublicInternshipRegistration = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.internshipRegistration);
 export const fetchPublicInternshipCalendar = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.internshipCalendar);
 export const fetchPublicInstitutionsClubs = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.institutionsClubs);
 export const fetchPublicStartupBlog = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.startupBlog);
-export const fetchPublicStartupFunding = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.startupFunding);
+export const fetchPublicReports = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.reports);
+export const fetchPublicInternshipListings = async () => {
+  const data = await fetchPublic<any[]>(PUBLIC_CONTENT_ENDPOINTS.internshipListings);
+  if (!data) return null;
+  return data.map((item) => ({
+    ...item,
+    logo: resolveSafeMediaUrl(item.logo),
+  }));
+};
+export const fetchPublicStartupFunding = async () => {
+  const data = await fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.startupFunding);
+  if (!data?.content) return null;
+  try {
+    const parsed = typeof data.content === "string" ? JSON.parse(data.content) : data.content;
+    return parsed;
+  } catch {
+    return null;
+  }
+};
 export const fetchPublicInvestors = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.investors);
 export const fetchPublicAhubNetwork = () => fetchPublicGenericData(PUBLIC_CONTENT_ENDPOINTS.ahubNetwork);
 export const fetchPublicDistinguishedVisitors = async () => {
@@ -421,7 +520,7 @@ export function mapCaseStudyFromApi(item: Record<string, unknown>) {
     title,
     category: "",
     description: String(item.description ?? ""),
-    image: resolveBackendMediaUrl(String(item.image_url ?? "")),
+    image: resolveSafeMediaUrl(String(item.image_url ?? "")),
     url: String(item.visit_link ?? item.url ?? ""),
     stats: [],
   };

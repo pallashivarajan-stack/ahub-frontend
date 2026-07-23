@@ -12,27 +12,29 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { resolveLegacyAsset } from "@/lib/assets";
-
-const features = [
-  { icon: Users, label: "Meet Founders" },
-  { icon: Network, label: "Build Network" },
-  { icon: Trophy, label: "Join Hackathons" },
-  { icon: Lightbulb, label: "Pitch Ideas" },
-];
+import { usePublicStartupEventsCollage } from "@/services/usePublicContent";
 
 const stats = [
-  { icon: CalendarDays, value: "50+", label: "Active Events" },
-  { icon: Building2, value: "20+", label: "Startup Communities" },
-  { icon: UserRound, value: "5000+", label: "Ecosystem Attendees" },
-  { icon: TrendingUp, value: "100+", label: "Active Founders" },
+  { icon: CalendarDays, value: "100+", label: "Events Hosted" },
+  { icon: Users, value: "5,000+", label: "Attendees" },
+  { icon: Building2, value: "250+", label: "Startups" },
+  { icon: TrendingUp, value: "₹10Cr+", label: "Fund Raised" },
 ];
 
+const fallbackCollage = {
+  main: resolveLegacyAsset("/src/assets/startups_events/Startup Saturdays - 6 Sep 2025Seaweed are a diverse set of macrophytic plants growing in the mar.jpg"),
+  card1: resolveLegacyAsset("/src/assets/startups_events/Greetings from AAA!Were thrilled to announce that our recent seminar on Agriculture Entreprene.webp"),
+  card2: resolveLegacyAsset("/src/assets/startups_events/IMG_3899.jpg"),
+  card3: resolveLegacyAsset("/src/assets/startups_events/Startup Saturdays - 2 November 2024 We had an electrifying session focused on electricity distri (1).jpg"),
+};
+
 export function StartupEventsPremiumHero() {
+  const { data: collageData } = usePublicStartupEventsCollage(fallbackCollage);
   const collageImages = {
-    main: resolveLegacyAsset("/src/assets/startups_events/Startup Saturdays - 6 Sep 2025Seaweed are a diverse set of macrophytic plants growing in the mar.jpg"),
-    card1: resolveLegacyAsset("/src/assets/startups_events/Greetings from AAA!Were thrilled to announce that our recent seminar on Agriculture Entreprene.webp"),
-    card2: resolveLegacyAsset("/src/assets/startups_events/IMG_3899.jpg"),
-    card3: resolveLegacyAsset("/src/assets/startups_events/Startup Saturdays - 2 November 2024 We had an electrifying session focused on electricity distri (1).jpg"),
+    main: collageData?.main || fallbackCollage.main,
+    card1: collageData?.card1 || fallbackCollage.card1,
+    card2: collageData?.card2 || fallbackCollage.card2,
+    card3: collageData?.card3 || fallbackCollage.card3,
   };
 
   return (
@@ -89,11 +91,7 @@ export function StartupEventsPremiumHero() {
                 aria-hidden
                 className="absolute -bottom-1.5 left-1 right-4 block h-[4px] origin-left rounded-full bg-primary/80 animate-underline"
               />
-              <Rocket
-                aria-hidden
-                className="absolute -right-10 top-1 h-7 w-7 -rotate-[25deg] text-primary md:h-9 md:w-9"
-                strokeWidth={2}
-              />
+
             </span>
           </h1>
 
@@ -206,27 +204,7 @@ export function StartupEventsPremiumHero() {
             </div>
           </div>
 
-          {/* Hand-drawn dashed arrow */}
-          <svg
-            aria-hidden
-            className="absolute left-[80px] top-[140px] z-10 h-24 w-32 text-primary"
-            viewBox="0 0 160 130"
-            fill="none"
-          >
-            <path
-              d="M10 20 C 50 5, 100 30, 140 80"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeDasharray="4 6"
-            />
-            <path
-              d="M140 80 L 128 72 M140 80 L 132 92"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+
         </div>
       </section>
     </main>

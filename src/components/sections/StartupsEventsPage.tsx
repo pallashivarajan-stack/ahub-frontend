@@ -157,6 +157,25 @@ export function StartupsEventsPage() {
   }, [selectedFilter]);
 
   const featuredEvents = useMemo(() => {
+    const backendFeatured = displayEvents
+      .filter((event: any) => event.featured)
+      .map((event: any) => ({
+        id: String(event.id),
+        title: event.title,
+        image: event.image,
+        type: event.type || "Upcoming Event",
+        panelDetails: event.panelDetails || event.detailedDescription || event.description,
+        dateLabel: `${event.date.month} ${event.date.day}${event.date.year ? `, ${event.date.year}` : ""}`,
+        time: event.time,
+        venue: event.location,
+        description: event.description,
+        registrationLink: event.registrationLink || event.instagramLink,
+      }));
+
+    if (backendFeatured.length > 0) {
+      return backendFeatured;
+    }
+
     return [
       {
         id: "featured-1",
@@ -182,7 +201,7 @@ export function StartupsEventsPage() {
         description: "An electrifying session focusing on modern startup distribution challenges, finding your first 100 customers, and open Q&A."
       }
     ];
-  }, []);
+  }, [displayEvents]);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();

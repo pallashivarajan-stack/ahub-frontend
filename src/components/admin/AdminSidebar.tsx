@@ -11,6 +11,12 @@ import {
   Building2,
   ChevronDown,
   ChevronRight,
+  ClipboardCheck,
+  Calendar,
+  Quote,
+  Globe,
+  MapPin,
+  Share2,
 } from "lucide-react";
 
 type NavGroup = {
@@ -22,6 +28,19 @@ type NavGroup = {
 };
 
 const NAV_GROUPS: NavGroup[] = [
+  {
+    key: "home",
+    label: "Home Page",
+    eyebrow: "Homepage sections",
+    paths: ["/admin/latest-events", "/admin/testimonials", "/admin/partners-logos", "/admin/visitors", "/admin/find-us-on"],
+    items: [
+      { to: "/admin/latest-events", label: "Latest Events", icon: Calendar },
+      { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
+      { to: "/admin/partners-logos", label: "Partners & Mesh Network", icon: Globe },
+      { to: "/admin/visitors", label: "Distinguished Visitors", icon: MapPin },
+      { to: "/admin/find-us-on", label: "Find Us On", icon: Share2 },
+    ],
+  },
   {
     key: "ecosystem",
     label: "Ecosystem",
@@ -40,6 +59,15 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/admin/mentors", label: "Mentors", icon: GraduationCap },
       { to: "/admin/board", label: "Board", icon: ClipboardList },
       { to: "/admin/team", label: "Team", icon: Users },
+    ],
+  },
+  {
+    key: "announcement",
+    label: "Announcement",
+    eyebrow: "Registrations & Events",
+    paths: ["/admin/internship-registration"],
+    items: [
+      { to: "/admin/internship-registration", label: "Internship Registration", icon: ClipboardCheck },
     ],
   },
 ];
