@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { isLoggedIn, loadTestimonialsData, saveTestimonialsData, getAssetOptions, type AdminTestimonialData } from "@/services/adminService";
+import { isLoggedIn, loadTestimonialsData, saveTestimonialsData, getMultiCategoryAssetOptions, type AdminTestimonialData } from "@/services/adminService";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { Plus, Pencil, Trash2, Save, Check, X, Star } from "lucide-react";
 
@@ -26,7 +26,7 @@ function AdminTestimonialsPage() {
   }, [navigate]);
 
   useEffect(() => {
-    getAssetOptions("visitors").then(setAssets);
+    getMultiCategoryAssetOptions(["visitors", "testimonals"]).then(setAssets);
   }, []);
 
   if (!authed) return null;

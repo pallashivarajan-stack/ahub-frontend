@@ -3,7 +3,12 @@ import { teamPageData, teamMembers, type TeamMember, type TeamPageMeta } from "@
 import { boardMembers, type BoardMember } from "@/data/boardPage";
 import { mentorsData, type Mentor } from "@/data/mentorsPage";
 import { infrastructureImages } from "@/data/infrastructurePage";
-import { events as staticEvents } from "@/data";
+import { ecosystemEvents } from "@/data/eventsCalendar";
+
+// Default: 7 most recent calendar events
+const defaultLatestEvents = [...ecosystemEvents]
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 7);
 import { resolveLegacyAsset } from "@/lib/assets";
 
 export const STORAGE_KEY_TEAM = "ahub_admin_team_data";
@@ -14,6 +19,8 @@ export const STORAGE_KEY_INTERNSHIP_REGISTRATION = "ahub_admin_internship_regist
 export const STORAGE_KEY_LATEST_EVENTS = "ahub_admin_latest_events_data";
 export const STORAGE_KEY_TESTIMONIALS = "ahub_admin_testimonials_data";
 export const STORAGE_KEY_PARTNERS_LOGOS = "ahub_admin_partners_logos_data";
+export const STORAGE_KEY_MESH_NETWORK = "ahub_admin_mesh_network_data";
+export const STORAGE_KEY_ASSOCIATED_WITH = "ahub_admin_associated_with_data";
 export const STORAGE_KEY_VISITORS = "ahub_admin_visitors_data";
 export const STORAGE_KEY_SOCIAL_LINKS = "ahub_admin_social_links_data";
 
@@ -33,6 +40,7 @@ function clearEmptyStored(key: string) {
 clearEmptyStored(STORAGE_KEY_TEAM);
 clearEmptyStored(STORAGE_KEY_BOARD);
 clearEmptyStored(STORAGE_KEY_MENTORS);
+clearEmptyStored(STORAGE_KEY_LATEST_EVENTS);
 
 export type AdminTeamData = {
   meta: TeamPageMeta;
@@ -136,6 +144,16 @@ export async function getAssetOptions(category = "team") {
       url: val,
       label: key.split("/").pop()?.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ") ?? key,
     }));
+}
+
+export async function getMultiCategoryAssetOptions(categories: string[]) {
+  const results = await Promise.all(categories.map((cat) => getAssetOptions(cat)));
+  const seen = new Set<string>();
+  return results.flat().filter((item) => {
+    if (seen.has(item.url)) return false;
+    seen.add(item.url);
+    return true;
+  });
 }
 
 function getStoredMentors(): Mentor[] {
@@ -428,10 +446,12 @@ export function loadInternshipRegistrationData(): InternshipRegistration[] {
 
 export type AdminEventData = {
   title: string;
-  date: string;
+  date: string;        // ISO format: YYYY-MM-DD
   tag: string;
-  desc: string;
-  img: string;
+  description: string;
+  image: string;
+  time?: string;
+  venue?: string;
 };
 
 function getStoredLatestEvents(): AdminEventData[] {
@@ -442,7 +462,15 @@ function getStoredLatestEvents(): AdminEventData[] {
       if (parsed.length) return parsed;
     }
   } catch { /* ignore */ }
-  return staticEvents.map((e) => ({ title: e.title, date: e.date, tag: e.tag, desc: e.desc, img: e.img }));
+  return defaultLatestEvents.map((e) => ({
+    title: e.title,
+    date: e.date,
+    tag: e.tag,
+    description: e.description,
+    image: e.image,
+    time: e.time,
+    venue: e.venue,
+  }));
 }
 
 function persistLatestEvents(data: AdminEventData[]) {
@@ -566,6 +594,64 @@ export async function savePartnersLogosData(data: string[]) {
 
 export function loadPartnersLogosData(): string[] {
   return getStoredPartnersLogos();
+}
+
+/* ── Mesh Network Logos ──────────────────────────────────────────────── */
+
+const DEFAULT_MESH_NETWORK_LOGOS = LEGACY_PARTNER_PATHS.map(resolveLegacyAsset);
+
+function getStoredMeshNetwork(): string[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_MESH_NETWORK);
+    if (raw) {
+      const parsed = JSON.parse(raw) as string[];
+      if (parsed.length) return parsed;
+    }
+  } catch { /* ignore */ }
+  return [...DEFAULT_MESH_NETWORK_LOGOS];
+}
+
+function persistMeshNetwork(data: string[]) {
+  try {
+    localStorage.setItem(STORAGE_KEY_MESH_NETWORK, JSON.stringify(data));
+  } catch { /* quota exceeded */ }
+}
+
+export async function saveMeshNetworkData(data: string[]) {
+  persistMeshNetwork(data);
+}
+
+export function loadMeshNetworkData(): string[] {
+  return getStoredMeshNetwork();
+}
+
+/* ── Associated With Logos ────────────────────────────────────────────── */
+
+const DEFAULT_ASSOCIATED_WITH_LOGOS = LEGACY_PARTNER_PATHS.map(resolveLegacyAsset);
+
+function getStoredAssociatedWith(): string[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_ASSOCIATED_WITH);
+    if (raw) {
+      const parsed = JSON.parse(raw) as string[];
+      if (parsed.length) return parsed;
+    }
+  } catch { /* ignore */ }
+  return [...DEFAULT_ASSOCIATED_WITH_LOGOS];
+}
+
+function persistAssociatedWith(data: string[]) {
+  try {
+    localStorage.setItem(STORAGE_KEY_ASSOCIATED_WITH, JSON.stringify(data));
+  } catch { /* quota exceeded */ }
+}
+
+export async function saveAssociatedWithData(data: string[]) {
+  persistAssociatedWith(data);
+}
+
+export function loadAssociatedWithData(): string[] {
+  return getStoredAssociatedWith();
 }
 
 /* ── Distinguished Visitors ────────────────────────────────────────────── */

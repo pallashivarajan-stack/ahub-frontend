@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "@tanstack/react-router";
 import {
   Rocket,
   ArrowRight,
@@ -99,16 +100,20 @@ export function StartupEventsPremiumHero() {
 
           {/* CTAs */}
           <div className="flex flex-wrap items-center gap-3 mt-2">
-            <button
+            <Link
+              to="/events/calendar"
               className="group inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[0_12px_30px_-10px_oklch(0.68_0.20_45/0.55)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-10px_oklch(0.68_0.20_45/0.6)]"
               style={{ background: "var(--gradient-primary)" }}
             >
               Explore Events
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={2.5} />
-            </button>
-            <button className="inline-flex items-center gap-2 rounded-xl border-2 border-primary bg-white px-5 py-3 text-sm font-semibold text-primary transition-all duration-300 ease-out hover:-translate-y-1 hover:bg-primary-soft">
+            </Link>
+            <Link
+              to="/events/event-registration"
+              className="inline-flex items-center gap-2 rounded-xl border-2 border-primary bg-white px-5 py-3 text-sm font-semibold text-primary transition-all duration-300 ease-out hover:-translate-y-1 hover:bg-primary-soft"
+            >
               Host Your Event
-            </button>
+            </Link>
           </div>
 
           {/* Stats */}

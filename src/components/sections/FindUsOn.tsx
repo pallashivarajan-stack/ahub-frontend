@@ -173,7 +173,7 @@ function SocialCard({
       {platform.embed ? (
         <div className="mt-4 mb-2 overflow-y-auto rounded-[11px] border border-[#5b0e2d]/10 shadow-sm max-h-[250px]">
           <iframe
-            src="https://www.linkedin.com/embed/feed/update/urn:li:share:7478853567030640640?collapsed=1"
+            src={`${platform.embed}?collapsed=1`}
             height="669"
             width="504"
             frameBorder="0"

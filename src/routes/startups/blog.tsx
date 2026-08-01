@@ -19,7 +19,7 @@ export const Route = createFileRoute("/startups/blog")({
 
 function StartupBlogRoutePage() {
   return (
-    <main className="min-h-screen bg-[#FFF7ED]">
+    <main className="min-h-screen bg-[#F8F4EE]">
       <Navbar />
       <StartupBlogPage />
       <Footer />

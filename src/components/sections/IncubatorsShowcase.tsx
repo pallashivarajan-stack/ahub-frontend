@@ -180,20 +180,23 @@ export function IncubatorsShowcase() {
                 {c.blurb}
               </p>
               <div className="mt-4 grid grid-cols-3 gap-2.5">
-                {c.stats.map(({ value, label, Icon }: StatItem) => (
+                {c.stats.map((stat: StatItem, statIdx: number) => {
+                  const Icon = stat.Icon ?? [Rocket, Users, TrendingUp][statIdx] ?? Rocket;
+                  return (
                   <div
-                    key={`${c.name}-${label}`}
+                    key={`${c.name}-${stat.label}-${statIdx}`}
                     className="rounded-2xl bg-white p-2.5 transition-all duration-300 hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
                     style={{ boxShadow: "var(--shadow-card)" }}
                   >
                     <div className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-50">
                       <Icon className="h-4 w-4 text-[#F97316]" />
                     </div>
-                    <div className="mt-2 text-base font-black text-neutral-900 leading-none">{value}</div>
-                    <div className="text-[10px] font-semibold text-neutral-500 mt-1 leading-none">{label}</div>
+                    <div className="mt-2 text-base font-black text-neutral-900 leading-none">{stat.value}</div>
+                    <div className="text-[10px] font-semibold text-neutral-500 mt-1 leading-none">{stat.label}</div>
                     <div className="h-0.5 w-5 bg-orange-500 rounded-full mt-2.5" />
                   </div>
-                ))}
+                  );
+                })}
               </div>
               <div>
                 <button className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2 text-sm font-bold text-neutral-900 transition-all duration-200 hover:scale-105 active:scale-95">

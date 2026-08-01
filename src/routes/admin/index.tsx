@@ -71,12 +71,19 @@ function AdminDashboard() {
             <h3 className="mt-4 font-semibold text-slate-900">Testimonials</h3>
             <p className="mt-1 text-sm text-slate-500">Manage founder testimonials and quotes</p>
           </Link>
-          <Link to="/admin/partners-logos" className="group rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+          <Link to="/admin/mesh-network" className="group rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-100 text-orange-700">
               <Globe size={24} />
             </div>
-            <h3 className="mt-4 font-semibold text-slate-900">Partners & Mesh Network</h3>
-            <p className="mt-1 text-sm text-slate-500">Manage partner logos for Associated With and Mesh Network</p>
+            <h3 className="mt-4 font-semibold text-slate-900">Mesh Network</h3>
+            <p className="mt-1 text-sm text-slate-500">Manage mesh network partner logos</p>
+          </Link>
+          <Link to="/admin/associated-with" className="group rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-100 text-orange-700">
+              <Globe size={24} />
+            </div>
+            <h3 className="mt-4 font-semibold text-slate-900">Associated With</h3>
+            <p className="mt-1 text-sm text-slate-500">Manage associated with partner logos</p>
           </Link>
           <Link to="/admin/visitors" className="group rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-100 text-orange-700">

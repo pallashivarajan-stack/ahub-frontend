@@ -1,13 +1,33 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Clock, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
-import { usePublicEvents } from "@/services/usePublicContent";
+import { Clock, MapPin, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { loadLatestEventsData } from "@/services/adminService";
+import { ecosystemEvents } from "@/data/eventsCalendar";
+import { Link } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
-const AUTOPLAY_DELAY = 4000; // ms per card
+const AUTOPLAY_DELAY = 4000;
+
+// Sorted calendar events as base fallback
+const defaultEvents = [...ecosystemEvents]
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 7);
 
 export function LatestEvents() {
-  const { data: events = [] } = usePublicEvents();
+  // Load from admin localStorage; fall back to sorted ecosystemEvents
+  const stored = loadLatestEventsData();
+  const rawEvents = stored.length > 0
+    ? stored
+    : defaultEvents.map((e) => ({
+        title: e.title,
+        date: e.date,
+        tag: e.tag,
+        description: e.description,
+        image: e.image,
+        time: e.time,
+        venue: e.venue,
+      }));
+  const events = rawEvents.slice(0, 7);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
@@ -17,7 +37,7 @@ export function LatestEvents() {
   });
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [progress, setProgress] = useState(0); // 0–100
+  const [progress, setProgress] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number>(Date.now());
@@ -32,31 +52,23 @@ export function LatestEvents() {
     setProgress(0);
     startTimeRef.current = Date.now();
 
-    // Progress bar update every 30ms for smooth 60fps-ish animation
     progressRef.current = setInterval(() => {
       const elapsed = Date.now() - startTimeRef.current;
       const pct = Math.min((elapsed / AUTOPLAY_DELAY) * 100, 100);
       setProgress(pct);
     }, 30);
 
-    // Advance card after delay
     timerRef.current = setTimeout(() => {
       if (emblaApi) emblaApi.scrollNext();
     }, AUTOPLAY_DELAY) as unknown as ReturnType<typeof setInterval>;
   }, [emblaApi]);
 
   const scrollPrev = useCallback(() => {
-    if (emblaApi) {
-      emblaApi.scrollPrev();
-      startAutoplay();
-    }
+    if (emblaApi) { emblaApi.scrollPrev(); startAutoplay(); }
   }, [emblaApi, startAutoplay]);
 
   const scrollNext = useCallback(() => {
-    if (emblaApi) {
-      emblaApi.scrollNext();
-      startAutoplay();
-    }
+    if (emblaApi) { emblaApi.scrollNext(); startAutoplay(); }
   }, [emblaApi, startAutoplay]);
 
   const onSelect = useCallback(() => {
@@ -69,15 +81,11 @@ export function LatestEvents() {
     if (!emblaApi) return;
     emblaApi.on("select", onSelect);
     startAutoplay();
-    return () => {
-      clearTimers();
-      emblaApi.off("select", onSelect);
-    };
+    return () => { clearTimers(); emblaApi.off("select", onSelect); };
   }, [emblaApi, onSelect, startAutoplay]);
 
   return (
     <section id="announcement" className="relative overflow-hidden py-16 md:py-24 bg-[#FFF8F2]">
-      {/* Background glow */}
       <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 w-full max-w-[1200px] h-[600px] bg-[radial-gradient(ellipse_at_top,rgba(255,122,0,0.06)_0%,transparent_70%)]" />
 
       <div className="site-container-wide relative z-10">
@@ -97,9 +105,8 @@ export function LatestEvents() {
             </p>
           </div>
 
-          {/* Nav + countdown */}
+          {/* Nav buttons */}
           <div className="flex items-center gap-4 shrink-0">
-
             <button onClick={scrollPrev} aria-label="Previous"
               className="group flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white/80 backdrop-blur-md shadow-sm transition-all hover:border-[#FF7A00]/40 hover:bg-white hover:scale-105 active:scale-95">
               <ChevronLeft size={18} className="text-slate-600 group-hover:text-[#FF7A00]" />
@@ -115,9 +122,12 @@ export function LatestEvents() {
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex -ml-4 md:-ml-5">
             {events.map((e, i) => {
-              const parts = e.date ? e.date.split(" ") : ["", ""];
-              const month = parts[0] || "Month";
-              const day = parts[1] || "01";
+              // Parse ISO date "YYYY-MM-DD"
+              const dateParts = e.date ? e.date.split("-") : ["2026", "01", "01"];
+              const dateObj = new Date(Number(dateParts[0]), Number(dateParts[1]) - 1, Number(dateParts[2]));
+              const dayNum = dateObj.getDate();
+              const monthName = dateObj.toLocaleString("en-US", { month: "short" }).toUpperCase();
+              const yearNum = dateObj.getFullYear();
 
               return (
                 <div
@@ -131,18 +141,15 @@ export function LatestEvents() {
                     transition={{ duration: 0.5, delay: i * 0.08, ease: "easeOut" }}
                     className="group flex flex-col h-full relative overflow-hidden rounded-[24px] border border-white/60 bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_16px_40px_rgba(255,122,0,0.10)] transition-all duration-500 hover:-translate-y-1.5"
                   >
-                    {/* Image */}
-                    <div className="relative h-[190px] overflow-hidden rounded-t-[24px]">
+                    {/* Poster Image — no tag badge */}
+                    <div className="relative h-[220px] overflow-hidden rounded-t-[24px] bg-[#FFF4E8]">
                       <img
-                        src={e.img}
+                        src={e.image}
                         alt={e.title}
                         loading="lazy"
                         draggable={false}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute right-3 top-3 rounded-full bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#FF7A00] shadow-sm">
-                        {e.tag}
-                      </div>
                     </div>
 
                     {/* Content */}
@@ -151,23 +158,36 @@ export function LatestEvents() {
                         {e.title}
                       </h3>
                       <p className="text-sm text-slate-500 line-clamp-2 mb-4 flex-1">
-                        {e.desc}
+                        {e.description}
                       </p>
 
                       {/* Meta */}
                       <div className="flex flex-col gap-1.5 pt-3 border-t border-slate-100">
-                        <div className="flex items-center gap-2 text-xs text-slate-500">
-                          <Clock size={13} className="text-[#FF7A00]" />
-                          <span>10:00 AM – 4:00 PM</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-slate-500">
-                          <MapPin size={13} className="text-[#FF7A00]" />
-                          <span className="truncate">a-Hub Innovation Center</span>
-                        </div>
-                        {/* Date at bottom */}
-                        <div className="flex items-center gap-1.5 mt-1.5 pt-2.5 border-t border-slate-100">
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#FF7A00]">{month}</span>
-                          <span className="text-lg font-black font-display text-slate-800 leading-none">{day}</span>
+                        {e.time && (
+                          <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <Clock size={13} className="text-[#FF7A00]" />
+                            <span>{e.time}</span>
+                          </div>
+                        )}
+                        {e.venue && (
+                          <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <MapPin size={13} className="text-[#FF7A00]" />
+                            <span className="truncate">{e.venue}</span>
+                          </div>
+                        )}
+                        {/* Date + Year + View */}
+                        <div className="flex items-center justify-between mt-1.5 pt-2.5 border-t border-slate-100">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-[#FF7A00]">{monthName}</span>
+                            <span className="text-lg font-black font-display text-slate-800 leading-none">{dayNum}</span>
+                            <span className="text-[11px] font-semibold text-slate-400 leading-none self-end mb-0.5">{yearNum}</span>
+                          </div>
+                          <Link
+                            to="/events/calendar"
+                            className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#FF7A00] hover:text-[#e06900] transition-colors"
+                          >
+                            View <ArrowRight size={11} />
+                          </Link>
                         </div>
                       </div>
                     </div>

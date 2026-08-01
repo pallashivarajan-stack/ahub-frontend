@@ -34,6 +34,7 @@ import { Route as AdminVisitorsRouteImport } from './routes/admin/visitors'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin/testimonials'
 import { Route as AdminTeamRouteImport } from './routes/admin/team'
 import { Route as AdminPartnersLogosRouteImport } from './routes/admin/partners-logos'
+import { Route as AdminMeshNetworkRouteImport } from './routes/admin/mesh-network'
 import { Route as AdminMentorsRouteImport } from './routes/admin/mentors'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminLatestEventsRouteImport } from './routes/admin/latest-events'
@@ -41,6 +42,7 @@ import { Route as AdminInternshipRegistrationRouteImport } from './routes/admin/
 import { Route as AdminInfrastructureRouteImport } from './routes/admin/infrastructure'
 import { Route as AdminFindUsOnRouteImport } from './routes/admin/find-us-on'
 import { Route as AdminBoardRouteImport } from './routes/admin/board'
+import { Route as AdminAssociatedWithRouteImport } from './routes/admin/associated-with'
 import { Route as AchieveReportsRouteImport } from './routes/achieve/reports'
 import { Route as AchieveImpactRouteImport } from './routes/achieve/impact'
 import { Route as AboutVisionRoadmapRouteImport } from './routes/about/vision-roadmap'
@@ -180,6 +182,11 @@ const AdminPartnersLogosRoute = AdminPartnersLogosRouteImport.update({
   path: '/admin/partners-logos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminMeshNetworkRoute = AdminMeshNetworkRouteImport.update({
+  id: '/admin/mesh-network',
+  path: '/admin/mesh-network',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminMentorsRoute = AdminMentorsRouteImport.update({
   id: '/admin/mentors',
   path: '/admin/mentors',
@@ -214,6 +221,11 @@ const AdminFindUsOnRoute = AdminFindUsOnRouteImport.update({
 const AdminBoardRoute = AdminBoardRouteImport.update({
   id: '/admin/board',
   path: '/admin/board',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAssociatedWithRoute = AdminAssociatedWithRouteImport.update({
+  id: '/admin/associated-with',
+  path: '/admin/associated-with',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AchieveReportsRoute = AchieveReportsRouteImport.update({
@@ -275,6 +287,7 @@ export interface FileRoutesByFullPath {
   '/about/vision-roadmap': typeof AboutVisionRoadmapRoute
   '/achieve/impact': typeof AchieveImpactRoute
   '/achieve/reports': typeof AchieveReportsRoute
+  '/admin/associated-with': typeof AdminAssociatedWithRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/find-us-on': typeof AdminFindUsOnRoute
   '/admin/infrastructure': typeof AdminInfrastructureRoute
@@ -282,6 +295,7 @@ export interface FileRoutesByFullPath {
   '/admin/latest-events': typeof AdminLatestEventsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/mentors': typeof AdminMentorsRoute
+  '/admin/mesh-network': typeof AdminMeshNetworkRoute
   '/admin/partners-logos': typeof AdminPartnersLogosRoute
   '/admin/team': typeof AdminTeamRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
@@ -318,6 +332,7 @@ export interface FileRoutesByTo {
   '/about/vision-roadmap': typeof AboutVisionRoadmapRoute
   '/achieve/impact': typeof AchieveImpactRoute
   '/achieve/reports': typeof AchieveReportsRoute
+  '/admin/associated-with': typeof AdminAssociatedWithRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/find-us-on': typeof AdminFindUsOnRoute
   '/admin/infrastructure': typeof AdminInfrastructureRoute
@@ -325,6 +340,7 @@ export interface FileRoutesByTo {
   '/admin/latest-events': typeof AdminLatestEventsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/mentors': typeof AdminMentorsRoute
+  '/admin/mesh-network': typeof AdminMeshNetworkRoute
   '/admin/partners-logos': typeof AdminPartnersLogosRoute
   '/admin/team': typeof AdminTeamRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
@@ -362,6 +378,7 @@ export interface FileRoutesById {
   '/about/vision-roadmap': typeof AboutVisionRoadmapRoute
   '/achieve/impact': typeof AchieveImpactRoute
   '/achieve/reports': typeof AchieveReportsRoute
+  '/admin/associated-with': typeof AdminAssociatedWithRoute
   '/admin/board': typeof AdminBoardRoute
   '/admin/find-us-on': typeof AdminFindUsOnRoute
   '/admin/infrastructure': typeof AdminInfrastructureRoute
@@ -369,6 +386,7 @@ export interface FileRoutesById {
   '/admin/latest-events': typeof AdminLatestEventsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/mentors': typeof AdminMentorsRoute
+  '/admin/mesh-network': typeof AdminMeshNetworkRoute
   '/admin/partners-logos': typeof AdminPartnersLogosRoute
   '/admin/team': typeof AdminTeamRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
@@ -407,6 +425,7 @@ export interface FileRouteTypes {
     | '/about/vision-roadmap'
     | '/achieve/impact'
     | '/achieve/reports'
+    | '/admin/associated-with'
     | '/admin/board'
     | '/admin/find-us-on'
     | '/admin/infrastructure'
@@ -414,6 +433,7 @@ export interface FileRouteTypes {
     | '/admin/latest-events'
     | '/admin/login'
     | '/admin/mentors'
+    | '/admin/mesh-network'
     | '/admin/partners-logos'
     | '/admin/team'
     | '/admin/testimonials'
@@ -450,6 +470,7 @@ export interface FileRouteTypes {
     | '/about/vision-roadmap'
     | '/achieve/impact'
     | '/achieve/reports'
+    | '/admin/associated-with'
     | '/admin/board'
     | '/admin/find-us-on'
     | '/admin/infrastructure'
@@ -457,6 +478,7 @@ export interface FileRouteTypes {
     | '/admin/latest-events'
     | '/admin/login'
     | '/admin/mentors'
+    | '/admin/mesh-network'
     | '/admin/partners-logos'
     | '/admin/team'
     | '/admin/testimonials'
@@ -493,6 +515,7 @@ export interface FileRouteTypes {
     | '/about/vision-roadmap'
     | '/achieve/impact'
     | '/achieve/reports'
+    | '/admin/associated-with'
     | '/admin/board'
     | '/admin/find-us-on'
     | '/admin/infrastructure'
@@ -500,6 +523,7 @@ export interface FileRouteTypes {
     | '/admin/latest-events'
     | '/admin/login'
     | '/admin/mentors'
+    | '/admin/mesh-network'
     | '/admin/partners-logos'
     | '/admin/team'
     | '/admin/testimonials'
@@ -537,6 +561,7 @@ export interface RootRouteChildren {
   AboutVisionRoadmapRoute: typeof AboutVisionRoadmapRoute
   AchieveImpactRoute: typeof AchieveImpactRoute
   AchieveReportsRoute: typeof AchieveReportsRoute
+  AdminAssociatedWithRoute: typeof AdminAssociatedWithRoute
   AdminBoardRoute: typeof AdminBoardRoute
   AdminFindUsOnRoute: typeof AdminFindUsOnRoute
   AdminInfrastructureRoute: typeof AdminInfrastructureRoute
@@ -544,6 +569,7 @@ export interface RootRouteChildren {
   AdminLatestEventsRoute: typeof AdminLatestEventsRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminMentorsRoute: typeof AdminMentorsRoute
+  AdminMeshNetworkRoute: typeof AdminMeshNetworkRoute
   AdminPartnersLogosRoute: typeof AdminPartnersLogosRoute
   AdminTeamRoute: typeof AdminTeamRoute
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
@@ -745,6 +771,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPartnersLogosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/mesh-network': {
+      id: '/admin/mesh-network'
+      path: '/admin/mesh-network'
+      fullPath: '/admin/mesh-network'
+      preLoaderRoute: typeof AdminMeshNetworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/mentors': {
       id: '/admin/mentors'
       path: '/admin/mentors'
@@ -792,6 +825,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/board'
       fullPath: '/admin/board'
       preLoaderRoute: typeof AdminBoardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/associated-with': {
+      id: '/admin/associated-with'
+      path: '/admin/associated-with'
+      fullPath: '/admin/associated-with'
+      preLoaderRoute: typeof AdminAssociatedWithRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/achieve/reports': {
@@ -873,6 +913,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutVisionRoadmapRoute: AboutVisionRoadmapRoute,
   AchieveImpactRoute: AchieveImpactRoute,
   AchieveReportsRoute: AchieveReportsRoute,
+  AdminAssociatedWithRoute: AdminAssociatedWithRoute,
   AdminBoardRoute: AdminBoardRoute,
   AdminFindUsOnRoute: AdminFindUsOnRoute,
   AdminInfrastructureRoute: AdminInfrastructureRoute,
@@ -880,6 +921,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLatestEventsRoute: AdminLatestEventsRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminMentorsRoute: AdminMentorsRoute,
+  AdminMeshNetworkRoute: AdminMeshNetworkRoute,
   AdminPartnersLogosRoute: AdminPartnersLogosRoute,
   AdminTeamRoute: AdminTeamRoute,
   AdminTestimonialsRoute: AdminTestimonialsRoute,

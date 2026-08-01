@@ -92,18 +92,18 @@ export const portfolio = [
 ];
 
 export const events = [
-  { title: "Startup Saturday", date: "Jan 12", tag: "Meetup", desc: "A vibrant gathering for local founders.", img: asset("/src/assets/events/startup saturday.jpeg") },
-  { title: "Been There Done That", date: "Feb 05", tag: "Panel", desc: "Experienced founders share their journey and insights.", img: asset("/src/assets/events/been there done that.jpeg") },
-  { title: "Google Startup Success Days", date: "Feb 20", tag: "Workshop", desc: "Learn how to scale with Google's ecosystem.", img: asset("/src/assets/events/google starup success days.jpg") },
-  { title: "Ideathon", date: "Mar 01", tag: "Hackathon", desc: "Brainstorm and build MVP solutions in 24 hours.", img: asset("/src/assets/events/ideathon.jpg") },
-  { title: "Start Up Saturday", date: "Mar 15", tag: "Meetup", desc: "Connecting the local startup ecosystem.", img: asset("/src/assets/events/Start Up saturday.jpeg") },
-  { title: "Been There Done That 2", date: "Apr 10", tag: "Panel", desc: "More insights from seasoned entrepreneurs.", img: asset("/src/assets/events/been there donw that 2.jpeg") },
-  { title: "Andhra Tech League", date: "Apr 25", tag: "Showcase", desc: "Showcasing the best tech talent in Andhra.", img: asset("/src/assets/events/andhra texh league.jpg") },
-  { title: "Hackap Agritech Hackathon", date: "May 05", tag: "Hackathon", desc: "Innovating solutions for agriculture.", img: asset("/src/assets/events/Hackap agritech hackathon.jpg") },
-  { title: "Startups Saturday", date: "May 20", tag: "Meetup", desc: "Networking and knowledge sharing.", img: asset("/src/assets/events/starups staruday.jpg") },
-  { title: "Runnin Wild", date: "Jun 10", tag: "Networking", desc: "A casual networking event for the bold.", img: asset("/src/assets/events/runnin wild.jpeg") },
-  { title: "EDS Student Design Competition", date: "Jun 25", tag: "Competition", desc: "Students showcase their design skills.", img: asset("/src/assets/events/eds stduet design competittion.jpeg") },
-  { title: "Eyes Wide Shut", date: "Jul 15", tag: "Workshop", desc: "An eye-opening workshop on market realities.", img: asset("/src/assets/events/eyes wide shut.jpg") },
+  { title: "Startup Saturday", date: "Jan 12", tag: "Meetup", desc: "A vibrant gathering for local founders.", img: asset("/src/assets/latest events/startup saturday.jpeg") },
+  { title: "Been There Done That", date: "Feb 05", tag: "Panel", desc: "Experienced founders share their journey and insights.", img: asset("/src/assets/latest events/been there done that.jpeg") },
+  { title: "Google Startup Success Days", date: "Feb 20", tag: "Workshop", desc: "Learn how to scale with Google's ecosystem.", img: asset("/src/assets/latest events/google starup success days.jpg") },
+  { title: "Ideathon", date: "Mar 01", tag: "Hackathon", desc: "Brainstorm and build MVP solutions in 24 hours.", img: asset("/src/assets/latest events/ideathon.jpg") },
+  { title: "Start Up Saturday", date: "Mar 15", tag: "Meetup", desc: "Connecting the local startup ecosystem.", img: asset("/src/assets/latest events/Start Up saturday.jpeg") },
+  { title: "Been There Done That 2", date: "Apr 10", tag: "Panel", desc: "More insights from seasoned entrepreneurs.", img: asset("/src/assets/latest events/been there donw that 2.jpeg") },
+  { title: "Andhra Tech League", date: "Apr 25", tag: "Showcase", desc: "Showcasing the best tech talent in Andhra.", img: asset("/src/assets/latest events/andhra texh league.jpg") },
+  { title: "Hackap Agritech Hackathon", date: "May 05", tag: "Hackathon", desc: "Innovating solutions for agriculture.", img: asset("/src/assets/latest events/Hackap agritech hackathon.jpg") },
+  { title: "Startups Saturday", date: "May 20", tag: "Meetup", desc: "Networking and knowledge sharing.", img: asset("/src/assets/latest events/starups staruday.jpg") },
+  { title: "Runnin Wild", date: "Jun 10", tag: "Networking", desc: "A casual networking event for the bold.", img: asset("/src/assets/latest events/runnin wild.jpeg") },
+  { title: "EDS Student Design Competition", date: "Jun 25", tag: "Competition", desc: "Students showcase their design skills.", img: asset("/src/assets/latest events/eds stduet design competittion.jpeg") },
+  { title: "Eyes Wide Shut", date: "Jul 15", tag: "Workshop", desc: "An eye-opening workshop on market realities.", img: asset("/src/assets/latest events/eyes wide shut.jpg") },
 ];
 
 export const partners = [
@@ -113,12 +113,12 @@ export const partners = [
 ];
 
 export const institutions = [
-  { name: "IIT Madras Research Park",       img: asset("/src/assets/inst-1.jpg") },
-  { name: "NSRCEL — IIM Bangalore",         img: asset("/src/assets/inst-2.jpg") },
-  { name: "ISB Hyderabad Founders Club",    img: asset("/src/assets/inst-3.jpg") },
-  { name: "BITS Pilani Demo Day",           img: asset("/src/assets/inst-4.jpg") },
-  { name: "Anna University Startup Cell",   img: asset("/src/assets/inst-5.jpg") },
-  { name: "Global Innovation Summit",       img: asset("/src/assets/inst-6.jpg") },
+  { name: "IIT Madras Research Park" },
+  { name: "NSRCEL — IIM Bangalore" },
+  { name: "ISB Hyderabad Founders Club" },
+  { name: "BITS Pilani Demo Day" },
+  { name: "Anna University Startup Cell" },
+  { name: "Global Innovation Summit" },
 ];
 
 export const stats = [

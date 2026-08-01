@@ -48,6 +48,7 @@ import {
   fetchPublicPressPage,
   fetchPublicPartnerItems,
   fetchPublicInternshipListings,
+  resolveSafeMediaUrl,
 } from "@/services/publicContent";
 import { portfolio as staticPortfolio, events as staticEvents } from "@/data";
 
@@ -140,39 +141,47 @@ export function usePublicIncubators<T>(fallbackData: T) {
 
       // Build a lookup from DB data by incubator heading (name)
       const dbByName = new Map(
-        (data || []).map((d: any) => [String(d.heading ?? "").toLowerCase().trim(), d])
+        (data || []).map((d: any) => [String(d.name ?? "").toLowerCase().trim(), d])
       );
 
-      // Merge DB data over the static fallback
-      return fallbackData.map((s: any) => {
+      const fixedNames = new Set(
+        fallbackData.map((s: any) => String(s.name ?? "").toLowerCase().trim())
+      );
+
+      const mergeDbMatch = (base: any, match: any) => {
+        const merged = { ...base };
+        if (match.name) merged.name = match.name;
+        if (match.tagline) merged.tagline = match.tagline;
+        if (match.image) merged.image = match.image;
+        if (match.short) merged.short = match.short;
+        if (match.long) merged.long = match.long;
+        if (match.blurb) merged.blurb = match.blurb;
+        if (match.card) merged.card = match.card;
+        if (match.stats) merged.stats = match.stats;
+        return merged;
+      };
+
+      const mergedFixed = fallbackData.map((s: any) => {
         const slotKey = String(s.name ?? "").toLowerCase().trim();
         const match = dbByName.get(slotKey);
-        
-        if (!match) return s;
-
-        // Merge match into s
-        const merged = { ...s };
-        if (match.heading) merged.name = match.heading;
-        if (match.subheading) merged.tagline = match.subheading;
-        if (match.image_url) merged.image = match.image_url;
-        
-        // Try to parse description as JSON to extract extended fields
-        if (match.description) {
-          try {
-            const parsed = JSON.parse(match.description);
-            if (parsed.short) merged.short = parsed.short;
-            if (parsed.long) merged.long = parsed.long;
-            if (parsed.blurb) merged.blurb = parsed.blurb;
-            if (parsed.card) merged.card = parsed.card;
-            if (parsed.stats) merged.stats = parsed.stats;
-          } catch (e) {
-            // If it's not valid JSON, just use it as the `short` description
-            merged.short = match.description;
-          }
-        }
-        
-        return merged;
+        return match ? mergeDbMatch(s, match) : s;
       });
+
+      const customItems = (data || [])
+        .filter((d: any) => !fixedNames.has(String(d.name ?? "").toLowerCase().trim()))
+        .sort((a: any, b: any) => (a.display_order ?? 0) - (b.display_order ?? 0))
+        .map((d: any) => ({
+          name: d.name ?? "",
+          tagline: d.tagline ?? "",
+          short: d.short ?? "",
+          long: d.long ?? "",
+          blurb: d.blurb ?? "",
+          image: d.image ?? "",
+          card: d.card ?? d.image ?? "",
+          stats: d.stats ?? [],
+        }));
+
+      return [...mergedFixed, ...customItems];
     },
     staleTime: 60_000,
     placeholderData: fallbackData,
@@ -250,6 +259,8 @@ const ADMIN_TEAM_KEY = "ahub_admin_team_data";
 const ADMIN_INFRASTRUCTURE_KEY = "ahub_admin_infrastructure_data";
 const ADMIN_LATEST_EVENTS_KEY = "ahub_admin_latest_events_data";
 const ADMIN_PARTNERS_LOGOS_KEY = "ahub_admin_partners_logos_data";
+const ADMIN_MESH_NETWORK_KEY = "ahub_admin_mesh_network_data";
+const ADMIN_ASSOCIATED_WITH_KEY = "ahub_admin_associated_with_data";
 const ADMIN_VISITORS_KEY = "ahub_admin_visitors_data";
 const ADMIN_SOCIAL_LINKS_KEY = "ahub_admin_social_links_data";
 const ADMIN_TESTIMONIALS_KEY = "ahub_admin_testimonials_data";
@@ -348,6 +359,32 @@ export function usePublicTestimonials<T>(fallbackData: T) {
     queryFn: async () => {
       const admin = getAdminLocalStorage<T>(ADMIN_TESTIMONIALS_KEY);
       return admin ?? fallbackData;
+    },
+    staleTime: 60_000,
+    placeholderData: fallbackData,
+  });
+}
+
+export function usePublicMeshNetwork<T>(fallbackData: T) {
+  return useQuery({
+    queryKey: ["public", "meshNetwork"],
+    queryFn: async () => {
+      const admin = getAdminLocalStorage<any[]>(ADMIN_MESH_NETWORK_KEY);
+      if (admin?.length) return admin.map(a => resolveSafeMediaUrl(typeof a === 'string' ? a : (a.logo_url || a.image_url || a.image || ''))) as any;
+      return fallbackData;
+    },
+    staleTime: 60_000,
+    placeholderData: fallbackData,
+  });
+}
+
+export function usePublicAssociatedWith<T>(fallbackData: T) {
+  return useQuery({
+    queryKey: ["public", "associatedWith"],
+    queryFn: async () => {
+      const admin = getAdminLocalStorage<any[]>(ADMIN_ASSOCIATED_WITH_KEY);
+      if (admin?.length) return admin.map(a => resolveSafeMediaUrl(typeof a === 'string' ? a : (a.logo_url || a.image_url || a.image || ''))) as any;
+      return fallbackData;
     },
     staleTime: 60_000,
     placeholderData: fallbackData,

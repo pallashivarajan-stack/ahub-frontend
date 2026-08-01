@@ -2,7 +2,7 @@ import { API_BASE_URL, resolveBackendMediaUrl } from "@/lib/media";
 import { resolveLegacyAsset } from "@/lib/assets";
 import { PUBLIC_CONTENT_ENDPOINTS } from "@/services/publicContentEndpoints";
 
-function resolveSafeMediaUrl(path: string | null | undefined): string {
+export function resolveSafeMediaUrl(path: string | null | undefined): string {
   if (!path) return "";
   const strPath = String(path);
   if (strPath.startsWith("/src/assets/")) {
@@ -150,15 +150,37 @@ export function mapHeroFromApi(item: Record<string, unknown>) {
 }
 
 export function mapIncubatorFromApi(item: Record<string, unknown>) {
+  let short = String(item.short ?? "");
+  let long = String(item.long ?? "");
+  let blurb = String(item.blurb ?? "");
+  let card = item.card ? resolveSafeMediaUrl(String(item.card)) : "";
+  let stats = Array.isArray(item.stats) ? item.stats : undefined;
+
+  if (item.description && typeof item.description === "string") {
+    try {
+      const parsed = JSON.parse(item.description);
+      if (parsed.short) short = String(parsed.short);
+      if (parsed.long) long = String(parsed.long);
+      if (parsed.blurb) blurb = String(parsed.blurb);
+      if (parsed.card) card = resolveSafeMediaUrl(String(parsed.card));
+      if (Array.isArray(parsed.stats)) stats = parsed.stats;
+    } catch {
+      if (!short) short = String(item.description);
+    }
+  }
+
+  const image = resolveSafeMediaUrl(String(item.image ?? item.image_url ?? ""));
+
   return {
-    name: String(item.name ?? ""),
-    tagline: String(item.tagline ?? ""),
-    short: String(item.short ?? ""),
-    long: String(item.long ?? ""),
-    blurb: String(item.blurb ?? ""),
-    image: item.image ? resolveSafeMediaUrl(String(item.image)) : "",
-    card: item.card ? resolveSafeMediaUrl(String(item.card)) : "",
-    stats: Array.isArray(item.stats) ? item.stats : undefined,
+    name: String(item.name ?? item.heading ?? ""),
+    tagline: String(item.tagline ?? item.subheading ?? ""),
+    short,
+    long,
+    blurb,
+    image,
+    card: card || image,
+    stats,
+    display_order: typeof item.display_order === "number" ? item.display_order : 0,
   };
 }
 
@@ -195,6 +217,9 @@ export function mapSocialLinkFromApi(item: Record<string, unknown>) {
     accent: item.accent ? String(item.accent) : undefined,
     glow: item.glow ? String(item.glow) : undefined,
     testimonial: item.testimonial ? item.testimonial : undefined,
+    embed: item.embed ? String(item.embed) : undefined,
+    tweetUrl: item.tweetUrl ? String(item.tweetUrl) : item.tweet_url ? String(item.tweet_url) : undefined,
+    instagramEmbed: item.instagramEmbed ? String(item.instagramEmbed) : item.instagram_embed ? String(item.instagram_embed) : undefined,
   };
 }
 

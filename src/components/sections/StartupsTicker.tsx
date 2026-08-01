@@ -79,17 +79,16 @@ export function StartupsTicker() {
         </div>
 
         {/* Marquee Section — no background, no arrows, clean like portfolio page */}
-        <div className="marquee-container relative mt-12">
-          {/* Fade Edges — blending into the section background, NOT white */}
+        <div className="marquee-container relative -mx-20 mt-12">
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#FFF8F0] to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#FFE8D6] to-transparent" />
 
           <div className="group/marquee overflow-hidden py-4">
-            <div className="flex w-max animate-marquee items-center group-hover/marquee:[animation-play-state:paused]">
+            <div className="flex w-max animate-marquee items-center group-hover/marquee:[animation-play-state:paused]" style={{ animationDuration: "65s" }}>
               {marqueeLogos.map((logo, idx) => (
                 <div
                   key={idx}
-                  className="mx-5 flex h-[110px] w-[190px] shrink-0 items-center justify-center rounded-2xl bg-white px-6 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100 transition-transform duration-300 hover:scale-105"
+                  className="mx-5 flex h-[110px] w-[190px] shrink-0 items-center justify-center rounded-2xl bg-white px-6 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border-2 border-dashed border-[#F59E42]/30 transition-transform duration-300 hover:scale-105"
                 >
                   <img
                     src={logo}

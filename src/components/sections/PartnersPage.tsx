@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight, Handshake } from "lucide-react";
+import partnersIcon from "@/assets/icons/partners.png";
 import { marqueePartners } from "@/data/partnersPage";
 import { usePublicPartnerItems } from "@/services/usePublicContent";
 import { cn } from "@/lib/utils";
@@ -68,7 +69,7 @@ function PartnerWithUsCard() {
       className="flex flex-col gap-6 rounded-[32px] bg-white p-8 shadow-[0_20px_60px_-30px_rgba(45,27,27,0.12)] sm:flex-row sm:items-center"
     >
       <div className="flex shrink-0 items-center justify-center rounded-[24px] bg-[#FFF4E8] p-8 sm:h-[180px] sm:w-[180px]">
-        <Handshake className="h-16 w-16 text-[#F59E42] sm:h-20 sm:w-20" strokeWidth={1.5} />
+        <img src={partnersIcon} alt="Partners" className="h-16 w-16 sm:h-24 sm:w-24 object-contain drop-shadow-sm" />
       </div>
 
       <div className="flex flex-1 flex-col">

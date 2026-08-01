@@ -19,6 +19,7 @@ import {
   Rocket,
   ShieldCheck,
   Sparkles,
+  Target,
   Users,
   Zap,
 } from "lucide-react";
@@ -27,33 +28,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { resolveLegacyAsset } from "@/lib/assets";
 import { cn } from "@/lib/utils";
 
-const [
-  ahubLogo,
-  heroPoster,
-  event1,
-  event2,
-  event3,
-  event4,
-  inst1,
-  inst2,
-  inst3,
-  inst4,
-  inst5,
-  inst6,
-] = [
-  "/src/assets/AHub-Logo-1.png",
-  "/src/assets/hero-poster.jpg",
-  "/src/assets/event-1.jpg",
-  "/src/assets/event-2.jpg",
-  "/src/assets/event-3.jpg",
-  "/src/assets/event-4.jpg",
-  "/src/assets/inst-1.jpg",
-  "/src/assets/inst-2.jpg",
-  "/src/assets/inst-3.jpg",
-  "/src/assets/inst-4.jpg",
-  "/src/assets/inst-5.jpg",
-  "/src/assets/inst-6.jpg",
-].map(resolveLegacyAsset);
+const ahubLogo = resolveLegacyAsset("/src/assets/AHub-Logo-1.png");
 
 type PanelKey = "approach" | "aspire" | "associate" | "achieve" | "announcement" | "about";
 type IconType = ComponentType<{ className?: string; size?: number }>;
@@ -84,15 +59,7 @@ function NavLabel({ label }: { label: string }) {
   );
 }
 
-type MenuLink = { label: string; href: string; description: string; image: string };
-
-type StudentTab = {
-  label: string;
-  href: string;
-  description: string;
-  image: string;
-  stats: string[];
-};
+type MenuLink = { label: string; href: string; description: string; customIcon?: string };
 
 const PANEL_CONTENT: Record<
   PanelKey,
@@ -101,7 +68,6 @@ const PANEL_CONTENT: Record<
     summary: string;
     links: MenuLink[];
     compact?: boolean;
-    spotlight?: { image: string; caption: string; note: string };
   }
 > = {
   approach: {
@@ -113,21 +79,16 @@ const PANEL_CONTENT: Record<
         label: "Vision & Roadmap",
         href: "/about/vision-roadmap",
         description: "Mission, milestones, and growth direction.",
-        image: heroPoster,
+        customIcon: "/src/assets/icons/vision-roadmap.png",
       },
       {
         label: "Operational Model",
         href: "/approach/operational-model",
         description: "How we build, validate, and scale startups.",
-        image: inst4,
+        customIcon: "/src/assets/icons/operational_model.png",
       },
     ],
     compact: true,
-    spotlight: {
-      image: heroPoster,
-      caption: "Strategic clarity",
-      note: "Vision, roadmap, and operational structure",
-    },
   },
   aspire: {
     eyebrow: "Aspire",
@@ -138,32 +99,27 @@ const PANEL_CONTENT: Record<
         label: "Startup Portfolio",
         href: "/startups/startup-portfolio",
         description: "Explore our incubated startups and their journeys.",
-        image: inst2,
+        customIcon: "/src/assets/icons/startup_porfolio.png",
       },
       {
         label: "Infrastructure",
         href: "/ecosystem/infrastructure",
         description: "Labs, halls, and collaboration spaces.",
-        image: inst4,
+        customIcon: "/src/assets/icons/infasrtucture.png",
       },
       {
         label: "Partners",
         href: "/ecosystem/partners",
         description: "Institutional logos and collaboration network.",
-        image: inst3,
+        customIcon: "/src/assets/icons/partners.png",
       },
       {
         label: "Startup Events",
         href: "/events/startups-events",
         description: "Demo days, pitch sessions, and founder meetups.",
-        image: event2,
+        customIcon: "/src/assets/icons/startup_events.png",
       },
     ],
-    spotlight: {
-      image: inst2,
-      caption: "Aspire ecosystem layer",
-      note: "Portfolio, infrastructure, and investor access",
-    },
   },
   associate: {
     eyebrow: "Associate",
@@ -173,27 +129,22 @@ const PANEL_CONTENT: Record<
         label: "Join Us",
         href: "/programs/join-us",
         description: "Community onboarding and membership.",
-        image: event4,
+        customIcon: "/src/assets/icons/join_us.png",
       },
       {
         label: "Pitch To Us",
         href: "/programs/pitch-to-us",
         description: "Startup submission and founder intake.",
-        image: event3,
+        customIcon: "/src/assets/icons/pitch_to_us.png",
       },
       {
         label: "Startup Funding",
         href: "/startups/startup-funding",
         description: "Funding pathways, grants, and investor access.",
-        image: inst5,
+        customIcon: "/src/assets/icons/startup_funding.png",
       },
     ],
     compact: true,
-    spotlight: {
-      image: event4,
-      caption: "Associate programs",
-      note: "Join, pitch, fund, and book",
-    },
   },
   achieve: {
     eyebrow: "Achieve",
@@ -203,27 +154,22 @@ const PANEL_CONTENT: Record<
         label: "Impact",
         href: "/achieve/impact",
         description: "Ecosystem impact metrics and founder outcomes.",
-        image: inst1,
+        customIcon: "/src/assets/icons/impact.png",
       },
       {
         label: "Reward & Recognition",
         href: "/about/rewards",
         description: "Awards, accolades, and ecosystem milestones.",
-        image: event3,
+        customIcon: "/src/assets/icons/rewared_recognition.png",
       },
       {
         label: "Reports",
         href: "/achieve/reports",
         description: "Annual reports, impact metrics, and data insights.",
-        image: event4,
+        customIcon: "/src/assets/icons/reports.png",
       },
     ],
     compact: true,
-    spotlight: {
-      image: event3,
-      caption: "Achievement & recognition",
-      note: "Impact, rewards, and transparent reporting",
-    },
   },
   announcement: {
     eyebrow: "Announcement",
@@ -233,50 +179,45 @@ const PANEL_CONTENT: Record<
         label: "Press",
         href: "/about/press",
         description: "Media coverage, news features, and publications.",
-        image: event2,
+        customIcon: "/src/assets/icons/press.png",
       },
       {
         label: "Case Studies",
         href: "/events/case-studies",
         description: "Impact stories and startup journey highlights.",
-        image: inst3,
+        customIcon: "/src/assets/icons/case_studies.png",
       },
       {
         label: "Events Calendar",
         href: "/events/calendar",
         description: "Interactive event schedule and upcoming dates.",
-        image: event1,
+        customIcon: "/src/assets/icons/event_calendar.png",
       },
       {
         label: "Startup Blogs",
         href: "/startups/blog",
         description: "Insights, stories, and innovation updates.",
-        image: heroPoster,
+        customIcon: "/src/assets/icons/startup_blog.png",
       },
       {
         label: "Event Registration",
         href: "/events/event-registration",
         description: "Register and RSVP for upcoming events.",
-        image: event2,
+        customIcon: "/src/assets/icons/event_registartion.png",
       },
       {
         label: "Startup Registration",
         href: "/startups/startup-registration",
         description: "Onboarding for founders and teams.",
-        image: inst6,
+        customIcon: "/src/assets/icons/startup_registartion.png",
       },
       {
         label: "Internship Registration",
         href: "/students/internship-registration",
         description: "Apply for internships and track status.",
-        image: event2,
+        customIcon: "/src/assets/icons/internship_registartion.png",
       },
     ],
-    spotlight: {
-      image: event2,
-      caption: "Announcements & updates",
-      note: "Press, events, registrations, and blogs",
-    },
   },
   about: {
     eyebrow: "About",
@@ -286,47 +227,24 @@ const PANEL_CONTENT: Record<
         label: "Mentors",
         href: "/about/mentors",
         description: "Industry experts, office hours, and domain guidance.",
-        image: inst1,
+        customIcon: "/src/assets/icons/mentors.png",
       },
       {
         label: "Board",
         href: "/about/board",
         description: "Governance, leadership, and strategic oversight.",
-        image: inst5,
+        customIcon: "/src/assets/icons/board.png",
       },
       {
         label: "Team",
         href: "/about/team",
         description: "Core team, coordinators, and student leaders.",
-        image: inst6,
+        customIcon: "/src/assets/icons/team.png",
       },
     ],
     compact: true,
-    spotlight: {
-      image: inst5,
-      caption: "Institutional leadership",
-      note: "Mentors, board, and team",
-    },
   },
 };
-
-const _STUDENT_TABS: StudentTab[] = [
-  {
-    label: "Internship Registration",
-    href: "/students/internship-registration",
-    description: "Apply for internships, submit applications, and track your status.",
-    image: event2,
-    stats: ["Apply now", "Track status", "Get matched"],
-  },
-  {
-    label: "Dashboard",
-    href: "/students/dashboard",
-    description:
-      "Track programs, opportunities, registrations, and application status in one view.",
-    image: heroPoster,
-    stats: ["Program tracking", "Startup opportunities", "RSVP status"],
-  },
-];
 
 function scrollToSection(id: string) {
   const section = document.getElementById(id);
@@ -433,6 +351,8 @@ function MegaMenuPanel({
                   Calendar: CalendarDays,
                   Registration: ShieldCheck,
                   Login: ShieldCheck,
+                  Vision: Target,
+                  Roadmap: Target,
                 };
 
                 const Icon =
@@ -447,8 +367,17 @@ function MegaMenuPanel({
                     data-reveal
                     className="group overflow-hidden rounded-lg border border-slate-200 bg-white text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50"
                   >
-                    <div className="relative h-[79px] overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100/50 flex items-center justify-center gap-2 px-3">
-                      <Icon size={22} className="text-[#ff8901]" strokeWidth={1.5} />
+                    <div className="relative h-[100px] overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100/50 flex items-center justify-center gap-2 px-3">
+                      {item.customIcon ? (
+                        <img
+                          src={item.customIcon}
+                          alt={item.label}
+                          className="h-16 w-16 object-contain select-none"
+                          draggable={false}
+                        />
+                      ) : (
+                        <Icon size={22} className="text-[#ff8901]" strokeWidth={1.5} />
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5" />
                     </div>
                     <div className="p-3.5">

@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { InternalPageShell } from "@/components/layout/InternalPageShell";
 import { LatestEvents } from "@/components/sections/LatestEvents";
+import { resolveLegacyAsset } from "@/lib/assets";
 import { institutions, partners, portfolio, visitors } from "@/data";
 
 export const Route = createFileRoute("/$section/$slug")({
@@ -129,7 +130,12 @@ const pageMap: Record<string, PageDefinition> = {
     eyebrow: "Ecosystem / Infrastructure",
     title: "Spaces built for research, collaboration, and delivery",
     summary: "Innovation labs, coworking zones, event halls, and incubation rooms designed for serious building.",
-    images: ["/src/assets/inst-1.jpg", "/src/assets/inst-2.jpg", "/src/assets/inst-3.jpg", "/src/assets/inst-4.jpg", "/src/assets/inst-5.jpg", "/src/assets/inst-6.jpg"],
+    images: [
+      resolveLegacyAsset("/src/assets/infastructure/ahub.jpg"),
+      resolveLegacyAsset("/src/assets/infastructure/collabrative environment.png"),
+      resolveLegacyAsset("/src/assets/infastructure/confenrce hall.jpg"),
+      resolveLegacyAsset("/src/assets/infastructure/iot labs.jpeg"),
+    ],
     cards: [
       { title: "Innovation labs", body: "Cross-functional rooms for product, AI, and deep-tech exploration." },
       { title: "Incubation rooms", body: "Quiet, focused spaces for founder mentoring and review sessions." },

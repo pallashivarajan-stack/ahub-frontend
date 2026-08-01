@@ -5,18 +5,20 @@ import {
   LayoutDashboard,
   LogOut,
   ArrowLeft,
-  ClipboardList,
   Users,
   GraduationCap,
-  Building2,
   ChevronDown,
   ChevronRight,
-  ClipboardCheck,
   Calendar,
-  Quote,
-  Globe,
-  MapPin,
+  MessageSquareQuote,
+  Network,
+  Handshake,
+  UserCheck,
   Share2,
+  Server,
+  UserCog,
+  LayoutList,
+  FileSignature,
 } from "lucide-react";
 
 type NavGroup = {
@@ -32,12 +34,13 @@ const NAV_GROUPS: NavGroup[] = [
     key: "home",
     label: "Home Page",
     eyebrow: "Homepage sections",
-    paths: ["/admin/latest-events", "/admin/testimonials", "/admin/partners-logos", "/admin/visitors", "/admin/find-us-on"],
+    paths: ["/admin/latest-events", "/admin/testimonials", "/admin/mesh-network", "/admin/associated-with", "/admin/visitors", "/admin/find-us-on"],
     items: [
       { to: "/admin/latest-events", label: "Latest Events", icon: Calendar },
-      { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
-      { to: "/admin/partners-logos", label: "Partners & Mesh Network", icon: Globe },
-      { to: "/admin/visitors", label: "Distinguished Visitors", icon: MapPin },
+      { to: "/admin/testimonials", label: "Testimonials", icon: MessageSquareQuote },
+      { to: "/admin/mesh-network", label: "Mesh Network", icon: Network },
+      { to: "/admin/associated-with", label: "Associated With", icon: Handshake },
+      { to: "/admin/visitors", label: "Distinguished Visitors", icon: UserCheck },
       { to: "/admin/find-us-on", label: "Find Us On", icon: Share2 },
     ],
   },
@@ -47,7 +50,7 @@ const NAV_GROUPS: NavGroup[] = [
     eyebrow: "Spaces & facilities",
     paths: ["/admin/infrastructure"],
     items: [
-      { to: "/admin/infrastructure", label: "Infrastructure", icon: Building2 },
+      { to: "/admin/infrastructure", label: "Infrastructure", icon: Server },
     ],
   },
   {
@@ -57,8 +60,8 @@ const NAV_GROUPS: NavGroup[] = [
     paths: ["/admin/board", "/admin/team", "/admin/mentors"],
     items: [
       { to: "/admin/mentors", label: "Mentors", icon: GraduationCap },
-      { to: "/admin/board", label: "Board", icon: ClipboardList },
-      { to: "/admin/team", label: "Team", icon: Users },
+      { to: "/admin/board", label: "Board", icon: LayoutList },
+      { to: "/admin/team", label: "Team", icon: UserCog },
     ],
   },
   {
@@ -67,7 +70,7 @@ const NAV_GROUPS: NavGroup[] = [
     eyebrow: "Registrations & Events",
     paths: ["/admin/internship-registration"],
     items: [
-      { to: "/admin/internship-registration", label: "Internship Registration", icon: ClipboardCheck },
+      { to: "/admin/internship-registration", label: "Internship Registration", icon: FileSignature },
     ],
   },
 ];

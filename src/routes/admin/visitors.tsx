@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { isLoggedIn, loadVisitorsData, saveVisitorsData, getAssetOptions, type AdminVisitorData } from "@/services/adminService";
+import { isLoggedIn, loadVisitorsData, saveVisitorsData, getMultiCategoryAssetOptions, type AdminVisitorData } from "@/services/adminService";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { Plus, Pencil, Trash2, Save, Check, X } from "lucide-react";
 
@@ -26,7 +26,7 @@ function AdminVisitorsPage() {
   }, [navigate]);
 
   useEffect(() => {
-    getAssetOptions("visitors").then(setAssets);
+    getMultiCategoryAssetOptions(["visitors", "testimonals"]).then(setAssets);
   }, []);
 
   if (!authed) return null;

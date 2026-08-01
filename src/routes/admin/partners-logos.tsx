@@ -57,7 +57,7 @@ function AdminPartnersLogosPage() {
       <main className="flex-1 overflow-auto">
         <div className="border-b border-slate-200 bg-white px-8 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">Partners & Mesh Network Logos</h1>
+            <h1 className="text-xl font-bold text-slate-900">Mesh Network Logos</h1>
             <p className="text-xs text-slate-500 mt-0.5">Controls logos for both "Associated With" and "Mesh Network" sections</p>
           </div>
           <button onClick={handleSave} disabled={saving}

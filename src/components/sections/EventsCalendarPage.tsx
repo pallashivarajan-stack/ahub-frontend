@@ -1,14 +1,17 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
+  ArrowRight,
   CalendarDays,
   Clock,
+  ExternalLink,
+  Instagram,
   MapPin,
   Mic2,
   Sparkles,
   Ticket,
-  TrendingUp,
-  Users,
+  TrendingUp, 
+  Users 
 } from "lucide-react";
 import { resolveLegacyAsset } from "@/lib/assets";
 import { Calendar } from "@/components/ui/calendar";
@@ -32,7 +35,34 @@ const fadeUp = {
   transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
 };
 
-const defaultDate = new Date(2023, 9, 15);
+function formatDateKey(d: Date): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function parseEventDate(event: EcosystemEvent) {
+  const dateStr = event.date || "";
+  if (dateStr) {
+    const parts = dateStr.split("-");
+    if (parts.length === 3) {
+      const year = parts[0];
+      const monthNum = parseInt(parts[1], 10);
+      const dayNum = parseInt(parts[2], 10);
+      
+      const realMonths = [
+        "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+        "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
+      ];
+      const month = realMonths[monthNum - 1] || "JULY";
+      return { day: dayNum, month, year };
+    }
+  }
+  return { day: "11", month: "JULY", year: "2026" };
+}
+
+const defaultDate = new Date(2026, 6, 11);
 
 export function EventsCalendarPage() {
   const { data } = usePublicEventsCalendar({
@@ -47,20 +77,24 @@ export function EventsCalendarPage() {
   const [month, setMonth] = useState<Date>(defaultDate);
 
   const selectedEvents = useMemo(() => {
-    const key = selected.toISOString().slice(0, 10);
+    const key = formatDateKey(selected);
     return data.ecosystemEvents.filter((e: any) => e.date === key);
   }, [selected, data.ecosystemEvents]);
 
   const eventDates = useMemo(() => {
-    return data.ecosystemEvents.map((e: any) => new Date(e.date + "T12:00:00"));
+    return data.ecosystemEvents.map((e: any) => {
+      const [y, m, d] = e.date.split("-").map(Number);
+      return new Date(y, m - 1, d);
+    });
   }, [data.ecosystemEvents]);
 
   const modifiers = useMemo(() => {
     const byType: Partial<Record<EcosystemEventType, Date[]>> = {};
     data.ecosystemEvents.forEach((e: any) => {
-      const d = new Date(e.date + "T12:00:00");
+      const [y, m, d] = e.date.split("-").map(Number);
+      const dateObj = new Date(y, m - 1, d);
       if (!byType[e.type as EcosystemEventType]) byType[e.type as EcosystemEventType] = [];
-      byType[e.type as EcosystemEventType]?.push(d);
+      byType[e.type as EcosystemEventType]?.push(dateObj);
     });
     return { hasEvent: eventDates, ...byType };
   }, [eventDates, data.ecosystemEvents]);
@@ -70,6 +104,9 @@ export function EventsCalendarPage() {
       <BackgroundDecor />
       <div className="relative site-container-wide">
         <HeroSection badges={data.heroBadges} />
+      </div>
+
+      <div className="relative site-container-wide">
         <DashboardGrid
           selected={selected}
           month={month}
@@ -129,14 +166,12 @@ function HeroSection({ badges }: { badges: any }) {
         </div>
       </div>
 
-      <div className="flex items-center justify-center">
-        <div className="w-full max-w-md overflow-hidden rounded-[32px] border border-white/80 bg-white/95 p-6 shadow-[0_24px_60px_-30px_rgba(45,27,27,0.15)] md:p-8">
-          <img
-            src={resolveLegacyAsset("/src/assets/calender.png")}
-            alt="Event calendar illustration"
-            className="mx-auto w-full max-w-[340px] object-contain"
-          />
-        </div>
+      <div className="flex items-center justify-center -mt-6 lg:-mt-16">
+        <img
+          src={resolveLegacyAsset("/src/assets/calender.png")}
+          alt="Event calendar illustration"
+          className="mx-auto w-full max-w-[460px] object-contain"
+        />
       </div>
     </motion.section>
   );
@@ -161,7 +196,7 @@ function DashboardGrid({
   allEvents: any[];
   legendItems: any[];
 }) {
-  const upcoming = allEvents.filter((e: any) => e.date >= "2023-09-01").slice(0, 4);
+  const upcoming = allEvents.slice(0, 4);
 
   return (
     <motion.div {...fadeUp} className="mt-12 grid gap-6 lg:grid-cols-[65%_35%]">
@@ -186,6 +221,7 @@ function CalendarCard({
   onMonthChange,
   selectedEvents,
   modifiers,
+  legendItems,
 }: {
   selected: Date;
   month: Date;
@@ -223,22 +259,25 @@ function CalendarCard({
           </div>
         </div>
 
-        <div className="rounded-[20px] bg-[#FFF8F3] p-5">
+        <div className="rounded-[20px] bg-[#FFF8F3] p-5 flex flex-col">
           <p className="text-xs font-semibold uppercase tracking-wide text-[#F59E42]">Selected Date</p>
           <p className="mt-2 text-lg font-[800] text-[#2D1B1B]">
             {selected.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
           </p>
           <p className="text-sm text-[#6C5E5B]">{selected.toLocaleDateString("en-US", { weekday: "long" })}</p>
 
-          <div className="mt-5 space-y-3">
+          <div className="mt-5 flex-1 space-y-3 overflow-y-auto max-h-[380px]">
             {selectedEvents.length === 0 ? (
               <p className="text-xs text-[#B0A8A4]">No events on this date.</p>
             ) : (
               selectedEvents.map((event) => (
-                <div key={event.id} className="overflow-hidden rounded-xl bg-white shadow-sm">
-                  <img src={event.image} alt="" className="h-16 w-full object-cover" />
+                <div key={event.id} className="overflow-hidden rounded-xl bg-white shadow-sm border border-[#F5F0EB]">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#FFF8F3] flex items-center justify-center">
+                    <img src={event.image} alt={event.title} className="h-full w-full object-contain" />
+                  </div>
                   <div className="p-3">
                     <p className="text-xs font-[800] text-[#2D1B1B]">{event.title}</p>
+                    <p className="text-[11px] font-semibold text-[#F59E42] mt-0.5">{event.displayDate || event.date}</p>
                     <p className="text-[11px] text-[#6C5E5B]">{event.time}</p>
                   </div>
                 </div>
@@ -254,38 +293,75 @@ function CalendarCard({
 function UpcomingPanel({ events }: { events: EcosystemEvent[] }) {
   return (
     <div className="rounded-[32px] bg-white p-6 shadow-[0_20px_60px_-30px_rgba(45,27,27,0.12)] md:p-7">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-5">
         <h2 className="text-lg font-[800] text-[#2D1B1B]">Upcoming Events</h2>
         <span className="text-xs font-medium text-[#F59E42]">View all</span>
       </div>
 
-      <div className="mt-5 space-y-4">
-        {events.slice(0, 4).map((event) => (
-          <article
-            key={event.id}
-            className="group overflow-hidden rounded-[20px] border border-[#F5F0EB] bg-white transition-all hover:border-[#F59E42]/20 hover:shadow-md"
-          >
-            <img
-              src={event.image}
-              alt={event.title}
-              className="h-24 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="p-4">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <p className="text-sm font-[800] text-[#2D1B1B]">{event.title}</p>
-                  <p className="mt-1 text-xs text-[#6C5E5B]">{event.dayLabel} · {event.time}</p>
-                </div>
-                <span className="shrink-0 rounded-full bg-[#DCFCE7] px-2 py-0.5 text-[10px] font-bold text-[#16A34A]">
-                  {event.price}
-                </span>
+      <div className="space-y-6">
+        {events.slice(0, 2).map((event) => {
+          const { day, month, year } = parseEventDate(event);
+          return (
+            <article
+              key={event.id}
+              className="group overflow-hidden rounded-[24px] border border-[#F5F0EB] bg-white transition-all hover:shadow-lg flex flex-col"
+            >
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#FFF8F3] flex items-center justify-center">
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                />
               </div>
-              <span className={cn("mt-2 inline-block rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase", eventTypeBadge(event.type))}>
-                {event.tag}
-              </span>
-            </div>
-          </article>
-        ))}
+              <div className="p-5 flex flex-col flex-1 bg-white">
+                <div className="flex gap-4">
+                  {/* Editorial Date Block */}
+                  <div className="flex flex-col items-center justify-start pt-1 shrink-0 w-16">
+                    <span className="text-[36px] font-[900] leading-none text-[#F59E42]">{day}</span>
+                    <span className="text-[12px] font-[900] tracking-[0.05em] text-[#F59E42] mt-1">{month}</span>
+                    <span className="text-[14px] font-[700] text-[#1A1512] mt-0.5">{year}</span>
+                  </div>
+
+                  {/* Vertical line divider */}
+                  <div className="w-px self-stretch bg-[#EDE8E3] shrink-0" />
+
+                  {/* Badges + Title + Desc */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="mt-1 text-base font-[800] leading-snug text-[#1A1512] line-clamp-1">{event.title}</h3>
+                    <p className="mt-1 text-xs text-[#6C5E5B] line-clamp-2 leading-relaxed">{event.description}</p>
+                  </div>
+                </div>
+
+                {/* Location + Time row (light grey rounded block) */}
+                <div className="mt-4 rounded-2xl bg-[#FFFBF8] border border-[#F5EDE6] p-3 grid grid-cols-2 gap-4">
+                  {/* Location */}
+                  <div className="flex items-start gap-2.5">
+                    <MapPin className="h-5 w-5 text-[#1A1512] mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-[#F59E42]">Location</p>
+                      <p className="text-[11px] font-semibold text-[#3D3530] leading-tight mt-0.5 line-clamp-1">{event.venue}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Vertical divider inside grid */}
+                  <div className="flex items-start gap-2.5 border-l border-[#EDE8E3] pl-3">
+                    <Clock className="h-5 w-5 text-[#1A1512] mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-[#F59E42]">Time</p>
+                      <p className="text-[11px] font-semibold text-[#3D3530] leading-tight mt-0.5">{event.time}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  className="mt-4 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#833ab4] via-[#fd1d1d] to-[#fcb045] transition-opacity hover:opacity-95 self-start"
+                >
+                  <Instagram className="h-4.5 w-4.5 text-white" />
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </div>
   );
@@ -299,7 +375,7 @@ function FeaturedEvents({ events, stats }: { events: any; stats: any }) {
       <div className="mb-6 flex items-end justify-between">
         <div>
           <h2 className="text-xl font-[800] text-[#2D1B1B] md:text-2xl">Featured Events</h2>
-          <p className="mt-1 text-sm text-[#6C5E5B]">Highlights from October 2023</p>
+          <p className="mt-1 text-sm text-[#6C5E5B]">Highlights from AHUB Ecosystem</p>
         </div>
       </div>
 
@@ -314,14 +390,14 @@ function FeaturedEvents({ events, stats }: { events: any; stats: any }) {
             whileHover={{ y: -6 }}
             className="group overflow-hidden rounded-[28px] bg-white shadow-[0_16px_50px_-24px_rgba(45,27,27,0.12)] hover:shadow-[0_24px_60px_-20px_rgba(245,158,66,0.2)]"
           >
-            <div className="relative aspect-[16/10] overflow-hidden">
+            <div className="relative aspect-[16/10] overflow-hidden bg-[#FFF8F3] flex items-center justify-center">
               <img
                 src={event.image}
                 alt={event.title}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="h-full w-full object-contain transition-transform duration-700 group-hover:scale-105"
               />
-              <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold uppercase text-[#F59E42] shadow-sm">
-                {event.dayLabel}
+              <span className="absolute left-3 top-3 rounded-full bg-[#F59E42] px-3.5 py-1 text-xs font-extrabold text-white shadow-md">
+                {event.displayDate || event.dayLabel}
               </span>
             </div>
             <div className="p-5">
@@ -331,12 +407,23 @@ function FeaturedEvents({ events, stats }: { events: any; stats: any }) {
                 <Clock className="h-3.5 w-3.5 text-[#F59E42]" />
                 {event.time}
               </div>
-              <button
-                type="button"
-                className="mt-5 w-full rounded-full border-2 border-[#F59E42] py-2.5 text-sm font-semibold text-[#F59E42] transition-all group-hover:bg-[#F59E42] group-hover:text-white"
-              >
-                View Details
-              </button>
+              {event.instagram ? (
+                <a
+                  href={event.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 block w-full text-center rounded-full border-2 border-[#F59E42] py-2.5 text-sm font-semibold text-[#F59E42] transition-all group-hover:bg-[#F59E42] group-hover:text-white"
+                >
+                  View Details
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  className="mt-5 w-full rounded-full border-2 border-[#F59E42] py-2.5 text-sm font-semibold text-[#F59E42] transition-all group-hover:bg-[#F59E42] group-hover:text-white"
+                >
+                  View Details
+                </button>
+              )}
             </div>
           </motion.article>
         ))}
@@ -373,7 +460,7 @@ function AllEventsGrid({ events }: { events: any }) {
       <div className="mb-8 flex items-end justify-between">
         <div>
           <h2 className="text-2xl font-[800] text-[#2D1B1B]">All Events</h2>
-          <p className="mt-1 text-sm text-[#6C5E5B]">September – October 2023 · {events.length} events</p>
+          <p className="mt-1 text-sm text-[#6C5E5B]">September 2023 – July 2026 · {events.length} events</p>
         </div>
         <div className="flex items-center gap-1 text-xs text-[#6C5E5B]">
           <TrendingUp className="h-3.5 w-3.5 text-[#F59E42]" />
@@ -391,54 +478,69 @@ function AllEventsGrid({ events }: { events: any }) {
 }
 
 function EventCard({ event, index }: { event: EcosystemEvent; index: number }) {
+  const { day, month, year } = parseEventDate(event);
   return (
     <motion.article
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: (index % 3) * 0.05 }}
-      className="group flex flex-col overflow-hidden rounded-[24px] bg-white shadow-[0_12px_40px_-24px_rgba(45,27,27,0.1)] transition-all hover:-translate-y-1 hover:shadow-[0_20px_50px_-20px_rgba(245,158,66,0.18)]"
+      className="group flex flex-col overflow-hidden rounded-[24px] bg-white shadow-[0_12px_40px_-24px_rgba(45,27,27,0.1)] transition-all hover:-translate-y-1 hover:shadow-lg"
     >
-      <div className="relative aspect-[16/10] overflow-hidden">
+      <div className="relative aspect-[16/10] overflow-hidden bg-[#FFF8F3]">
         <img
           src={event.image}
           alt={event.title}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-        <span className="absolute left-3 top-3 rounded-lg bg-[#F59E42] px-2.5 py-1 text-[10px] font-bold uppercase text-white">
-          {event.dayLabel}
-        </span>
-        <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-2.5 py-0.5 text-[10px] font-bold text-[#16A34A]">
-          {event.price}
-        </span>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
       </div>
 
-      <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="text-base font-[800] leading-tight text-[#2D1B1B]">{event.title}</h3>
-          <span className={cn("shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase", eventTypeBadge(event.type))}>
-            {event.tag}
-          </span>
+      <div className="p-5 flex flex-col flex-1 bg-white">
+        <div className="flex gap-4">
+          {/* Editorial Date Block */}
+          <div className="flex flex-col items-center justify-start pt-1 shrink-0 w-16">
+            <span className="text-[36px] font-[900] leading-none text-[#F59E42]">{day}</span>
+            <span className="text-[12px] font-[900] tracking-[0.05em] text-[#F59E42] mt-1">{month}</span>
+            <span className="text-[14px] font-[700] text-[#1A1512] mt-0.5">{year}</span>
+          </div>
+
+          {/* Vertical line divider */}
+          <div className="w-px self-stretch bg-[#EDE8E3] shrink-0" />
+
+          {/* Badges + Title + Desc */}
+          <div className="flex-1 min-w-0">
+            <h3 className="mt-1 text-base font-[800] leading-snug text-[#1A1512] line-clamp-1">{event.title}</h3>
+            <p className="mt-1 text-xs text-[#6C5E5B] line-clamp-2 leading-relaxed">{event.description}</p>
+          </div>
         </div>
 
-        <p className="mt-2 flex items-center gap-1.5 text-xs text-[#6C5E5B]">
-          <Clock className="h-3 w-3 text-[#F59E42]" />
-          {event.time}
-        </p>
-        <p className="mt-1 flex items-start gap-1.5 text-xs leading-relaxed text-[#6C5E5B]">
-          <MapPin className="mt-0.5 h-3 w-3 shrink-0 text-[#F59E42]" />
-          <span className="line-clamp-2">{event.venue}</span>
-        </p>
-        <p className="mt-3 line-clamp-2 flex-1 text-xs leading-relaxed text-[#78716C]">{event.description}</p>
+        {/* Location + Time row (light grey rounded block) */}
+        <div className="mt-4 rounded-2xl bg-[#FFFBF8] border border-[#F5EDE6] p-3 grid grid-cols-2 gap-4">
+          {/* Location */}
+          <div className="flex items-start gap-2.5">
+            <MapPin className="h-5 w-5 text-[#1A1512] mt-0.5 shrink-0" />
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-[#F59E42]">Location</p>
+              <p className="text-[11px] font-semibold text-[#3D3530] leading-tight mt-0.5 line-clamp-1">{event.venue}</p>
+            </div>
+          </div>
+          
+          {/* Vertical divider inside grid */}
+          <div className="flex items-start gap-2.5 border-l border-[#EDE8E3] pl-3">
+            <Clock className="h-5 w-5 text-[#1A1512] mt-0.5 shrink-0" />
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-[#F59E42]">Time</p>
+              <p className="text-[11px] font-semibold text-[#3D3530] leading-tight mt-0.5">{event.time}</p>
+            </div>
+          </div>
+        </div>
 
-        <button
-          type="button"
-          className="mt-4 inline-flex items-center gap-1 self-start rounded-full border-2 border-[#F59E42] px-4 py-1.5 text-xs font-semibold text-[#F59E42] transition-all group-hover:bg-[#F59E42] group-hover:text-white"
+        <div
+          className="mt-4 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#833ab4] via-[#fd1d1d] to-[#fcb045] transition-opacity hover:opacity-95 self-start"
         >
-          View Details
-          <Users className="h-3 w-3" />
-        </button>
+          <Instagram className="h-4.5 w-4.5 text-white" />
+        </div>
       </div>
     </motion.article>
   );
