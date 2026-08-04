@@ -27,6 +27,7 @@ import {
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { resolveLegacyAsset } from "@/lib/assets";
 import { cn } from "@/lib/utils";
+import { usePageVisibilityHelper } from "@/hooks/usePageVisibility";
 
 const ahubLogo = resolveLegacyAsset("/src/assets/AHub-Logo-1.png");
 
@@ -301,11 +302,13 @@ function MegaMenuPanel({
   panelRef: RefObject<HTMLDivElement | null>;
   onNavigate: () => void;
 }) {
+  const { isVisible } = usePageVisibilityHelper();
   const panel = activePanel ? PANEL_CONTENT[activePanel] : null;
+  const visibleLinks = panel ? panel.links.filter((link) => isVisible(link.href)) : [];
 
   return (
     <AnimatePresence mode="wait">
-      {activePanel && panel ? (
+      {activePanel && panel && visibleLinks.length > 0 ? (
         <motion.div
           key={activePanel}
           ref={panelRef}
@@ -335,7 +338,7 @@ function MegaMenuPanel({
                 panel.compact ? "sm:grid-cols-2" : "sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4",
               )}
             >
-              {panel.links.map((item) => {
+              {visibleLinks.map((item) => {
                 // Map labels to appropriate icons
                 const iconMap: Record<string, IconType> = {
                   Mentors: Users,
@@ -404,6 +407,7 @@ function MegaMenuPanel({
 }
 
 export function Navbar() {
+  const { isVisible } = usePageVisibilityHelper();
   const navigate = useNavigate();
   const routeKey = useRouterState({
     select: (state) => state.location.pathname,
@@ -412,6 +416,16 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activePanel, setActivePanel] = useState<PanelKey | null>(null);
   const [activeSection, setActiveSection] = useState("home");
+
+  const visibleNavItems = NAV_ITEMS.filter((item) => {
+    if (item.panel) {
+      const panelContent = PANEL_CONTENT[item.panel];
+      const visibleLinks = panelContent.links.filter((link) => isVisible(link.href));
+      return visibleLinks.length > 0;
+    }
+    return isVisible(item.href);
+  });
+
   const panelRef = useRef<HTMLDivElement | null>(null);
   const navRef = useRef<HTMLDivElement | null>(null);
 
@@ -613,10 +627,10 @@ export function Navbar() {
               </Link>
             </div>
 
-            {/* Center navigation links - hidden on mobile */}
+             {/* Center navigation links - hidden on mobile */}
             <div className="hidden flex-1 items-center justify-center lg:flex">
               <ul className="flex items-center justify-center gap-1 xl:gap-1.5">
-                {NAV_ITEMS.map((item) => {
+                {visibleNavItems.map((item) => {
                   const isPanelOpen = activePanel === item.panel;
                   const hasPanel = !!item.panel;
                   return (
@@ -661,16 +675,18 @@ export function Navbar() {
 
             {/* CTA Button - right aligned */}
             <div className="flex shrink-0 items-center gap-2">
-              <Link
-                to="/programs/join-us"
-                className="group hidden lg:inline-flex items-center gap-2 rounded-xl bg-[#c94a0a] px-3.5 py-2.5 text-xs font-medium text-white transition-transform duration-300 hover:-translate-y-0.5 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
-              >
-                Join Us
-                <ArrowRight
-                  size={15}
-                  className="transition-transform duration-300 group-hover:translate-x-0.5"
-                />
-              </Link>
+              {isVisible("/programs/join-us") && (
+                <Link
+                  to="/programs/join-us"
+                  className="group hidden lg:inline-flex items-center gap-2 rounded-xl bg-[#c94a0a] px-3.5 py-2.5 text-xs font-medium text-white transition-transform duration-300 hover:-translate-y-0.5 active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
+                >
+                  Join Us
+                  <ArrowRight
+                    size={15}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5"
+                  />
+                </Link>
+              )}
 
               {/* Mobile menu toggle */}
               <div className="flex lg:hidden">
@@ -735,7 +751,7 @@ export function Navbar() {
                 }}
                 className="mt-6 grid gap-3"
               >
-                {NAV_ITEMS.map((item) => {
+                {visibleNavItems.map((item) => {
                   const isActive =
                     activeSection === item.href.slice(1) || activePanel === item.panel;
                   const panelContent = item.panel ? PANEL_CONTENT[item.panel] : null;
@@ -783,20 +799,22 @@ export function Navbar() {
                       {/* Inline sub-links — shown when panel is open */}
                       {panelContent && activePanel === item.panel && (
                         <div className="mt-1.5 grid gap-1 pl-2">
-                          {panelContent.links.map((link) => (
-                            <Link
-                              key={link.href}
-                              to={link.href}
-                              onClick={closeMenus}
-                              className="flex items-center justify-between rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] px-4 py-2.5 text-left transition hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)]"
-                            >
-                              <div>
-                                <div className="text-sm font-medium text-white">{link.label}</div>
-                                <div className="mt-0.5 text-xs text-white/50">{link.description}</div>
-                              </div>
-                              <ArrowRight size={13} className="shrink-0 text-[#e75710] ml-2" />
-                            </Link>
-                          ))}
+                          {panelContent.links
+                            .filter((link) => isVisible(link.href))
+                            .map((link) => (
+                              <Link
+                                key={link.href}
+                                to={link.href}
+                                onClick={closeMenus}
+                                className="flex items-center justify-between rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] px-4 py-2.5 text-left transition hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)]"
+                              >
+                                <div>
+                                  <div className="text-sm font-medium text-white">{link.label}</div>
+                                  <div className="mt-0.5 text-xs text-white/50">{link.description}</div>
+                                </div>
+                                <ArrowRight size={13} className="shrink-0 text-[#e75710] ml-2" />
+                              </Link>
+                            ))}
                         </div>
                       )}
                     </motion.li>
@@ -805,17 +823,19 @@ export function Navbar() {
               </motion.ul>
 
               {/* CTA Button */}
-              <Link
-                to="/programs/join-us"
-                onClick={closeMenus}
-                className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#c94a0a] px-5 py-2.5 text-xs font-medium text-white transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(201,74,10,0.28)] active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
-              >
-                Join Us
-                <ArrowRight
-                  size={15}
-                  className="transition-transform duration-300 group-hover:translate-x-0.5"
-                />
-              </Link>
+              {isVisible("/programs/join-us") && (
+                <Link
+                  to="/programs/join-us"
+                  onClick={closeMenus}
+                  className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#c94a0a] px-5 py-2.5 text-xs font-medium text-white transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(201,74,10,0.28)] active:scale-95 focus-visible:ring-2 focus-visible:ring-[#e75710] focus-visible:ring-offset-2 focus:outline-none"
+                >
+                  Join Us
+                  <ArrowRight
+                    size={15}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5"
+                  />
+                </Link>
+              )}
             </div>
           </motion.div>
         )}

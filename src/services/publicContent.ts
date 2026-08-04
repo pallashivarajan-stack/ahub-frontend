@@ -583,3 +583,8 @@ export const fetchPublicPressPage = async () => {
   const data = await fetchPublic<Record<string, unknown>>(PUBLIC_CONTENT_ENDPOINTS.pressPage);
   return data ? mapPressPageFromApi(data) : null;
 };
+
+export async function fetchPageVisibility() {
+  return fetchPublic<Record<string, any>[]>(PUBLIC_CONTENT_ENDPOINTS.pageVisibility);
+}
+

@@ -56,6 +56,8 @@ export const PUBLIC_CONTENT_ENDPOINTS = {
   reports: "/api/public/reports",
   /** Internship listings from dedicated table */
   internshipListings: "/api/public/internship-listings",
+  /** Page visibility settings */
+  pageVisibility: "/api/public/page-visibility",
 } as const;
 
 export type PublicContentKey = keyof typeof PUBLIC_CONTENT_ENDPOINTS;

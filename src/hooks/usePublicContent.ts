@@ -38,4 +38,5 @@ export {
   usePublicPitchToUs,
   usePublicStartupRegistration,
   usePublicInternshipListings,
+  usePageVisibility,
 } from "@/services/usePublicContent";

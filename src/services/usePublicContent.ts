@@ -49,6 +49,7 @@ import {
   fetchPublicPartnerItems,
   fetchPublicInternshipListings,
   resolveSafeMediaUrl,
+  fetchPageVisibility,
 } from "@/services/publicContent";
 import { portfolio as staticPortfolio, events as staticEvents } from "@/data";
 
@@ -390,3 +391,15 @@ export function usePublicAssociatedWith<T>(fallbackData: T) {
     placeholderData: fallbackData,
   });
 }
+
+export function usePageVisibility() {
+  return useQuery({
+    queryKey: ["public", "pageVisibility"],
+    queryFn: async () => {
+      const data = await fetchPageVisibility();
+      return data || [];
+    },
+    staleTime: 60_000,
+  });
+}
+

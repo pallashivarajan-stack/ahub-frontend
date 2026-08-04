@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { useLenis } from "@/hooks/useLenis";
 import { useEffect } from "react";
 import { initScrollAnimations } from "@/lib/scroll";
+import { PageVisibilityGuard } from "@/components/layout/PageVisibilityGuard";
 
 function NotFoundComponent() {
   return (
@@ -144,7 +145,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <PageVisibilityGuard>
+        <Outlet />
+      </PageVisibilityGuard>
     </QueryClientProvider>
   );
 }
